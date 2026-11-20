@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Micro Tool 01 - معالج النصوص والبيانات السريع</title>
+  <style>
+    :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; }
+    body { margin: 0; padding: 20px; font-family: system-ui, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; }
+    .container { width: 100%; max-width: 600px; background: var(--card); border-radius: 12px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    h1 { color: var(--accent); margin-top: 0; font-size: 1.4rem; text-align: center; }
+    textarea { width: 100%; height: 160px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; color: #fff; padding: 12px; font-size: 1rem; box-sizing: border-box; resize: vertical; margin-bottom: 15px; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; text-align: center; }
+    .stat-box { background: #334155; padding: 10px; border-radius: 6px; }
+    .stat-num { font-size: 1.2rem; font-weight: bold; color: var(--accent); }
+    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    button { flex: 1; padding: 10px; border: none; border-radius: 6px; background: var(--accent); color: #0f172a; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>أداة معالجة النصوص الذكية</h1>
+    <textarea id="inputText" placeholder="اكتب أو ألصق النص هنا..." oninput="analyzeText()"></textarea>
+    <div class="stats">
+      <div class="stat-box"><div class="stat-num" id="charCount">0</div>أحرف</div>
+      <div class="stat-box"><div class="stat-num" id="wordCount">0</div>كلمات</div>
+      <div class="stat-box"><div class="stat-num" id="lineCount">0</div>أسطر</div>
+    </div>
+    <div class="btn-group">
+      <button onclick="cleanSpaces()">تنظيف الفراغات الزائدة</button>
+      <button onclick="copyResult()">نسخ النص</button>
+    </div>
+  </div>
+  <script>
+    function analyzeText() {
+      const text = document.getElementById('inputText').value;
+      document.getElementById('charCount').innerText = text.length;
+      document.getElementById('wordCount').innerText = text.trim() ? text.trim().split(/\s+/).length : 0;
+      document.getElementById('lineCount').innerText = text ? text.split('\n').length : 0;
+    }
+    function cleanSpaces() {
+      const el = document.getElementById('inputText');
+      el.value = el.value.replace(/\s+/g, ' ').trim();
+      analyzeText();
+    }
+    function copyResult() {
+      const text = document.getElementById('inputText').value;
+      navigator.clipboard.writeText(text);
+      alert('تم نسخ النص بنجاح!');
+    }
+  </script>
+</body>
+  </html>
+  
