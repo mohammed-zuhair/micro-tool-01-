@@ -1,15 +1,18 @@
-name: Autonomous AI Developer Agent
+name: Autonomous AI Developer Agent Engine
 
 on:
   schedule:
-    - cron: '0 0 * * 0'
-  workflow_dispatch:
+    - cron: '0 0 * * 0' # تشغيل أوتوماتيكي دوري كل أسبوع
+  workflow_dispatch:     # إمكانية التشغيل اليدوي في أي وقت
+  push:
+    paths:
+      - 'roadmap.txt'    # يتفعل الإيجنت فوراً وبدون تدخل عند تعديل ملف الخطة
 
 permissions:
   contents: write
 
 jobs:
-  auto-update:
+  auto-build-and-deploy:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
@@ -26,16 +29,16 @@ jobs:
         run: |
           pip install google-generativeai
 
-      - name: Run AI Agent with Validation Stage
+      - name: Execute Autonomous Agent
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
           python agent.py
 
-      - name: Commit and Push Changes to Main
+      - name: Commit and Push All Structural Changes
         run: |
           git config --global user.name "Autonomous-AI-Agent"
           git config --global user.email "agent@bot.local"
-          git add .
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update: Added tool & updated log [Verified]" && git push)
+          git add -A
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-Update: Autonomous engine updated core files & changelog [Verified]" && git push)
           
