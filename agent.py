@@ -48,8 +48,6 @@ for model_name in models_to_try:
             break
     except Exception as err:
         print(f"WARNING: Model {model_name} failed with error: {err}")
-        exit(0)
-        
 
 # Prevent breaking the workflow if API limit is reached
 if not new_code:
