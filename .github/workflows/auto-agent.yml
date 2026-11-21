@@ -37,5 +37,5 @@ jobs:
           git config --global user.name "Autonomous-AI-Agent"
           git config --global user.email "agent@bot.local"
           git add .
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update: Added trending tool & updated log [Verified]" && git push)
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update: Added tool & updated log [Verified]" && git push)
           
