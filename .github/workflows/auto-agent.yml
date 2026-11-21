@@ -11,7 +11,7 @@ permissions:
 jobs:
   auto-update:
     runs-on: ubuntu-latest
-    timeout-minutes: 20 # تمديد مهلة التشغيل لمنح نموذج Hydrogen الوقت الكافي للتفكير
+    timeout-minutes: 20
 
     steps:
       - name: Checkout Repository
@@ -36,6 +36,6 @@ jobs:
         run: |
           git config --global user.name "Autonomous-AI-Agent"
           git config --global user.email "agent@bot.local"
-          git add index.html
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update: Enhanced features & tools via Hydrogen Engine [Verified]" && git push)
+          git add .
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update: Added trending tool & updated log [Verified]" && git push)
           
