@@ -7,7 +7,7 @@ import google.generativeai as genai
 # 1. API Configuration
 api_key = os.environ.get("GEMINI_API_KEY")
 if not api_key:
-    print("ERROR: GEMINI_API_KEY missing!")
+    print("ERROR: GEMINI_API_KEY is missing!")
     exit(1)
 
 genai.configure(api_key=api_key)
@@ -25,12 +25,26 @@ if os.path.exists("roadmap.txt"):
     with open("roadmap.txt", "r", encoding="utf-8") as rf:
         roadmap_text = rf.read().strip()
 
-# 3. Dynamic Prompt Construction
+# 3. Dynamic Model Discovery (يستخرج النماذج الشغالة تلقائياً لمنع خطأ 404)
+available_models = []
+try:
+    for m in genai.list_models():
+        if 'generateContent' in m.supported_generation_methods:
+            available_models.append(m.name)
+    print(f"Discovered active models on API Key: {available_models}")
+except Exception as e:
+    print(f"Model listing notice: {e}")
+
+# احتياطي في حال عدم جلب القائمة
+if not available_models:
+    available_models = ['models/gemini-1.5-flash', 'models/gemini-2.0-flash', 'models/gemini-1.5-pro']
+
+# 4. Prompt Construction
 prompt = f"""
 أنت مهندس مطور خبير ومستقل لمنصة أدوات مصغرة (Micro-Tools Platform).
 مهمتك:
 1. تحليل الكود الحالي وقراءة الخطة.
-2. إضافة أداة مصغرة جديدة ورائجة ومفيدة كلياً بتصميم متناسق وسلس.
+2. إضافة أداة مصغرة جديدة ورائجة ومفيدة بتصميم متناسق وسلس.
 3. احتفظ بكل الوسوم الخاصة بـ Google Search Console وVercel Analytics وGoogle Fonts وشريط المشاركة وسياسة الخصوصية بدون أي تغيير.
 4. قم بإرجاع كود HTML الكامل فقط دون أي أسطر markdown مثل ```html.
 
@@ -43,14 +57,12 @@ prompt = f"""
 
 print("Executing AI Code Generation...")
 
-# 4. Multi-Model Execution
-models_to_try = ['gemini-1.5-flash', 'gemini-1.5-flash-8b']
 new_code = None
 used_model = None
 
-for model_name in models_to_try:
+for model_name in available_models:
     try:
-        print(f"Connecting to model: {model_name}...")
+        print(f"Connecting to available model: {model_name}...")
         model = genai.GenerativeModel(model_name)
         response = model.generate_content(
             prompt,
@@ -72,7 +84,7 @@ for model_name in models_to_try:
         print(f"WARNING: Model {model_name} failed: {err}")
 
 if not new_code:
-    print("CRITICAL ERROR: Failed to generate valid code from all models.")
+    print("CRITICAL ERROR: All discovered models failed to return valid code.")
     exit(1)
 
 # 5. Save HTML Changes
