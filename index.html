@@ -6,9 +6,12 @@
   <title>منصة الأدوات الذكية المجانية | 5 أدوات في مكان واحد</title>
   <meta name="description" content="منصة أدوات مجانية شاملة: معالج نصوص، مولد كلمات سر قوية، محول تشفير، مولد رموز QR، وحاسبة نسب مئوية سريعة.">
   <meta name="keywords" content="أدوات مجانية, معالج نصوص, مولد qr, حساب نسبة مئوية, كلمة سر معقدة">
+  <meta name="google-site-verification" content="PHM4zbdJu9FraC4fYw8tmj92C4HLUJpCzzcvpZXwoco" />
   
-  <!-- كود إثبات ملكية Google Search Console الخاص بك (ضع سطر الميتا الخاص بك هنا إذا كان لديك) -->
-     <meta name="google-site-verification" content="PHM4zbdJu9FraC4fYw8tmj92C4HLUJpCzzcvpZXwoco" />
+  <!-- Google Font: Cairo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Vercel Web Analytics Script -->
   <script defer src="/_vercel/insights/script.js"></script>
@@ -20,13 +23,13 @@
   <meta property="og:description" content="5 أدوات مجانية وسريعة تعمل مباشرة على متصفحك دون تسجيل.">
   <style>
     :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; --border: #334155; }
-    * { box-sizing: border-box; }
-    body { margin: 0; padding: 15px; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; }
+    * { box-sizing: border-box; font-family: 'Cairo', system-ui, sans-serif; }
+    body { margin: 0; padding: 15px; background: var(--bg); color: var(--text); display: flex; justify-content: center; }
     .container { width: 100%; max-width: 700px; background: var(--card); border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    h1 { color: var(--accent); margin: 0 0 15px 0; font-size: 1.3rem; text-align: center; }
+    h1 { color: var(--accent); margin: 0 0 15px 0; font-size: 1.3rem; text-align: center; font-weight: 800; }
     
     .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
-    .tab-btn { background: #0f172a; color: #94a3b8; border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+    .tab-btn { background: #0f172a; color: #94a3b8; border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
     .tab-btn.active { background: var(--accent); color: #0f172a; border-color: var(--accent); }
     
     .tool-panel { display: none; }
@@ -36,7 +39,7 @@
     textarea { height: 120px; resize: vertical; }
     
     .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-    button.action-btn { flex: 1; min-width: 120px; padding: 10px; border: none; border-radius: 8px; background: var(--accent); color: #0f172a; font-weight: bold; cursor: pointer; font-size: 0.9rem; }
+    button.action-btn { flex: 1; min-width: 120px; padding: 10px; border: none; border-radius: 8px; background: var(--accent); color: #0f172a; font-weight: 700; cursor: pointer; font-size: 0.9rem; }
     
     .output-box { background: #0f172a; border: 1px dashed var(--border); padding: 12px; border-radius: 8px; margin-top: 12px; font-family: monospace; word-break: break-all; font-size: 0.95rem; }
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; text-align: center; }
@@ -46,7 +49,7 @@
     .share-box { margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); text-align: center; }
     .share-title { font-size: 0.85rem; color: #94a3b8; margin-bottom: 10px; }
     .share-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-    .share-btn { background: #334155; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: none; }
+    .share-btn { background: #334155; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: none; font-weight: 600; }
   </style>
 </head>
 <body>
@@ -78,7 +81,7 @@
 
     <!-- Tool 2: Password Generator -->
     <div id="pass-tool" class="tool-panel">
-      <label style="display:block; margin-bottom:6px;">طول كلمة السر:</label>
+      <label style="display:block; margin-bottom:6px; font-weight:600;">طول كلمة السر:</label>
       <input type="number" id="passLength" value="16" min="8" max="64">
       <div class="btn-group">
         <button class="action-btn" onclick="generatePassword()">توليد كلمة سر معقدة</button>
@@ -100,9 +103,9 @@
 
     <!-- Tool 4: Percentage Calculator -->
     <div id="calc-tool" class="tool-panel">
-      <label style="display:block; margin-bottom:6px;">احسب نسبة %:</label>
+      <label style="display:block; margin-bottom:6px; font-weight:600;">احسب نسبة %:</label>
       <input type="number" id="percentVal" placeholder="مثال: 15">
-      <label style="display:block; margin-bottom:6px;">من إجمالي المبلغ/العدد:</label>
+      <label style="display:block; margin-bottom:6px; font-weight:600;">من إجمالي المبلغ/العدد:</label>
       <input type="number" id="totalVal" placeholder="مثال: 200">
       <div class="btn-group">
         <button class="action-btn" onclick="calcPercent()">حساب الناتج</button>
@@ -200,5 +203,4 @@
     }
   </script>
 </body>
-        </html>
-        
+</html>
