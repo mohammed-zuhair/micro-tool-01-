@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد تأثيرات الزجاج والظلال الحديثة - CSS Glass & Shadow Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Cairo', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="p-4 border-b border-slate-800 flex justify-between items-center max-w-6xl mx-auto w-full">
+        <a href="../index.html" class="text-indigo-400 hover:text-indigo-300 font-semibold flex items-center gap-2">
+            ← العودة للرئيسية
+        </a>
+        <h1 class="text-lg font-bold bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent">مولد تأثيرات الزجاج والظلال</h1>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-6xl mx-auto w-full p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+        
+        <!-- Controls Panel -->
+        <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6 lg:col-span-1">
+            <h2 class="text-xl font-bold border-b border-slate-800 pb-3">الإعدادات</h2>
+
+            <!-- Blur Control -->
+            <div class="space-y-2">
+                <label class="flex justify-between text-sm">
+                    <span>درجة الضبابية (Blur):</span>
+                    <span id="blurValue" class="text-indigo-400 font-mono">10px</span>
+                </label>
+                <input type="range" id="blurRange" min="0" max="40" value="10" class="w-full accent-indigo-500 cursor-pointer">
+            </div>
+
+            <!-- Transparency Control -->
+            <div class="space-y-2">
+                <label class="flex justify-between text-sm">
+                    <span>شفافية الخلفية (Opacity):</span>
+                    <span id="opacityValue" class="text-indigo-400 font-mono">0.25</span>
+                </label>
+                <input type="range" id="opacityRange" min="0" max="1" step="0.05" value="0.25" class="w-full accent-indigo-500 cursor-pointer">
+            </div>
+
+            <!-- Border Width -->
+            <div class="space-y-2">
+                <label class="flex justify-between text-sm">
+                    <span>سمك الإطار (Border):</span>
+                    <span id="borderValue" class="text-indigo-400 font-mono">1px</span>
+                </label>
+                <input type="range" id="borderRange" min="0" max="5" value="1" class="w-full accent-indigo-500 cursor-pointer">
+            </div>
+
+            <!-- Border Radius -->
+            <div class="space-y-2">
+                <label class="flex justify-between text-sm">
+                    <span>استدارة الحواف (Radius):</span>
+                    <span id="radiusValue" class="text-indigo-400 font-mono">16px</span>
+                </label>
+                <input type="range" id="radiusRange" min="0" max="50" value="16" class="w-full accent-indigo-500 cursor-pointer">
+            </div>
+        </div>
+
+        <!-- Preview & Code Output Area -->
+        <div class="lg:col-span-2 space-y-6">
+            <!-- Preview Box -->
+            <div id="previewContainer" class="relative h-80 rounded-2xl flex items-center justify-center p-8 overflow-hidden bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 shadow-2xl">
+                <!-- Background decorative elements -->
+                <div class="absolute -top-10 -left-10 w-32 h-32 bg-yellow-400 rounded-full blur-xl opacity-60"></div>
+                <div class="absolute -bottom-10 -right-10 w-40 h-40 bg-teal-400 rounded-full blur-xl opacity-60"></div>
+
+                <!-- Glass Card Preview -->
+                <div id="glassCard" class="p-8 text-center transition-all duration-200 z-10 max-w-sm w-full">
+                    <h3 class="text-2xl font-bold text-white mb-2">بطاقة زجاجية</h3>
+                    <p class="text-slate-200 text-sm">هذا العنصر يعكس تأثير الـ Glassmorphism الحديث المباشر.</p>
+                </div>
+            </div>
+
+            <!-- Code Output -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-slate-300">كود CSS الناتح</h3>
+                    <button id="copyBtn" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition shadow-lg shadow-indigo-600/20">
+                        نسخ الكود
+                    </button>
+                </div>
+                <pre id="codeOutput" class="bg-slate-950 p-4 rounded-xl font-mono text-xs text-indigo-300 overflow-x-auto border border-slate-800/80" dir="ltr"></pre>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center p-6 text-slate-500 text-xs border-t border-slate-900">
+        جميع الحقوق محفوظة © منصة الأدوات المصغرة
+    </footer>
+
+    <script>
+        const blurRange = document.getElementById('blurRange');
+        const opacityRange = document.getElementById('opacityRange');
+        const borderRange = document.getElementById('borderRange');
+        const radiusRange = document.getElementById('radiusRange');
+
+        const blurValue = document.getElementById('blurValue');
+        const opacityValue = document.getElementById('opacityValue');
+        const borderValue = document.getElementById('borderValue');
+        const radiusValue = document.getElementById('radiusValue');
+
+        const glassCard = document.getElementById('glassCard');
+        const codeOutput = document.getElementById('codeOutput');
+        const copyBtn = document.getElementById('copyBtn');
+
+        function updateGenerator() {
+            const blur = blurRange.value;
+            const opacity = opacityRange.value;
+            const border = borderRange.value;
+            const radius = radiusRange.value;
+
+            blurValue.textContent = blur + 'px';
+            opacityValue.textContent = opacity;
+            borderValue.textContent = border + 'px';
+            radiusValue.textContent = radius + 'px';
+
+            // Apply styles to preview
+            glassCard.style.backdropFilter = `blur(${blur}px)`;
+            glassCard.style.webkitBackdropFilter = `blur(${blur}px)`;
+            glassCard.style.backgroundColor = `rgba(255, 255, 255, ${opacity})`;
+            glassCard.style.border = `${border}px solid rgba(255, 255, 255, 0.2)`;
+            glassCard.style.borderRadius = `${radius}px`;
+            glassCard.style.boxShadow = `0 8px 32px 0 rgba(0, 0, 0, 0.37)`;
+
+            // Generate CSS code
+            const cssCode = `background: rgba(255, 255, 255, ${opacity});
+backdrop-filter: blur(${blur}px);
+-webkit-backdrop-filter: blur(${blur}px);
+border: ${border}px solid rgba(255, 255, 255, 0.2);
+border-radius: ${radius}px;
+box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);`;
+
+            codeOutput.textContent = cssCode;
+        }
+
+        [blurRange, opacityRange, borderRange, radiusRange].forEach(input => {
+            input.addEventListener('input', updateGenerator);
+        });
+
+        copyBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(codeOutput.textContent);
+            copyBtn.textContent = 'تم النسخ! ✓';
+            setTimeout(() => {
+                copyBtn.textContent = 'نسخ الكود';
+            }, 2000);
+        });
+
+        // Initialize
+        updateGenerator();
+    </script>
+</body>
+</html>
