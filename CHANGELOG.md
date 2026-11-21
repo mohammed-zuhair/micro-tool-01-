@@ -366,3 +366,21 @@ ai-prompt-optimizer.html
 - Viral Potential: Extremely high due to the current global surge in Generative AI usage and the common struggle of "getting bad results" from AI.
 
 ---
+
+
+## ⚡ تعديل جراحي وتطوير إضافي [2026-11-21 20:33 UTC]
+**النموذج المنفذ:** `models/gemma-4-26b-a4b-it`
+**الأداة المضافة:** [محول النصوص الذكي وSEO](tools/text-seo-transformer.html)
+**نوع التعديل:** حقن أسطر مخصصة (Surgical Line Patching) دون مسح الملفات.
+
+### 📋 التفاصيل الفنية:
+- الأداة: Text & SEO Transformer.
+- الفئة: Content Creation / SEO Tools.
+- الميزات التقنية: 
+    1. معالجة النصوص الفورية (Regex-based transformations).
+    2. نظام إحصائيات حي (Real-time stats) للكلمات والحروف والأسطر.
+    3. مولد Slugs متوافق مع معايير محركات البحث.
+    4. واجهة مستخدم Responsive تعتمد على CSS Grid و Flexbox.
+- القيمة المضافة: توفير الوقت على كتاب المحتوى والمطورين في تنظيف البيانات وتحويل النصوص من صيغ غير منظمة إلى صيغ جاهزة للنشر أو البرمجة.
+
+---

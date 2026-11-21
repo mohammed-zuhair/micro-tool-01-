@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Text & SEO Transformer</title>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --accent: #ec4899;
+        }
+
+        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        
+        .container { width: 100%; max-width: 800px; background: var(--card-bg); padding: 2rem; border-radius: 1.5rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); }
+        
+        h1 { margin-top: 0; font-size: 1.5rem; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        p.subtitle { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.9rem; }
+
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 1rem;
+            resize: vertical;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            outline: none;
+            margin-bottom: 1rem;
+        }
+        textarea:focus { border-color: var(--primary); }
+
+        .stats-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 10px 15px;
+            border-radius: 0.75rem;
+        }
+        .stats-bar span b { color: var(--primary); }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 0.5rem;
+            background: var(--bg);
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+        }
+        button:hover { background: var(--primary); color: white; transform: translateY(-2px); }
+        button.primary-btn { background: var(--primary); color: white; border: none; }
+        button.primary-btn:hover { background: var(--primary-hover); }
+        button.accent-btn { background: var(--accent); color: white; border: none; }
+        button.accent-btn:hover { opacity: 0.9; }
+
+        .action-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .copy-toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: none;
+            animation: fadeInOut 2s forwards;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; bottom: 10px; }
+            20% { opacity: 1; bottom: 20px; }
+            80% { opacity: 1; bottom: 20px; }
+            100% { opacity: 0; bottom: 10px; }
+        }
+
+        @media (max-width: 480px) {
+            .controls-grid { grid-template-columns: repeat(2, 1fr); }
+            .action-footer { flex-direction: column; gap: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>✨ محول النصوص الذكي & SEO</h1>
+    <p class="subtitle">نظف نصوصك، أنشئ روابط URL، وحسن محتواك في ثوانٍ.</p>
+
+    <textarea id="inputText" placeholder="أدخل أو الصق النص هنا..."></textarea>
+
+    <div class="stats-bar">
+        <span>كلمات: <b id="wordCount">0</b></span>
+        <span>حروف: <b id="charCount">0</b></span>
+        <span>أسطر: <b id="lineCount">0</b></span>
+    </div>
+
+    <div class="controls-grid">
+        <button onclick="transform('upper')">UPPERCASE</button>
+        <button onclick="transform('lower')">lowercase</button>
+        <button onclick="transform('title')">Title Case</button>
+        <button onclick="transform('sentence')">Sentence case</button>
+        <button onclick="transform('slug')">URL Slug</button>
+        <button onclick="transform('clean')">تنظيف المسافات</button>
+        <button onclick="transform('removeExtraLines')">حذف الأسطر الفارغة</button>
+        <button onclick="transform('emoji')">إضافة إيموجي ✨</button>
+    </div>
+
+    <div class="action-footer">
+        <button class="accent-btn" onclick="clearText()">مسح الكل</button>
+        <button class="primary-btn" onclick="copyText()">نسخ النص المطور 📋</button>
+    </div>
+</div>
+
+<div id="toast" class="copy-toast">تم النسخ بنجاح!</div>
+
+<script>
+    const textArea = document.getElementById('inputText');
+    const wordCount = document.getElementById('wordCount');
+    const charCount = document.getElementById('charCount');
+    const lineCount = document.getElementById('lineCount');
+    const toast = document.getElementById('toast');
+
+    textArea.addEventListener('input', updateStats);
+
+    function updateStats() {
+        const text = textArea.value;
+        charCount.innerText = text.length;
+        wordCount.innerText = text.trim() ? text.trim().split(/\s+/).length : 0;
+        lineCount.innerText = text.trim() ? text.split(/\n/).length : 0;
+    }
+
+    function transform(type) {
+        let text = textArea.value;
+        if (!text) return;
+
+        switch(type) {
+            case 'upper': text = text.toUpperCase(); break;
+            case 'lower': text = text.toLowerCase(); break;
+            case 'title': 
+                text = text.toLowerCase().split(' ').map(s => s.charAt(0).toUpperCase() + s.substring(1)).join(' ');
+                break;
+            case 'sentence':
+                text = text.toLowerCase().replace(/(^\s*\w|[\.\!\?]\s*\w)/g, c => c.toUpperCase());
+                break;
+            case 'slug':
+                text = text.toLowerCase()
+                    .replace(/[^\w\s-]/g, '')
+                    .replace(/[\s_-]+/g, '-')
+                    .replace(/^-+|-+$/g, '');
+                break;
+            case 'clean':
+                text = text.replace(/\s+/g, ' ').trim();
+                break;
+            case 'removeExtraLines':
+                text = text.replace(/\n\s*\n/g, '\n').trim();
+                break;
+            case 'emoji':
+                const emojis = ['🚀', '✨', '🔥', '✅', '💡', '⭐'];
+                text = text + ' ' + emojis[Math.floor(Math.random() * emojis.length)];
+                break;
+        }
+        textArea.value = text;
+        updateStats();
+    }
+
+    function clearText() {
+        textArea.value = '';
+        updateStats();
+    }
+
+    function copyText() {
+        textArea.select();
+        document.execCommand('copy');
+        toast.style.display = 'block';
+        setTimeout(() => { toast.style.display = 'none'; }, 2000);
+    }
+</script>
+
+</body>
+</html>
