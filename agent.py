@@ -3,9 +3,9 @@ import re
 import html.parser
 import google.generativeai as genai
 
-# 1. Setup Gemini API
+# 1. Setup Gemini API with Gemini 4 Hydrogen model
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-model = genai.GenerativeModel('gemini-2.5-flash')
+model = genai.GenerativeModel('gemini-4-hydrogen')
 
 # 2. Read Current HTML
 with open("index.html", "r", encoding="utf-8") as f:
@@ -54,4 +54,4 @@ try:
 except Exception as e:
     print(f"VALIDATION FAILED: {e}. Reverting to original code.")
     exit(1)
-  
+    
