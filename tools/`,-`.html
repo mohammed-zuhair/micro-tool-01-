@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Prompt Optimizer | مُحسّن الأوامر</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Noto+Sans+Arabic:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+            background: radial-gradient(circle at top left, #1a1a2e, #16213e);
+            color: #e9ecef;
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+        }
+        .input-field {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: #4f46e5;
+            outline: none;
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.3);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            transition: transform 0.2s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.4);
+        }
+        .copy-success {
+            animation: fadeInOut 2s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            20%, 80% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">
+                AI Prompt Optimizer
+            </h1>
+            <p class="text-gray-400 text-lg">هندس أوامرك بذكاء للحصول على نتائج مذهلة من نماذج الذكاء الاصطناعي</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Input Section -->
+            <div class="glass-card p-6 space-y-5">
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-indigo-300">الفكرة الأساسية (The Core Idea)</label>
+                    <textarea id="coreIdea" rows="3" class="w-full input-field rounded-xl p-3 text-white placeholder-gray-500" placeholder="مثال: اكتب مقال عن فوائد القهوة..."></textarea>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-indigo-300">الدور المطلوب (Persona/Role)</label>
+                    <select id="persona" class="w-full input-field rounded-xl p-3 text-white">
+                        <option value="">بدون تحديد دور</option>
+                        <option value="Expert Professional">خبير محترف (Expert)</option>
+                        <option value="Creative Storyteller">راوٍ مبدع (Storyteller)</option>
+                        <option value="Academic Researcher">باحث أكاديمي (Researcher)</option>
+                        <option value="Coding Mentor">مدرب برمجة (Coding Mentor)</option>
+                        <option value="Marketing Strategist">خبير تسويق (Marketer)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-indigo-300">الأسلوب (Tone)</label>
+                    <select id="tone" class="w-full input-field rounded-xl p-3 text-white">
+                        <option value="Professional">احترافي (Professional)</option>
+                        <option value="Friendly & Casual">ودي (Friendly)</option>
+                        <option value="Formal">رسمي (Formal)</option>
+                        <option value="Witty & Humorous">فكاهي (Humorous)</option>
+                        <option value="Urgent & Persuasive">مقنع ومستعجل (Persuasive)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-indigo-300">تنسيق المخرجات (Output Format)</label>
+                    <select id="format" class="w-full input-field rounded-xl p-3 text-white">
+                        <option value="Paragraphs">فقرات (Paragraphs)</option>
+                        <option value="Bullet Points">نقاط (Bullet Points)</option>
+                        <option value="Markdown Table">جدول (Table)</option>
+                        <option value="Step-by-step Guide">دليل خطوة بخطوة</option>
+                        <option value="Code Block">كتلة برمجية (Code)</option>
+                    </select>
+                </div>
+
+                <button onclick="optimizePrompt()" class="w-full btn-primary text-white font-bold py-3 rounded-xl mt-4">
+                    تحسين الأمر ✨
+                </button>
+            </div>
+
+            <!-- Output Section -->
+            <div class="glass-card p-6 flex flex-col">
+                <div class="flex justify-between items-center mb-4">
+                    <label class="text-sm font-medium text-purple-300">الأمر المُحسن (Optimized Prompt)</label>
+                    <button onclick="copyToClipboard()" class="text-xs bg-white/10 hover:bg-white/20 px-3 py-1 rounded-lg transition">
+                        نسخ النص 📋
+                    </button>
+                </div>
+                
+                <div id="outputContainer" class="flex-grow relative">
+                    <div id="optimizedResult" class="w-full h-full min-h-[300px] input-field rounded-xl p-4 text-gray-300 text-sm leading-relaxed whitespace-pre-wrap overflow-y-auto">
+                        سيظهر الأمر المحسن هنا بعد الضغط على زر التحسين...
+                    </div>
+                    <div id="copyToast" class="hidden absolute top-2 right-2 bg-green-500 text-white text-xs px-2 py-1 rounded copy-success">
+                        تم النسخ!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-12 text-center text-gray-500 text-sm">
+            <p>صمم لرفع كفاءة التعامل مع نماذج LLMs مثل GPT-4 و Claude 3</p>
+        </footer>
+    </div>
+
+    <script>
+        function optimizePrompt() {
+            const idea = document.getElementById('coreIdea').value.trim();
+            const persona = document.getElementById('persona').value;
+            const tone = document.getElementById('tone').value;
+            const format = document.getElementById('format').value;
+            const resultDiv = document.getElementById('optimizedResult');
+
+            if (!idea) {
+                resultDiv.innerText = "⚠️ يرجى إدخال الفكرة الأساسية أولاً!";
+                resultDiv.classList.add('text-red-400');
+                return;
+            }
+
+            resultDiv.classList.remove('text-red-400');
+
+            // Prompt Engineering Framework: Persona + Task + Context + Format + Tone
+            let optimized = "";
+            
+            if (persona) {
+                optimized += `Act as an ${persona}. `;
+            }
+
+            optimized += `Your task is to: ${idea}. `;
+            
+            optimized += `\n\nPlease ensure the response follows these guidelines:\n`;
+            optimized += `- Tone: ${tone}\n`;
+            optimized += `- Format: ${format}\n`;
+            optimized += `- Structure: Provide a clear, well-organized, and high-quality response.\n`;
+            optimized += `- Detail: Be thorough and avoid generic information where possible.`;
+
+            resultDiv.innerText = optimized;
+        }
+
+        function copyToClipboard() {
+            const text = document.getElementById('optimizedResult').innerText;
+            if (text.includes("سيظهر الأمر")) return;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.getElementById('copyToast');
+                toast.classList.remove('hidden');
+                setTimeout(() => {
+                    toast.classList.add('hidden');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

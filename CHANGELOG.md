@@ -338,3 +338,31 @@ border: 1px solid rgba(255, 255, 255, 0.1);</pre>
 تم تطوير أداة "CSS Glass & Shadow Generator" بنجاح كأداة تفاعلية متطورة ومطلوبة بكثرة من قبل مطوري الواجهات الأمامية. الأداة صُممت بتصميم متجاوب باستخدام Tailwind CSS مع إمكانية التعديل اللحظي ومعاينة التأثير ونسخ الكود البرمجي بكل سلاسة.
 
 ---
+
+
+## ⚡ تعديل جراحي وتطوير إضافي [2026-11-21 19:31 UTC]
+**النموذج المنفذ:** `models/gemma-4-26b-a4b-it`
+**الأداة المضافة:** [`, etc.
+    *   Check quality: Is the code clean? Yes. Is it responsive? Yes.
+
+    *(Self-Correction during coding)*: Make sure the tool doesn't just concatenate, but adds "instructional weight" (e.g., "Act as a...", "Your goal is to...", "Please follow these rules...").
+
+    *   *Persona:* Expert, Creative, Technical, Academic.
+    *   *Format:* Markdown, Table, Bullet points, Code, Essay.
+    *   *Tone:* Professional, Friendly, Sarcastic, Concise.
+
+    (Proceeding to generate the response based on these steps).
+---FILENAME---
+ai-prompt-optimizer.html
+---TITLE---
+مُحسّن أوامر الذكاء الاصطناعي (AI Prompt Optimizer)](tools/`,-`.html)
+**نوع التعديل:** حقن أسطر مخصصة (Surgical Line Patching) دون مسح الملفات.
+
+### 📋 التفاصيل الفنية:
+- Tool Name: AI Prompt Optimizer.
+- Concept: Leverages the "Persona-Task-Format" prompt engineering framework to transform vague user inputs into structured, high-performance instructions for LLMs.
+- Target Audience: AI enthusiasts, content creators, developers, and marketers.
+- Technical Implementation: Vanilla JS for logic, Tailwind CSS for modern glassmorphism UI, responsive grid layout.
+- Viral Potential: Extremely high due to the current global surge in Generative AI usage and the common struggle of "getting bad results" from AI.
+
+---
