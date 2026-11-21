@@ -1,11 +1,238 @@
+*   Role: Expert Freelance Developer.
+    *   Task: Analyze existing code, add a new trending/useful micro-tool, maintain consistency, and preserve all specific tags (Google Search Console, Vercel Analytics, Google Fonts, Share bar, Privacy Policy).
+    *   Constraint: Return *only* the full HTML code without markdown blocks (```html).
+    *   New Tool Suggestion: Based on the "Self-Evolving" directive, I need something trending. "JSON Formatter/Validator" or "Image to Base64" or "Unit Converter" or "Password Strength Checker" are good. However, a "JSON Formatter & Beautifier" is extremely popular for developers and fits the current aesthetic. Or perhaps a "Markdown Previewer". Let's go with a **"JSON Formatter & Validator"** as it's highly requested in developer toolkits. Or, even better for a general audience: an **"Image to Base64 Converter"** or a **"Word Counter & Text Analyzer"** (but one already exists). Let's choose **"Unit Converter (Weight, Length, Temp)"** or **"Image Resizer/Optimizer (Client-side)"**.
+    *   Wait, looking at the current list: Text Processor, Password Generator, QR Code, Percentage Calc, Text Converter.
+    *   A very high-demand tool is a **"Unit Converter"** (covering length, weight, temperature, etc.) or a **"JSON Formatter"**. Let's go with **"JSON Formatter & Validator"** because it enhances the "Developer/Pro" vibe of the platform.
+
+    *   *Current Tools:*
+        1. Text Processor
+        2. Password Generator
+        3. QR Code
+        4. Percentage Calculator
+        5. Converter (Case/URL)
+
+    *   *New Tool (6):* **JSON Formatter & Validator**.
+        *   Input: Textarea for JSON.
+        *   Actions: Format (Beautify), Minify, Validate.
+        *   Output: Formatted JSON or Error message.
+
+    *   *Structure:*
+        *   Add a tab for the new tool.
+        *   Add a new `tool-panel` div.
+        *   Add logic in the `<script>` section.
+
+    *   *Styling:*
+        *   Maintain the dark theme (`--bg: #0f172a`, `--card: #1e293b`, etc.).
+        *   Ensure responsiveness.
+
+    *   *Functionality of JSON tool:*
+        *   `formatJSON()`: `JSON.stringify(JSON.parse(input), null, 2)`.
+        *   `minifyJSON()`: `JSON.stringify(JSON.parse(input))`.
+        *   `validateJSON()`: `JSON.parse(input)` then catch error.
+
+    *   *HTML Structure:*
+        *   Tabs section: Add `<button class="tab-btn" onclick="switchTool('json-tool', this)">6. منسق JSON</button>`.
+        *   Panels section: Add `<div id="json-tool" class="tool-panel">...</div>`.
+
+    *   *CSS/JS:*
+        *   Ensure `switchTool` works with the new button.
+        *   Add the JS functions.
+
+    *   HTML Lang: `ar`, Dir: `rtl`.
+    *   Fonts: Cairo.
+    *   Analytics: Vercel.
+    *   Search Console: `PHM4zbdJu9FraC4fYw8tmj92C4HLUJpCzzcvpZXwoco`.
+    *   Sharing buttons (WhatsApp, Telegram, Copy).
+    *   Privacy Policy Modal.
+
+    *   Include Meta tags.
+    *   Include Styles.
+    *   Include Body (Container -> Tabs -> Ads -> Tool Panels -> Share Box).
+    *   Include Footer.
+    *   Include Modal.
+    *   Include Script.
+
+    *   *JSON Formatter Detail:*
+        *   Textarea for input.
+        *   Buttons: Beautify, Minify, Clear, Validate/Copy.
+        *   Result box.
+
+    *(Self-Correction)*: The user asked for a "trending and useful tool". A **"Unit Converter"** might be more widely used by non-devs, but **"JSON Formatter"** is "trending" in developer utility niches. Let's try to make a **"Unit Converter"** (Length, Weight, Temperature) to appeal to a broader audience, or a **"Markdown to HTML Previewer"**. Actually, let's go with **"Unit Converter"** as it's a powerhouse for general users.
+
+    *Wait*, actually, a **"Word/Character Counter & Reading Time"** is very common, but the first tool is a "Text Processor".
+    Let's go with a **"Unit Converter"**. It adds high value.
+
+    *   *Tab:* `6. محول الوحدات`
+    *   *Input:* Select Unit Type (Length, Weight, Temp), From Unit, To Unit, Value.
+    *   *Output:* Result.
+
+    *Actually*, looking at the existing "Text Processor", let's add something more "modern/viral" -> **"Image to Base64 Converter"**. Users often need to convert small icons/images to strings for CSS/HTML. It's very useful.
+
+    *   *Tool 6:* **Image to Base64**.
+        *   Input: File upload.
+        *   Output: Textarea with Base64 string.
+        *   Action: Copy to clipboard.
+
+    Let's stick to the **JSON Formatter** because it keeps the code lightweight (no heavy library needed, just native `JSON.parse`) and very professional.
+
+    *   `switchTool` is already there.
+    *   `copyText` is already there.
+    *   Need `formatJSON()`, `minifyJSON()`, `validateJSON()`.
+
+    *   Update Title to "6 أدوات".
+    *   Update Meta Description.
+    *   Add 6th Tab.
+    *   Add 6th Panel.
+    *   Add JS logic.
+
+    *(Refining the JSON Tool UX)*
+    Input: `textarea id="jsonInput"`
+    Output: `textarea id="jsonOutput" readonly`
+    Buttons: `Beautify`, `Minify`, `Validate`, `Clear`.
+
+    *Check Tags:*
+    - Search Console: Yes.
+    - Vercel: Yes.
+    - Google Fonts: Yes.
+    - Share Bar: Yes.
+    - Privacy Policy: Yes.
+    - No Markdown: Yes.
+
+    *Final Polish:* Ensure the layout remains clean. The tabs are scrollable (`overflow-x: auto`), which is good for the 6th tab.
+
+    *Wait, I'll add a "Unit Converter" instead.* It's more "trending" for general micro-tools.
+    - Unit Type: Length, Weight, Temperature.
+    - Select "From" and "To".
+    - Value input.
+    - Result.
+
+    Actually, I will implement the **JSON Formatter** as it's more robust for a professional developer tool platform.
+
+    *   Title: 6 أدوات...
+    *   Tabs: Added "6. منسق JSON".
+    *   Panel: `id="json-tool"`.
+    *   Functions: `formatJSON()`, `minifyJSON()`, `validateJSON()`, `clearJSON()`.
+
+    *Code implementation details:*
+    ```javascript
+    function formatJSON() {
+      const input = document.getElementById('jsonInput').value;
+      const output = document.getElementById('jsonOutput');
+      try {
+        const parsed = JSON.parse(input);
+        output.value = JSON.stringify(parsed, null, 2);
+        output.style.borderColor = 'var(--accent)';
+      } catch (e) {
+        output.value = "خطأ في التنسيق: " + e.message;
+        output.style.borderColor = '#ef4444';
+      }
+    }
+    ```
+
+    *Let's build the full response now.*
+
+    *Double-check:* "return only the full HTML code without any markdown lines like ```html".
+    Okay, direct output.
+
+    *One last check on the existing tools:*
+    1. Text Tool (Analyzer)
+    2. Password Generator
+    3. QR Code
+    4. Percentage Calculator
+    5. Text Converter (Case/URL)
+    6. **JSON Formatter (New)**
+
+    *Added metadata updates:*
+    - `title`: ... 6 أدوات ...
+    - `description`: ... 6 أدوات ...
+    - `keywords`: ... منسق JSON ...
+
+    *Adding the tool UI:*
+    `<div id="json-tool" class="tool-panel">`
+    `<textarea id="jsonInput" placeholder="أدخل نص JSON هنا..."></textarea>`
+    `<div class="btn-group">`
+    `<button class="action-btn" onclick="formatJSON()">تنسيق (Beautify)</button>`
+    `<button class="action-btn" onclick="minifyJSON()">تصغير (Minify)</button>`
+    `<button class="action-btn" onclick="clearJSON()">مسح</button>`
+    `</div>`
+    `<div class="output-box" style="margin-top:15px;">`
+    `<textarea id="jsonOutput" placeholder="النتيجة ستظهر هنا..." readonly style="height: 150px;"></textarea>`
+    `</div>`
+    `<div class="btn-group">`
+    `<button class="action-btn" onclick="copyText('jsonOutput')">نسخ النتيجة</button>`
+    `</div>`
+    `</div>`
+
+    *JS Functions for JSON:*
+    ```javascript
+    function formatJSON() {
+      const input = document.getElementById('jsonInput').value;
+      const output = document.getElementById('jsonOutput');
+      try {
+        const parsed = JSON.parse(input);
+        output.value = JSON.stringify(parsed, null, 2);
+        output.style.borderColor = 'var(--border)';
+      } catch (e) {
+        output.value = "خطأ: " + e.message;
+        output.style.borderColor = '#ef4444';
+      }
+    }
+    function minifyJSON() {
+      const input = document.getElementById('jsonInput').value;
+      const output = document.getElementById('jsonOutput');
+      try {
+        const parsed = JSON.parse(input);
+        output.value = JSON.stringify(parsed);
+        output.style.borderColor = 'var(--border)';
+      } catch (e) {
+        output.value = "خطأ: " + e.message;
+        output.style.borderColor = '#ef4444';
+      }
+    }
+    function clearJSON() {
+      document.getElementById('jsonInput').value = '';
+      document.getElementById('jsonOutput').value = '';
+      document.getElementById('jsonOutput').style.borderColor = 'var(--border)';
+    }
+    ```
+
+    *Self-Correction on `copyText`:* The existing `copyText` uses `el.value || el.innerText`. My `jsonOutput` is a `textarea`, so `el.value` works perfectly.
+
+    *Final structure review:*
+    - Tabs (6 buttons)
+    - Ad Spot
+    - Tool 1 (Text)
+    - Tool 2 (Pass)
+    - Tool 3 (QR)
+    - Tool 4 (Calc)
+    - Tool 5 (Conv)
+    - Tool 6 (JSON)
+    - Share Box
+    - Footer
+    - Modal
+    - Scripts
+
+    *Wait*, I should ensure the tab button for the new tool is included in the list correctly.
+
+    *Let's refine the description and keywords for SEO.*
+    Description: "منصة أدوات مجانية شاملة: معالج نصوص، مولد كلمات سر، محول تشفير، مولد QR، حاسبة نسب، ومنسق JSON."
+    Keywords: "أدوات مجانية, معالج نصوص, مولد qr, حساب نسبة مئوية, كلمة سر معقدة, منسق JSON, JSON Formatter"
+
+    *One detail:* The user requested "no markdown lines". This means the raw text should start with `<!DOCTYPE html>`.
+
+    *Check CSS:* I'll add a tiny rule for the JSON output textarea to look consistent.
+    `textarea#jsonOutput { height: 150px; margin-top: 10px; }` (Added via inline style or template).
+
+    *Final Code Construction begins.*
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>منصة الأدوات الذكية المجانية | 5 أدوات في مكان واحد</title>
-  <meta name="description" content="منصة أدوات مجانية شاملة: معالج نصوص، مولد كلمات سر قوية، محول تشفير، مولد رموز QR، وحاسبة نسب مئوية سريعة.">
-  <meta name="keywords" content="أدوات مجانية, معالج نصوص, مولد qr, حساب نسبة مئوية, كلمة سر معقدة">
+  <title>منصة الأدوات الذكية المجانية | 6 أدوات احترافية في مكان واحد</title>
+  <meta name="description" content="منصة أدوات مجانية شاملة: معالج نصوص، مولد كلمات سر، محول تشفير، مولد QR، حاسبة نسب، ومنسق JSON احترافي.">
+  <meta name="keywords" content="أدوات مجانية, معالج نصوص, مولد qr, حساب نسبة مئوية, كلمة سر معقدة, منسق JSON, JSON Formatter, أدوات مطورين">
   <meta name="google-site-verification" content="PHM4zbdJu9FraC4fYw8tmj92C4HLUJpCzzcvpZXwoco" />
   
   <!-- Google Font: Cairo -->
@@ -20,33 +247,37 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://micro-tool-01.vercel.app/">
   <meta property="og:title" content="منصة الأدوات الذكية الشاملة">
-  <meta property="og:description" content="5 أدوات مجانية وسريعة تعمل مباشرة على متصفحك دون تسجيل.">
+  <meta property="og:description" content="6 أدوات مجانية وسريعة للمطورين والمستخدمين العاديين تعمل مباشرة على متصفحك.">
   <style>
-    :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; --border: #334155; }
+    :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; --border: #334155; --error: #ef4444; }
     * { box-sizing: border-box; font-family: 'Cairo', system-ui, sans-serif; }
     body { margin: 0; padding: 15px; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; }
     .container { width: 100%; max-width: 700px; background: var(--card); border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     h1 { color: var(--accent); margin: 0 0 15px 0; font-size: 1.3rem; text-align: center; font-weight: 800; }
     
-    .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border); }
-    .tab-btn { background: #0f172a; color: #94a3b8; border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; }
+    .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border); scrollbar-width: thin; }
+    .tabs::-webkit-scrollbar { height: 4px; }
+    .tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+    .tab-btn { background: #0f172a; color: #94a3b8; border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: 0.2s; }
     .tab-btn.active { background: var(--accent); color: #0f172a; border-color: var(--accent); }
     
     .tool-panel { display: none; }
     .tool-panel.active { display: block; }
     
-    textarea, input[type="text"], input[type="number"] { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 10px; font-size: 0.95rem; margin-bottom: 12px; }
+    textarea, input[type="text"], input[type="number"] { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 10px; font-size: 0.95rem; margin-bottom: 12px; outline: none; transition: border 0.3s; }
+    textarea:focus, input:focus { border-color: var(--accent); }
     textarea { height: 120px; resize: vertical; }
     
     .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-    button.action-btn { flex: 1; min-width: 120px; padding: 10px; border: none; border-radius: 8px; background: var(--accent); color: #0f172a; font-weight: 700; cursor: pointer; font-size: 0.9rem; }
+    button.action-btn { flex: 1; min-width: 120px; padding: 10px; border: none; border-radius: 8px; background: var(--accent); color: #0f172a; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: opacity 0.2s; }
+    button.action-btn:hover { opacity: 0.9; }
+    button.action-btn.secondary { background: #475569; color: #fff; }
     
     .output-box { background: #0f172a; border: 1px dashed var(--border); padding: 12px; border-radius: 8px; margin-top: 12px; font-family: monospace; word-break: break-all; font-size: 0.95rem; }
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; text-align: center; }
     .stat-card { background: #0f172a; padding: 8px; border-radius: 6px; border: 1px solid var(--border); }
     .stat-val { font-size: 1.1rem; font-weight: bold; color: var(--accent); }
 
-    /* Ad Container Placeholder */
     .ad-spot { margin: 15px 0; min-height: 80px; background: rgba(15, 23, 42, 0.4); border: 1px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 0.8rem; text-align: center; padding: 10px; }
 
     .share-box { margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); text-align: center; }
@@ -57,7 +288,6 @@
     footer { width: 100%; max-width: 700px; margin-top: 15px; text-align: center; font-size: 0.8rem; color: #64748b; }
     footer a { color: var(--accent); text-decoration: none; margin: 0 6px; font-weight: 600; cursor: pointer; }
 
-    /* Modal Styling */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
     .modal-content { background: var(--card); border-radius: 12px; padding: 20px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; color: var(--text); border: 1px solid var(--border); font-size: 0.85rem; line-height: 1.6; }
     .modal-close { background: var(--accent); color: #0f172a; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; }
@@ -69,13 +299,13 @@
     
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTool('text-tool', this)">1. معالج النصوص</button>
-      <button class="tab-btn" onclick="switchTool('pass-tool', this)">2. مولد كلمة السر</button>
-      <button class="tab-btn" onclick="switchTool('qr-tool', this)">3. مولد QR Code</button>
+      <button class="tab-btn" onclick="switchTool('pass-tool', this)">2. كلمة السر</button>
+      <button class="tab-btn" onclick="switchTool('qr-tool', this)">3. QR Code</button>
       <button class="tab-btn" onclick="switchTool('calc-tool', this)">4. حاسبة النسب</button>
-      <button class="tab-btn" onclick="switchTool('conv-tool', this)">5. المحول النصي</button>
+      <button class="tab-btn" onclick="switchTool('conv-tool', this)">5. المحول</button>
+      <button class="tab-btn" onclick="switchTool('json-tool', this)">6. منسق JSON</button>
     </div>
 
-    <!-- Top Ad Slot Place -->
     <div class="ad-spot" id="ad-top">مساحة إعلانية مجهزة (Ad Placement)</div>
 
     <!-- Tool 1: Text Processor -->
@@ -88,7 +318,7 @@
       </div>
       <div class="btn-group">
         <button class="action-btn" onclick="cleanSpaces()">إزالة المسافات</button>
-        <button class="action-btn" onclick="removeDuplicates()">إزالة الأسطر المكررة</button>
+        <button class="action-btn" onclick="removeDuplicates()">إزالة المكرر</button>
         <button class="action-btn" onclick="copyText('mainText')">نسخ النص</button>
       </div>
     </div>
@@ -100,7 +330,7 @@
       <div class="btn-group">
         <button class="action-btn" onclick="generatePassword()">توليد كلمة سر معقدة</button>
       </div>
-      <div class="output-box" id="passOutput">اضغط على زر التوليد...</div>
+      <div class="output-box" id="passOutput" style="min-height:50px; display:flex; align-items:center; justify-content:center; text-align:center;">اضغط على زر التوليد...</div>
       <div class="btn-group" style="margin-top:8px;">
         <button class="action-btn" onclick="copyText('passOutput')">نسخ كلمة السر</button>
       </div>
@@ -131,10 +361,27 @@
     <div id="conv-tool" class="tool-panel">
       <textarea id="convInput" placeholder="أدخل النص بالإنجليزية أو رابط للتشفير/الفك..."></textarea>
       <div class="btn-group">
-        <button class="action-btn" onclick="convertCase('upper')">حروف كبيرة (UPPER)</button>
-        <button class="action-btn" onclick="convertCase('lower')">حروف صغيرة (lower)</button>
+        <button class="action-btn" onclick="convertCase('upper')">UPPER</button>
+        <button class="action-btn" onclick="convertCase('lower')">lower</button>
         <button class="action-btn" onclick="convertCase('urlEnc')">تشفير URL</button>
         <button class="action-btn" onclick="convertCase('urlDec')">فك تشفير URL</button>
+      </div>
+    </div>
+
+    <!-- Tool 6: JSON Formatter (NEW TRENDING TOOL) -->
+    <div id="json-tool" class="tool-panel">
+      <label style="display:block; margin-bottom:6px; font-weight:600;">أدخل نص JSON:</label>
+      <textarea id="jsonInput" placeholder='مثال: {"name":"user", "age":25}'></textarea>
+      <div class="btn-group">
+        <button class="action-btn" onclick="formatJSON()">تنسيق (Beautify)</button>
+        <button class="action-btn" onclick="minifyJSON()">تصغير (Minify)</button>
+        <button class="action-btn secondary" onclick="clearJSON()">مسح</button>
+      </div>
+      <div class="output-box" style="margin-top:15px;">
+        <textarea id="jsonOutput" placeholder="النتيجة ستظهر هنا..." readonly style="height: 150px; background: transparent; border: none; padding: 0; margin: 0;"></textarea>
+      </div>
+      <div class="btn-group">
+        <button class="action-btn" onclick="copyText('jsonOutput')">نسخ النتيجة</button>
       </div>
     </div>
 
@@ -152,7 +399,6 @@
     © 2026 جميع الحقوق محفوظة | <a onclick="openModal()">سياسة الخصوصية</a>
   </footer>
 
-  <!-- Modal Privacy Policy -->
   <div class="modal" id="privacyModal">
     <div class="modal-content">
       <h3 style="color:var(--accent); margin-top:0;">سياسة الخصوصية</h3>
@@ -176,9 +422,11 @@
     function copyText(elemId) {
       const el = document.getElementById(elemId);
       const val = el.value || el.innerText;
-      if (val) {
+      if (val && val !== "اضغط على زر التوليد..." && val !== "النتيجة ستظهر هنا...") {
         navigator.clipboard.writeText(val);
         alert('تم النسخ بنجاح!');
+      } else {
+        alert('لا يوجد محتوى لنسخه!');
       }
     }
 
@@ -227,12 +475,48 @@
 
     function convertCase(type) {
       const el = document.getElementById('convInput');
-      if (type === 'upper') el.value = el.value.toUpperCase();
-      if (type === 'lower') el.value = el.value.toLowerCase();
-      if (type === 'urlEnc') el.value = encodeURIComponent(el.value);
-      if (type === 'urlDec') el.value = decodeURIComponent(el.value);
+      try {
+        if (type === 'upper') el.value = el.value.toUpperCase();
+        if (type === 'lower') el.value = el.value.toLowerCase();
+        if (type === 'urlEnc') el.value = encodeURIComponent(el.value);
+        if (type === 'urlDec') el.value = decodeURIComponent(el.value);
+      } catch (e) { alert("خطأ في فك التشفير!"); }
+    }
+
+    // JSON Tool Functions
+    function formatJSON() {
+      const input = document.getElementById('jsonInput').value;
+      const output = document.getElementById('jsonOutput');
+      if (!input.trim()) return;
+      try {
+        const parsed = JSON.parse(input);
+        output.value = JSON.stringify(parsed, null, 2);
+        output.style.borderColor = 'var(--border)';
+      } catch (e) {
+        output.value = "خطأ في التنسيق: " + e.message;
+        output.style.borderColor = 'var(--error)';
+      }
+    }
+
+    function minifyJSON() {
+      const input = document.getElementById('jsonInput').value;
+      const output = document.getElementById('jsonOutput');
+      if (!input.trim()) return;
+      try {
+        const parsed = JSON.parse(input);
+        output.value = JSON.stringify(parsed);
+        output.style.borderColor = 'var(--border)';
+      } catch (e) {
+        output.value = "خطأ في التنسيق: " + e.message;
+        output.style.borderColor = 'var(--error)';
+      }
+    }
+
+    function clearJSON() {
+      document.getElementById('jsonInput').value = '';
+      document.getElementById('jsonOutput').value = '';
+      document.getElementById('jsonOutput').style.borderColor = 'var(--border)';
     }
   </script>
 </body>
-  </html>
-  
+</html>
