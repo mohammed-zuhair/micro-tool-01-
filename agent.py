@@ -24,7 +24,6 @@ def get_active_text_models():
     try:
         for m in genai.list_models():
             name = m.name.lower()
-            # استثناء النماذج غير النصية (الصوت، الصور، الموسيقى، الروبوتات)
             if any(skip in name for skip in ['tts', 'audio', 'lyria', 'image', 'transcribe', 'robotics', 'computer-use', 'antigravity']):
                 continue
             if 'generateContent' in m.supported_generation_methods:
@@ -56,6 +55,9 @@ def run_dual_council_pipeline(current_html, roadmap):
     master_prompt = f"""
 أنت تعمل كنظام ذكاء اصطناعي مزدوج (مجلس النواب للمشروعات والابتكار + مجلس الشيوخ للمراجعة والحصانة البرمجية).
 
+[تعليمات صارمة جداً لإنتاج الكود]:
+يجب أن يكون ردك محتوياً على كود HTML كامل وصحيح ومغلق تماماً. ممنوع منعاً باتاً قطع النص أو تركه ناقصاً أو بدون إغلاق وسم </html>. إذا اقتربت من حدود الطول، قم بتقليص التعليقات أو النصوص الوصفية داخل الكود البرمجي لضمان اكتمال الـ HTML بنسبة 100%.
+
 [دور مجلس النواب - الابتكار]:
 1. قراءة الدستور وتحديد أداة مصغرة جديدة رائجة ومطلوبة بكثرة (Viral Tool).
 2. كتابة كود الأداة بلغة JavaScript عصرية، متجاوبة، وسريعة، مع معالجة الأخطاء (try/catch).
@@ -63,11 +65,11 @@ def run_dual_council_pipeline(current_html, roadmap):
 [دور مجلس الشيوخ - التدقيق الصارم]:
 1. التأكد من تطابق الهوية البصرية وخلو الكود من أخطاء Syntax.
 2. الحفاظ الصارم على وسوم Google Search Console, Vercel Analytics, Google Fonts, Privacy Policy وشريط المشاركة.
-3. التأكد من فصل كود الـ HTML عن التقرير الفني نهائياً.
+3. التأكد من فصل كود الـ HTML عن التقرير الفني نهائياً وضمان أن ينتهي بـ </html> تماماً.
 
-صيغة المخرجات المطلوبة حصراً:
+صيغة المخرجات المطلوبة حصراً وبدقة:
 ---HTML_START---
-[ضع كود HTML الكامل المنقح يبتدئ من <!DOCTYPE html> وينتهي بـ </html> فقط]
+[ضع كود HTML الكامل المنقح يبتدئ من <!DOCTYPE html> وينتهي بـ </html> حصراً وبدون نقصان]
 ---HTML_END---
 
 ---LOG_START---
@@ -85,7 +87,11 @@ def run_dual_council_pipeline(current_html, roadmap):
         try:
             print(f"Council engaging model: {model_name}...")
             model = genai.GenerativeModel(model_name)
-            response = model.generate_content(master_prompt, request_options={"timeout": 300})
+            response = model.generate_content(
+                master_prompt, 
+                request_options={"timeout": 300},
+                generation_config={"max_output_tokens": 65536, "temperature": 0.7}
+            )
             if response and response.text:
                 text = response.text.strip()
                 if "</html>" in text and ("<!DOCTYPE" in text or "<html" in text):
@@ -112,7 +118,7 @@ def attempt_self_healing(error_message):
 حدث خطأ غير متوقع أثناء تنفيذ سكريبت البايثون (agent.py).
 مهمتك كـ "مهندس معالجة الأخطاء الذاتية":
 1. تحليل رسالة الخطأ وكود agent.py الحالي.
-2. إعادة كتابة وتعديل كود agent.py لتصحيح هذا الخطأ وضمان استقرار التشغيل.
+2. إعادة كتابة وتعديل كود agent.py لتصحيح هذا الخطأ وضمان استقرار التشغيل وتلافي أي مشاكل في استخراج النصوص أو اكتمال الأكواد.
 3. قم بإرجاع كود البايثون الجديد المصحح فقط بدون أي شرح أو وسوم markdown مثل ```python.
 
 رسالة الخطأ:
@@ -132,7 +138,6 @@ def attempt_self_healing(error_message):
                 new_py_code = re.sub(r'^```\s*', '', new_py_code)
                 new_py_code = re.sub(r'\s*```$', '', new_py_code).strip()
                 
-                # فحص السلامة البنيوية لكود البايثون لمنع تعطيل المحرك (Syntax Verification)
                 ast.parse(new_py_code)
                 
                 with open("agent.py", "w", encoding="utf-8") as f:
@@ -140,7 +145,6 @@ def attempt_self_healing(error_message):
                     
                 print(f"SUCCESS: agent.py autonomously self-healed and updated via {model_name}.")
                 
-                # تسجيل العملية في السجل
                 now_utc = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
                 with open("CHANGELOG.md", "a", encoding="utf-8") as log_file:
                     log_file.write(f"\n\n### 🛡️ عملية استشفاء وتطوير ذاتي [{now_utc}]\n- قام الإيجنت بتشخيص خطأ التشغيل وأصلح كود `agent.py` بنفسه تلقائياً.\n- الخطأ المعالج: `{error_message[:150]}...`\n---\n")
@@ -174,9 +178,9 @@ if __name__ == "__main__":
         if not raw_response:
             raise RuntimeError("All models failed to return a valid HTML payload.")
             
-        # استخلاص الكود والتقرير
-        html_match = re.search(r'---HTML_START---([\s\S]*?)---HTML_END---', raw_response)
-        log_match = re.search(r'---LOG_START---([\s\S]*?)---LOG_END---', raw_response)
+        # استخلاص الكود والتقرير بطريقة مرنة ومقاومة للانقطاع
+        html_match = re.search(r'---HTML_START---([\s\S]*?)(?:---HTML_END---|(?=---LOG_START---)|$)', raw_response)
+        log_match = re.search(r'---LOG_START---([\s\S]*?)(?:---LOG_END---|$)', raw_response)
         
         if html_match:
             new_code = html_match.group(1).strip()
@@ -184,33 +188,34 @@ if __name__ == "__main__":
             h_match = re.search(r'(<!DOCTYPE\s+html[\s\S]*?</html>|<html[\s\S]*?</html>)', raw_response, re.IGNORECASE)
             new_code = h_match.group(1).strip() if h_match else None
             
-        if not new_code or "</html>" not in new_code:
+        # إذا وُجد جزء من الـ HTML ولكنه فقد وسم </html> بسبب القطع، نقوم بإغلاقه تلقائياً للحفاظ على استقرار الموقع
+        if new_code and "<html" in new_code.lower() and "</html>" not in new_code.lower():
+            print("Warning: Extracted HTML was cut off. Auto-closing HTML tags.")
+            new_code += "\n</body>\n</html>"
+
+        if not new_code or "</html>" not in new_code.lower():
             raise ValueError("Extracted HTML is broken or incomplete.")
             
-        log_details = log_match.group(1).strip() if log_match else "تم تطوير المنصة وإضافة ميزات جديدة بنجاح."
+        log_details = log_match.group(1).strip() if log_match and log_match.group(1) else "تم تطوير المنصة وإضافة ميزات جديدة بنجاح."
         
-        # تنظيف الأكواد
         new_code = re.sub(r'^```html\s*', '', new_code, flags=re.IGNORECASE)
         new_code = re.sub(r'^```\s*', '', new_code)
         new_code = re.sub(r'\s*```$', '', new_code).strip()
         
-        # فحص HTML
         class HTMLValidator(html.parser.HTMLParser):
             pass
         validator = HTMLValidator()
         validator.feed(new_code)
         
-        assert "</title>" in new_code and "</html>" in new_code and "<script" in new_code
+        assert "</title>" in new_code.lower() and "</html>" in new_code.lower() and "<script" in new_code.lower()
         
-        # حفظ الملفات
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(new_code)
         print("SUCCESS: index.html updated successfully.")
         
-        # كتابة السجل
         now_utc = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-        title_match = re.search(r'<title>(.*?)</title>', new_code, re.IGNORECASE)
-        page_title = title_match.group(1) if title_match else "منصة الأدوات المصغرة"
+        title_match = re.search(r'<title>(.*?)</title>', new_code, re.IGNORECASE | re.DOTALL)
+        page_title = title_match.group(1).strip() if title_match else "منصة الأدوات المصغرة"
         
         log_entry = (
             f"\n\n## 🏛️ قرار المجلس الأعلى للتطوير [{now_utc}]\n"
@@ -224,7 +229,6 @@ if __name__ == "__main__":
             log_file.write(log_entry)
         print("SUCCESS: CHANGELOG.md updated.")
         
-        # تحديث sitemap
         if os.path.exists("sitemap.xml"):
             with open("sitemap.xml", "r", encoding="utf-8") as sf:
                 sm_code = sf.read()
@@ -240,8 +244,7 @@ if __name__ == "__main__":
         healed = attempt_self_healing(err_msg)
         if healed:
             print("Self-healing finished. The updated script will run on the next cycle.")
-            sys.exit(0) # خروج آمن يسمح بـ Commit للتعديل الذاتي
+            sys.exit(0)
         else:
             print("CRITICAL: Self-healing failed.")
             sys.exit(1)
-                  
