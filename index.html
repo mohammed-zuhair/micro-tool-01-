@@ -2,13 +2,18 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="google-site-verification" content="PHM4zbdJu9FraC4fYw8tmj92C4HLUJpCzzcvpZXwoco" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>منصة الأدوات الذكية المجانية | 5 أدوات في مكان واحد</title>
   <meta name="description" content="منصة أدوات مجانية شاملة: معالج نصوص، مولد كلمات سر قوية، محول تشفير، مولد رموز QR، وحاسبة نسب مئوية سريعة.">
   <meta name="keywords" content="أدوات مجانية, معالج نصوص, مولد qr, حساب نسبة مئوية, كلمة سر معقدة">
   
-  <!-- Open Graph / Facebook / WhatsApp Preview -->
+  <!-- كود إثبات ملكية Google Search Console الخاص بك (ضع سطر الميتا الخاص بك هنا إذا كان لديك) -->
+     <meta name="google-site-verification" content="PHM4zbdJu9FraC4fYw8tmj92C4HLUJpCzzcvpZXwoco" />
+
+  <!-- Vercel Web Analytics Script -->
+  <script defer src="/_vercel/insights/script.js"></script>
+
+  <!-- Open Graph / WhatsApp Preview -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://micro-tool-01.vercel.app/">
   <meta property="og:title" content="منصة الأدوات الذكية الشاملة">
@@ -37,6 +42,11 @@
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; text-align: center; }
     .stat-card { background: #0f172a; padding: 8px; border-radius: 6px; border: 1px solid var(--border); }
     .stat-val { font-size: 1.1rem; font-weight: bold; color: var(--accent); }
+
+    .share-box { margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); text-align: center; }
+    .share-title { font-size: 0.85rem; color: #94a3b8; margin-bottom: 10px; }
+    .share-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    .share-btn { background: #334155; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: none; }
   </style>
 </head>
 <body>
@@ -110,6 +120,15 @@
         <button class="action-btn" onclick="convertCase('urlDec')">فك تشفير URL</button>
       </div>
     </div>
+
+    <div class="share-box">
+      <div class="share-title">شارك المنصة مع أصدقائك لاستخدام الأدوات المجانية:</div>
+      <div class="share-btns">
+        <a class="share-btn" href="https://api.whatsapp.com/send?text=جرب%20منصة%20الأدوات%20الذكية%20المجانية:%20https://micro-tool-01.vercel.app/" target="_blank">واتساب</a>
+        <a class="share-btn" href="https://t.me/share/url?url=https://micro-tool-01.vercel.app/&text=منصة%20أدوات%20مصغرة%20مجانية" target="_blank">تليجرام</a>
+        <button class="share-btn" onclick="navigator.clipboard.writeText('https://micro-tool-01.vercel.app/'); alert('تم نسخ رابط الموقع!');">نسخ الرابط</button>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -181,5 +200,5 @@
     }
   </script>
 </body>
-  </html>
-  
+        </html>
+        
