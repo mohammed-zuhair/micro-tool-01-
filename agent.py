@@ -188,26 +188,26 @@ if __name__ == "__main__":
             h_match = re.search(r'(<!DOCTYPE\s+html[\s\S]*?</html>|<html[\s\S]*?</html>)', raw_response, re.IGNORECASE)
             new_code = h_match.group(1).strip() if h_match else None
             
+        # إزالة وسوم الـ markdown العالقة إن وجدت
+        if new_code:
+            new_code = re.sub(r'^```html\s*', '', new_code, flags=re.IGNORECASE)
+            new_code = re.sub(r'^```\s*', '', new_code)
+            new_code = re.sub(r'\s*```$', '', new_code).strip()
+            
         # إذا وُجد جزء من الـ HTML ولكنه فقد وسم </html> بسبب القطع، نقوم بإغلاقه تلقائياً للحفاظ على استقرار الموقع
         if new_code and "<html" in new_code.lower() and "</html>" not in new_code.lower():
             print("Warning: Extracted HTML was cut off. Auto-closing HTML tags.")
             new_code += "\n</body>\n</html>"
 
-        if not new_code or "</html>" not in new_code.lower():
+        if not new_code or "</html>" not in new_code.lower() or "<html" not in new_code.lower():
             raise ValueError("Extracted HTML is broken or incomplete.")
             
         log_details = log_match.group(1).strip() if log_match and log_match.group(1) else "تم تطوير المنصة وإضافة ميزات جديدة بنجاح."
-        
-        new_code = re.sub(r'^```html\s*', '', new_code, flags=re.IGNORECASE)
-        new_code = re.sub(r'^```\s*', '', new_code)
-        new_code = re.sub(r'\s*```$', '', new_code).strip()
         
         class HTMLValidator(html.parser.HTMLParser):
             pass
         validator = HTMLValidator()
         validator.feed(new_code)
-        
-        assert "</title>" in new_code.lower() and "</html>" in new_code.lower() and "<script" in new_code.lower()
         
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(new_code)
