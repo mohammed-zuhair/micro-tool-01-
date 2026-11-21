@@ -1,238 +1,11 @@
-*   Role: Expert Freelance Developer.
-    *   Task: Analyze existing code, add a new trending/useful micro-tool, maintain consistency, and preserve all specific tags (Google Search Console, Vercel Analytics, Google Fonts, Share bar, Privacy Policy).
-    *   Constraint: Return *only* the full HTML code without markdown blocks (```html).
-    *   New Tool Suggestion: Based on the "Self-Evolving" directive, I need something trending. "JSON Formatter/Validator" or "Image to Base64" or "Unit Converter" or "Password Strength Checker" are good. However, a "JSON Formatter & Beautifier" is extremely popular for developers and fits the current aesthetic. Or perhaps a "Markdown Previewer". Let's go with a **"JSON Formatter & Validator"** as it's highly requested in developer toolkits. Or, even better for a general audience: an **"Image to Base64 Converter"** or a **"Word Counter & Text Analyzer"** (but one already exists). Let's choose **"Unit Converter (Weight, Length, Temp)"** or **"Image Resizer/Optimizer (Client-side)"**.
-    *   Wait, looking at the current list: Text Processor, Password Generator, QR Code, Percentage Calc, Text Converter.
-    *   A very high-demand tool is a **"Unit Converter"** (covering length, weight, temperature, etc.) or a **"JSON Formatter"**. Let's go with **"JSON Formatter & Validator"** because it enhances the "Developer/Pro" vibe of the platform.
-
-    *   *Current Tools:*
-        1. Text Processor
-        2. Password Generator
-        3. QR Code
-        4. Percentage Calculator
-        5. Converter (Case/URL)
-
-    *   *New Tool (6):* **JSON Formatter & Validator**.
-        *   Input: Textarea for JSON.
-        *   Actions: Format (Beautify), Minify, Validate.
-        *   Output: Formatted JSON or Error message.
-
-    *   *Structure:*
-        *   Add a tab for the new tool.
-        *   Add a new `tool-panel` div.
-        *   Add logic in the `<script>` section.
-
-    *   *Styling:*
-        *   Maintain the dark theme (`--bg: #0f172a`, `--card: #1e293b`, etc.).
-        *   Ensure responsiveness.
-
-    *   *Functionality of JSON tool:*
-        *   `formatJSON()`: `JSON.stringify(JSON.parse(input), null, 2)`.
-        *   `minifyJSON()`: `JSON.stringify(JSON.parse(input))`.
-        *   `validateJSON()`: `JSON.parse(input)` then catch error.
-
-    *   *HTML Structure:*
-        *   Tabs section: Add `<button class="tab-btn" onclick="switchTool('json-tool', this)">6. منسق JSON</button>`.
-        *   Panels section: Add `<div id="json-tool" class="tool-panel">...</div>`.
-
-    *   *CSS/JS:*
-        *   Ensure `switchTool` works with the new button.
-        *   Add the JS functions.
-
-    *   HTML Lang: `ar`, Dir: `rtl`.
-    *   Fonts: Cairo.
-    *   Analytics: Vercel.
-    *   Search Console: `PHM4zbdJu9FraC4fYw8tmj92C4HLUJpCzzcvpZXwoco`.
-    *   Sharing buttons (WhatsApp, Telegram, Copy).
-    *   Privacy Policy Modal.
-
-    *   Include Meta tags.
-    *   Include Styles.
-    *   Include Body (Container -> Tabs -> Ads -> Tool Panels -> Share Box).
-    *   Include Footer.
-    *   Include Modal.
-    *   Include Script.
-
-    *   *JSON Formatter Detail:*
-        *   Textarea for input.
-        *   Buttons: Beautify, Minify, Clear, Validate/Copy.
-        *   Result box.
-
-    *(Self-Correction)*: The user asked for a "trending and useful tool". A **"Unit Converter"** might be more widely used by non-devs, but **"JSON Formatter"** is "trending" in developer utility niches. Let's try to make a **"Unit Converter"** (Length, Weight, Temperature) to appeal to a broader audience, or a **"Markdown to HTML Previewer"**. Actually, let's go with **"Unit Converter"** as it's a powerhouse for general users.
-
-    *Wait*, actually, a **"Word/Character Counter & Reading Time"** is very common, but the first tool is a "Text Processor".
-    Let's go with a **"Unit Converter"**. It adds high value.
-
-    *   *Tab:* `6. محول الوحدات`
-    *   *Input:* Select Unit Type (Length, Weight, Temp), From Unit, To Unit, Value.
-    *   *Output:* Result.
-
-    *Actually*, looking at the existing "Text Processor", let's add something more "modern/viral" -> **"Image to Base64 Converter"**. Users often need to convert small icons/images to strings for CSS/HTML. It's very useful.
-
-    *   *Tool 6:* **Image to Base64**.
-        *   Input: File upload.
-        *   Output: Textarea with Base64 string.
-        *   Action: Copy to clipboard.
-
-    Let's stick to the **JSON Formatter** because it keeps the code lightweight (no heavy library needed, just native `JSON.parse`) and very professional.
-
-    *   `switchTool` is already there.
-    *   `copyText` is already there.
-    *   Need `formatJSON()`, `minifyJSON()`, `validateJSON()`.
-
-    *   Update Title to "6 أدوات".
-    *   Update Meta Description.
-    *   Add 6th Tab.
-    *   Add 6th Panel.
-    *   Add JS logic.
-
-    *(Refining the JSON Tool UX)*
-    Input: `textarea id="jsonInput"`
-    Output: `textarea id="jsonOutput" readonly`
-    Buttons: `Beautify`, `Minify`, `Validate`, `Clear`.
-
-    *Check Tags:*
-    - Search Console: Yes.
-    - Vercel: Yes.
-    - Google Fonts: Yes.
-    - Share Bar: Yes.
-    - Privacy Policy: Yes.
-    - No Markdown: Yes.
-
-    *Final Polish:* Ensure the layout remains clean. The tabs are scrollable (`overflow-x: auto`), which is good for the 6th tab.
-
-    *Wait, I'll add a "Unit Converter" instead.* It's more "trending" for general micro-tools.
-    - Unit Type: Length, Weight, Temperature.
-    - Select "From" and "To".
-    - Value input.
-    - Result.
-
-    Actually, I will implement the **JSON Formatter** as it's more robust for a professional developer tool platform.
-
-    *   Title: 6 أدوات...
-    *   Tabs: Added "6. منسق JSON".
-    *   Panel: `id="json-tool"`.
-    *   Functions: `formatJSON()`, `minifyJSON()`, `validateJSON()`, `clearJSON()`.
-
-    *Code implementation details:*
-    ```javascript
-    function formatJSON() {
-      const input = document.getElementById('jsonInput').value;
-      const output = document.getElementById('jsonOutput');
-      try {
-        const parsed = JSON.parse(input);
-        output.value = JSON.stringify(parsed, null, 2);
-        output.style.borderColor = 'var(--accent)';
-      } catch (e) {
-        output.value = "خطأ في التنسيق: " + e.message;
-        output.style.borderColor = '#ef4444';
-      }
-    }
-    ```
-
-    *Let's build the full response now.*
-
-    *Double-check:* "return only the full HTML code without any markdown lines like ```html".
-    Okay, direct output.
-
-    *One last check on the existing tools:*
-    1. Text Tool (Analyzer)
-    2. Password Generator
-    3. QR Code
-    4. Percentage Calculator
-    5. Text Converter (Case/URL)
-    6. **JSON Formatter (New)**
-
-    *Added metadata updates:*
-    - `title`: ... 6 أدوات ...
-    - `description`: ... 6 أدوات ...
-    - `keywords`: ... منسق JSON ...
-
-    *Adding the tool UI:*
-    `<div id="json-tool" class="tool-panel">`
-    `<textarea id="jsonInput" placeholder="أدخل نص JSON هنا..."></textarea>`
-    `<div class="btn-group">`
-    `<button class="action-btn" onclick="formatJSON()">تنسيق (Beautify)</button>`
-    `<button class="action-btn" onclick="minifyJSON()">تصغير (Minify)</button>`
-    `<button class="action-btn" onclick="clearJSON()">مسح</button>`
-    `</div>`
-    `<div class="output-box" style="margin-top:15px;">`
-    `<textarea id="jsonOutput" placeholder="النتيجة ستظهر هنا..." readonly style="height: 150px;"></textarea>`
-    `</div>`
-    `<div class="btn-group">`
-    `<button class="action-btn" onclick="copyText('jsonOutput')">نسخ النتيجة</button>`
-    `</div>`
-    `</div>`
-
-    *JS Functions for JSON:*
-    ```javascript
-    function formatJSON() {
-      const input = document.getElementById('jsonInput').value;
-      const output = document.getElementById('jsonOutput');
-      try {
-        const parsed = JSON.parse(input);
-        output.value = JSON.stringify(parsed, null, 2);
-        output.style.borderColor = 'var(--border)';
-      } catch (e) {
-        output.value = "خطأ: " + e.message;
-        output.style.borderColor = '#ef4444';
-      }
-    }
-    function minifyJSON() {
-      const input = document.getElementById('jsonInput').value;
-      const output = document.getElementById('jsonOutput');
-      try {
-        const parsed = JSON.parse(input);
-        output.value = JSON.stringify(parsed);
-        output.style.borderColor = 'var(--border)';
-      } catch (e) {
-        output.value = "خطأ: " + e.message;
-        output.style.borderColor = '#ef4444';
-      }
-    }
-    function clearJSON() {
-      document.getElementById('jsonInput').value = '';
-      document.getElementById('jsonOutput').value = '';
-      document.getElementById('jsonOutput').style.borderColor = 'var(--border)';
-    }
-    ```
-
-    *Self-Correction on `copyText`:* The existing `copyText` uses `el.value || el.innerText`. My `jsonOutput` is a `textarea`, so `el.value` works perfectly.
-
-    *Final structure review:*
-    - Tabs (6 buttons)
-    - Ad Spot
-    - Tool 1 (Text)
-    - Tool 2 (Pass)
-    - Tool 3 (QR)
-    - Tool 4 (Calc)
-    - Tool 5 (Conv)
-    - Tool 6 (JSON)
-    - Share Box
-    - Footer
-    - Modal
-    - Scripts
-
-    *Wait*, I should ensure the tab button for the new tool is included in the list correctly.
-
-    *Let's refine the description and keywords for SEO.*
-    Description: "منصة أدوات مجانية شاملة: معالج نصوص، مولد كلمات سر، محول تشفير، مولد QR، حاسبة نسب، ومنسق JSON."
-    Keywords: "أدوات مجانية, معالج نصوص, مولد qr, حساب نسبة مئوية, كلمة سر معقدة, منسق JSON, JSON Formatter"
-
-    *One detail:* The user requested "no markdown lines". This means the raw text should start with `<!DOCTYPE html>`.
-
-    *Check CSS:* I'll add a tiny rule for the JSON output textarea to look consistent.
-    `textarea#jsonOutput { height: 150px; margin-top: 10px; }` (Added via inline style or template).
-
-    *Final Code Construction begins.*
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>منصة الأدوات الذكية المجانية | 6 أدوات احترافية في مكان واحد</title>
-  <meta name="description" content="منصة أدوات مجانية شاملة: معالج نصوص، مولد كلمات سر، محول تشفير، مولد QR، حاسبة نسب، ومنسق JSON احترافي.">
-  <meta name="keywords" content="أدوات مجانية, معالج نصوص, مولد qr, حساب نسبة مئوية, كلمة سر معقدة, منسق JSON, JSON Formatter, أدوات مطورين">
+  <title>منصة الأدوات الذكية | 6 أدوات احترافية مجانية</title>
+  <meta name="description" content="منصة شاملة تضم أدوات معالجة النصوص، توليد كلمات السر، QR Code، حاسبة النسب، محول النصوص، ومنسق JSON المطور.">
+  <meta name="keywords" content="أدوات مجانية, معالج نصوص, مولد كلمات سر, QR Code, حاسبة نسبة, منسق JSON, JSON Formatter, أدوات مطورين">
   <meta name="google-site-verification" content="PHM4zbdJu9FraC4fYw8tmj92C4HLUJpCzzcvpZXwoco" />
   
   <!-- Google Font: Cairo -->
@@ -240,62 +13,61 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 
-  <!-- Vercel Web Analytics Script -->
+  <!-- Vercel Web Analytics -->
   <script defer src="/_vercel/insights/script.js"></script>
 
-  <!-- Open Graph / WhatsApp Preview -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://micro-tool-01.vercel.app/">
-  <meta property="og:title" content="منصة الأدوات الذكية الشاملة">
-  <meta property="og:description" content="6 أدوات مجانية وسريعة للمطورين والمستخدمين العاديين تعمل مباشرة على متصفحك.">
   <style>
-    :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; --border: #334155; --error: #ef4444; }
-    * { box-sizing: border-box; font-family: 'Cairo', system-ui, sans-serif; }
-    body { margin: 0; padding: 15px; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; }
-    .container { width: 100%; max-width: 700px; background: var(--card); border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-    h1 { color: var(--accent); margin: 0 0 15px 0; font-size: 1.3rem; text-align: center; font-weight: 800; }
+    :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; --border: #334155; --error: #ef4444; --success: #10b981; }
+    * { box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+    body { margin: 0; padding: 15px; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; min-height: 100vh; }
+    .container { width: 100%; max-width: 700px; background: var(--card); border-radius: 16px; padding: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+    h1 { color: var(--accent); margin: 0 0 20px 0; font-size: 1.4rem; text-align: center; font-weight: 800; }
     
-    .tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 20px; border-bottom: 1px solid var(--border); scrollbar-width: thin; }
+    .tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--border); scrollbar-width: thin; }
     .tabs::-webkit-scrollbar { height: 4px; }
     .tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-    .tab-btn { background: #0f172a; color: #94a3b8; border: 1px solid var(--border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; font-weight: 700; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: 0.2s; }
-    .tab-btn.active { background: var(--accent); color: #0f172a; border-color: var(--accent); }
+    .tab-btn { background: #0f172a; color: #94a3b8; border: 1px solid var(--border); padding: 8px 16px; border-radius: 10px; font-size: 0.85rem; font-weight: 700; cursor: pointer; white-space: nowrap; transition: 0.3s; }
+    .tab-btn.active { background: var(--accent); color: #0f172a; border-color: var(--accent); box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
     
-    .tool-panel { display: none; }
+    .tool-panel { display: none; animation: fadeIn 0.3s ease; }
     .tool-panel.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     
-    textarea, input[type="text"], input[type="number"] { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 8px; color: #fff; padding: 10px; font-size: 0.95rem; margin-bottom: 12px; outline: none; transition: border 0.3s; }
-    textarea:focus, input:focus { border-color: var(--accent); }
-    textarea { height: 120px; resize: vertical; }
+    textarea, input { width: 100%; background: #0f172a; border: 1px solid var(--border); border-radius: 10px; color: #fff; padding: 12px; font-size: 0.95rem; margin-bottom: 15px; outline: none; transition: 0.3s; }
+    textarea:focus, input:focus { border-color: var(--accent); box-shadow: 0 0 8px rgba(56, 189, 248, 0.2); }
+    textarea { height: 140px; resize: vertical; font-family: monospace; }
     
-    .btn-group { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-    button.action-btn { flex: 1; min-width: 120px; padding: 10px; border: none; border-radius: 8px; background: var(--accent); color: #0f172a; font-weight: 700; cursor: pointer; font-size: 0.9rem; transition: opacity 0.2s; }
-    button.action-btn:hover { opacity: 0.9; }
+    .btn-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    button.action-btn { flex: 1; min-width: 120px; padding: 10px; border: none; border-radius: 10px; background: var(--accent); color: #0f172a; font-weight: 700; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
+    button.action-btn:hover { transform: translateY(-2px); opacity: 0.9; }
     button.action-btn.secondary { background: #475569; color: #fff; }
     
-    .output-box { background: #0f172a; border: 1px dashed var(--border); padding: 12px; border-radius: 8px; margin-top: 12px; font-family: monospace; word-break: break-all; font-size: 0.95rem; }
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; text-align: center; }
-    .stat-card { background: #0f172a; padding: 8px; border-radius: 6px; border: 1px solid var(--border); }
-    .stat-val { font-size: 1.1rem; font-weight: bold; color: var(--accent); }
+    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 15px; }
+    .stat-card { background: #0f172a; padding: 10px; border-radius: 10px; text-align: center; border: 1px solid var(--border); }
+    .stat-val { font-size: 1.2rem; font-weight: 800; color: var(--accent); display: block; }
+    .stat-label { font-size: 0.75rem; color: #94a3b8; }
 
-    .ad-spot { margin: 15px 0; min-height: 80px; background: rgba(15, 23, 42, 0.4); border: 1px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 0.8rem; text-align: center; padding: 10px; }
+    .output-box { background: #0f172a; border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-top: 10px; position: relative; min-height: 40px; word-break: break-all; font-family: monospace; }
+    .output-box.error { border-color: var(--error); }
+    
+    .ad-spot { margin: 15px 0; min-height: 90px; background: rgba(15, 23, 42, 0.4); border: 1px dashed var(--border); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 0.8rem; text-align: center; }
 
-    .share-box { margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); text-align: center; }
-    .share-title { font-size: 0.85rem; color: #94a3b8; margin-bottom: 10px; }
-    .share-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-    .share-btn { background: #334155; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: none; font-weight: 600; }
+    .share-box { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border); text-align: center; }
+    .share-btns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+    .share-btn { background: #334155; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; text-decoration: none; font-weight: 600; transition: 0.2s; }
+    .share-btn:hover { background: #475569; }
 
-    footer { width: 100%; max-width: 700px; margin-top: 15px; text-align: center; font-size: 0.8rem; color: #64748b; }
-    footer a { color: var(--accent); text-decoration: none; margin: 0 6px; font-weight: 600; cursor: pointer; }
+    footer { width: 100%; max-width: 700px; margin-top: 25px; text-align: center; font-size: 0.8rem; color: #64748b; padding-bottom: 20px; }
+    footer a { color: var(--accent); text-decoration: none; margin: 0 8px; cursor: pointer; }
 
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
-    .modal-content { background: var(--card); border-radius: 12px; padding: 20px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; color: var(--text); border: 1px solid var(--border); font-size: 0.85rem; line-height: 1.6; }
-    .modal-close { background: var(--accent); color: #0f172a; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
+    .modal-content { background: var(--card); border-radius: 16px; padding: 25px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; border: 1px solid var(--border); font-size: 0.9rem; line-height: 1.7; }
+    .modal-close { background: var(--accent); color: #0f172a; border: none; padding: 10px; border-radius: 8px; font-weight: 800; cursor: pointer; width: 100%; margin-top: 20px; }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>منصة الأدوات المصغرة الشاملة</h1>
+    <h1>منصة الأدوات الذكية الشاملة</h1>
     
     <div class="tabs">
       <button class="tab-btn active" onclick="switchTool('text-tool', this)">1. معالج النصوص</button>
@@ -306,91 +78,89 @@
       <button class="tab-btn" onclick="switchTool('json-tool', this)">6. منسق JSON</button>
     </div>
 
-    <div class="ad-spot" id="ad-top">مساحة إعلانية مجهزة (Ad Placement)</div>
+    <div class="ad-spot">مساحة إعلانية (Ad Space)</div>
 
     <!-- Tool 1: Text Processor -->
     <div id="text-tool" class="tool-panel active">
-      <textarea id="mainText" placeholder="ادخل النص لمعالجته وتحليله..." oninput="analyzeText()"></textarea>
+      <textarea id="mainText" placeholder="أدخل النص هنا للتحليل..." oninput="analyzeText()"></textarea>
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-val" id="cCount">0</div>أحرف</div>
-        <div class="stat-card"><div class="stat-val" id="wCount">0</div>كلمات</div>
-        <div class="stat-card"><div class="stat-val" id="lCount">0</div>أسطر</div>
+        <div class="stat-card"><span class="stat-val" id="cCount">0</span><span class="stat-label">أحرف</span></div>
+        <div class="stat-card"><span class="stat-val" id="wCount">0</span><span class="stat-label">كلمات</span></div>
+        <div class="stat-card"><span class="stat-val" id="lCount">0</span><span class="stat-label">أسطر</span></div>
       </div>
       <div class="btn-group">
         <button class="action-btn" onclick="cleanSpaces()">إزالة المسافات</button>
-        <button class="action-btn" onclick="removeDuplicates()">إزالة المكرر</button>
-        <button class="action-btn" onclick="copyText('mainText')">نسخ النص</button>
+        <button class="action-btn" onclick="removeDuplicates()">حذف المكرر</button>
+        <button class="action-btn secondary" onclick="copyText('mainText')">نسخ</button>
       </div>
     </div>
 
     <!-- Tool 2: Password Generator -->
     <div id="pass-tool" class="tool-panel">
-      <label style="display:block; margin-bottom:6px; font-weight:600;">طول كلمة السر:</label>
+      <label style="display:block; margin-bottom:8px; font-size:0.9rem;">طول الكلمة:</label>
       <input type="number" id="passLength" value="16" min="8" max="64">
       <div class="btn-group">
-        <button class="action-btn" onclick="generatePassword()">توليد كلمة سر معقدة</button>
+        <button class="action-btn" onclick="generatePassword()">توليد كلمة سر قوية</button>
       </div>
-      <div class="output-box" id="passOutput" style="min-height:50px; display:flex; align-items:center; justify-content:center; text-align:center;">اضغط على زر التوليد...</div>
-      <div class="btn-group" style="margin-top:8px;">
-        <button class="action-btn" onclick="copyText('passOutput')">نسخ كلمة السر</button>
+      <div class="output-box" id="passOutput" style="text-align:center; font-size:1.2rem; letter-spacing:2px;">********</div>
+      <div class="btn-group" style="margin-top:10px;">
+        <button class="action-btn secondary" onclick="copyText('passOutput')">نسخ كلمة السر</button>
       </div>
     </div>
 
-    <!-- Tool 3: QR Generator -->
+    <!-- Tool 3: QR Code -->
     <div id="qr-tool" class="tool-panel">
-      <input type="text" id="qrText" placeholder="أدخل الرابط أو النص لتوليد كود QR...">
+      <input type="text" id="qrText" placeholder="أدخل الرابط أو النص...">
       <div class="btn-group">
-        <button class="action-btn" onclick="generateQR()">توليد رمز QR</button>
+        <button class="action-btn" onclick="generateQR()">توليد QR Code</button>
       </div>
-      <div style="text-align:center; margin-top:15px;" id="qrOutput"></div>
+      <div id="qrOutput" style="text-align:center; margin-top:15px;"></div>
     </div>
 
     <!-- Tool 4: Percentage Calculator -->
     <div id="calc-tool" class="tool-panel">
-      <label style="display:block; margin-bottom:6px; font-weight:600;">احسب نسبة %:</label>
-      <input type="number" id="percentVal" placeholder="مثال: 15">
-      <label style="display:block; margin-bottom:6px; font-weight:600;">من إجمالي المبلغ/العدد:</label>
-      <input type="number" id="totalVal" placeholder="مثال: 200">
+      <input type="number" id="percentVal" placeholder="النسبة المئوية (%)">
+      <input type="number" id="totalVal" placeholder="من العدد الإجمالي">
       <div class="btn-group">
-        <button class="action-btn" onclick="calcPercent()">حساب الناتج</button>
+        <button class="action-btn" onclick="calcPercent()">احسب</button>
       </div>
-      <div class="output-box" id="calcOutput">النتيجة ستظهر هنا...</div>
+      <div class="output-box" id="calcOutput">النتيجة: --</div>
     </div>
 
     <!-- Tool 5: Converter -->
     <div id="conv-tool" class="tool-panel">
-      <textarea id="convInput" placeholder="أدخل النص بالإنجليزية أو رابط للتشفير/الفك..."></textarea>
+      <textarea id="convInput" placeholder="أدخل النص..."></textarea>
       <div class="btn-group">
-        <button class="action-btn" onclick="convertCase('upper')">UPPER</button>
-        <button class="action-btn" onclick="convertCase('lower')">lower</button>
-        <button class="action-btn" onclick="convertCase('urlEnc')">تشفير URL</button>
-        <button class="action-btn" onclick="convertCase('urlDec')">فك تشفير URL</button>
+        <button class="action-btn" onclick="convertCase('upper')">UPPERCASE</button>
+        <button class="action-btn" onclick="convertCase('lower')">lowercase</button>
+        <button class="action-btn" onclick="convertCase('urlEnc')">URL Encode</button>
+        <button class="action-btn" onclick="convertCase('urlDec')">URL Decode</button>
       </div>
     </div>
 
-    <!-- Tool 6: JSON Formatter (NEW TRENDING TOOL) -->
+    <!-- Tool 6: JSON Formatter (The New Viral Tool) -->
     <div id="json-tool" class="tool-panel">
-      <label style="display:block; margin-bottom:6px; font-weight:600;">أدخل نص JSON:</label>
-      <textarea id="jsonInput" placeholder='مثال: {"name":"user", "age":25}'></textarea>
+      <label style="display:block; margin-bottom:8px; font-size:0.9rem;">نص JSON الخام:</label>
+      <textarea id="jsonInput" placeholder='{"id":1, "name":"test"}'></textarea>
       <div class="btn-group">
         <button class="action-btn" onclick="formatJSON()">تنسيق (Beautify)</button>
         <button class="action-btn" onclick="minifyJSON()">تصغير (Minify)</button>
         <button class="action-btn secondary" onclick="clearJSON()">مسح</button>
       </div>
-      <div class="output-box" style="margin-top:15px;">
-        <textarea id="jsonOutput" placeholder="النتيجة ستظهر هنا..." readonly style="height: 150px; background: transparent; border: none; padding: 0; margin: 0;"></textarea>
+      <div class="output-box" id="jsonOutputContainer">
+        <textarea id="jsonOutput" placeholder="النتيجة ستظهر هنا..." readonly style="height: 150px; background:transparent; border:none; padding:0; margin:0;"></textarea>
       </div>
-      <div class="btn-group">
-        <button class="action-btn" onclick="copyText('jsonOutput')">نسخ النتيجة</button>
+      <div class="btn-group" style="margin-top:10px;">
+        <button class="action-btn secondary" onclick="copyText('jsonOutput')">نسخ النتيجة</button>
       </div>
     </div>
 
     <div class="share-box">
-      <div class="share-title">شارك المنصة مع أصدقائك لاستخدام الأدوات المجانية:</div>
+      <div class="share-title">شارك الأداة مع الآخرين:</div>
       <div class="share-btns">
-        <a class="share-btn" href="https://api.whatsapp.com/send?text=جرب%20منصة%20الأدوات%20الذكية%20المجانية:%20https://micro-tool-01.vercel.app/" target="_blank">واتساب</a>
-        <a class="share-btn" href="https://t.me/share/url?url=https://micro-tool-01.vercel.app/&text=منصة%20أدوات%20مصغرة%20مجانية" target="_blank">تليجرام</a>
-        <button class="share-btn" onclick="navigator.clipboard.writeText('https://micro-tool-01.vercel.app/'); alert('تم نسخ رابط الموقع!');">نسخ الرابط</button>
+        <a class="share-btn" href="https://api.whatsapp.com/send?text=استخدم منصة الأدوات المجانية: https://micro-tool-01.vercel.app/" target="_blank">WhatsApp</a>
+        <a class="share-btn" href="https://t.me/share/url?url=https://micro-tool-01.vercel.app/" target="_blank">Telegram</a>
+        <button class="share-btn" onclick="copyUrl()">نسخ رابط الموقع</button>
       </div>
     </div>
   </div>
@@ -402,13 +172,14 @@
   <div class="modal" id="privacyModal">
     <div class="modal-content">
       <h3 style="color:var(--accent); margin-top:0;">سياسة الخصوصية</h3>
-      <p>نحن نحترم خصوصية زوارنا. المنصة لا تقوم بتخزين أي بيانات شخصية أو نصوص على خوادم خارجية، حيث تُنفّذ جميع العمليات والحسابات محلياً داخل متصفح الزائر.</p>
-      <p>قد نستخدم خدمات تحليلية معتمدة مثل Vercel Analytics أو شبكات إعلانية معتمدة لتغطية تكاليف الاستضافة والتطوير.</p>
-      <button class="modal-close" onclick="closeModal()">إغلاق</button>
+      <p>منصتنا تعمل بالكامل على متصفحك (Client-Side). هذا يعني أن جميع البيانات التي تُدخلها، سواء كانت نصوصاً أو كلمات سر أو ملفات JSON، لا تُرسل إلى أي خادم ولا يتم تخزينها في أي مكان.</p>
+      <p>نستخدم ملفات تعريف الارتباط الضرورية فقط لضمان عمل الموقع وسرعته، ونعتمد على Vercel Analytics لتحسين تجربة المستخدم دون جمع بيانات شخصية محددة.</p>
+      <button class="modal-close" onclick="closeModal()">فهمت ذلك</button>
     </div>
   </div>
 
   <script>
+    // Core Navigation
     function switchTool(id, btn) {
       document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -416,20 +187,23 @@
       btn.classList.add('active');
     }
 
+    // Utility Functions
     function openModal() { document.getElementById('privacyModal').style.display = 'flex'; }
     function closeModal() { document.getElementById('privacyModal').style.display = 'none'; }
+    function copyUrl() { navigator.clipboard.writeText(window.location.href); alert('تم نسخ الرابط!'); }
 
     function copyText(elemId) {
       const el = document.getElementById(elemId);
       const val = el.value || el.innerText;
-      if (val && val !== "اضغط على زر التوليد..." && val !== "النتيجة ستظهر هنا...") {
+      if (val && val.trim() !== "" && !val.includes("********")) {
         navigator.clipboard.writeText(val);
-        alert('تم النسخ بنجاح!');
+        alert('تم النسخ!');
       } else {
-        alert('لا يوجد محتوى لنسخه!');
+        alert('لا يوجد نص لنسخه!');
       }
     }
 
+    // Tool 1 Logic
     function analyzeText() {
       const txt = document.getElementById('mainText').value;
       document.getElementById('cCount').innerText = txt.length;
@@ -448,31 +222,34 @@
       analyzeText();
     }
 
+    // Tool 2 Logic
     function generatePassword() {
       const len = parseInt(document.getElementById('passLength').value) || 16;
-      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?";
-      let res = "";
-      for (let i = 0; i < len; i++) {
-        res += chars.charAt(Math.floor(Math.random() * chars.length));
+      const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
+      let retVal = "";
+      for (let i = 0; i < len; ++i) {
+        retVal += charset.charAt(Math.floor(Math.random() * charset.length));
       }
-      document.getElementById('passOutput').innerText = res;
+      document.getElementById('passOutput').innerText = retVal;
     }
 
+    // Tool 3 Logic
     function generateQR() {
-      const val = document.getElementById('qrText').value.trim();
+      const text = document.getElementById('qrText').value;
       const out = document.getElementById('qrOutput');
-      if (!val) { alert('الرجاء إدخال نص أو رابط أولاً'); return; }
-      out.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(val)}" alt="QR Code" style="border-radius:8px; border:2px solid #38bdf8;" />`;
+      if (!text) return alert('أدخل نصاً أولاً');
+      out.innerHTML = `<img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(text)}" style="border: 4px solid var(--border); border-radius: 10px;">`;
     }
 
+    // Tool 4 Logic
     function calcPercent() {
       const p = parseFloat(document.getElementById('percentVal').value);
       const t = parseFloat(document.getElementById('totalVal').value);
-      if (isNaN(p) || isNaN(t)) { alert('يرجى إدخال أرقام صالحة'); return; }
-      const res = (p / 100) * t;
-      document.getElementById('calcOutput').innerText = `${p}% من ${t} يساوي: ${res}`;
+      if (isNaN(p) || isNaN(t)) return alert('يرجى إدخال أرقام صحيحة');
+      document.getElementById('calcOutput').innerText = `النتيجة: ${(p/100)*t}`;
     }
 
+    // Tool 5 Logic
     function convertCase(type) {
       const el = document.getElementById('convInput');
       try {
@@ -480,42 +257,44 @@
         if (type === 'lower') el.value = el.value.toLowerCase();
         if (type === 'urlEnc') el.value = encodeURIComponent(el.value);
         if (type === 'urlDec') el.value = decodeURIComponent(el.value);
-      } catch (e) { alert("خطأ في فك التشفير!"); }
+      } catch(e) { alert('خطأ في العملية!'); }
     }
 
-    // JSON Tool Functions
+    // Tool 6 Logic (JSON)
     function formatJSON() {
       const input = document.getElementById('jsonInput').value;
       const output = document.getElementById('jsonOutput');
-      if (!input.trim()) return;
+      const container = document.getElementById('jsonOutputContainer');
       try {
+        if (!input.trim()) throw new Error("الرجاء إدخال كود JSON");
         const parsed = JSON.parse(input);
         output.value = JSON.stringify(parsed, null, 2);
-        output.style.borderColor = 'var(--border)';
+        container.classList.remove('error');
       } catch (e) {
-        output.value = "خطأ في التنسيق: " + e.message;
-        output.style.borderColor = 'var(--error)';
+        output.value = "خطأ: " + e.message;
+        container.classList.add('error');
       }
     }
 
     function minifyJSON() {
       const input = document.getElementById('jsonInput').value;
       const output = document.getElementById('jsonOutput');
-      if (!input.trim()) return;
+      const container = document.getElementById('jsonOutputContainer');
       try {
+        if (!input.trim()) throw new Error("الرجاء إدخال كود JSON");
         const parsed = JSON.parse(input);
         output.value = JSON.stringify(parsed);
-        output.style.borderColor = 'var(--border)';
+        container.classList.remove('error');
       } catch (e) {
-        output.value = "خطأ في التنسيق: " + e.message;
-        output.style.borderColor = 'var(--error)';
+        output.value = "خطأ: " + e.message;
+        container.classList.add('error');
       }
     }
 
     function clearJSON() {
       document.getElementById('jsonInput').value = '';
       document.getElementById('jsonOutput').value = '';
-      document.getElementById('jsonOutput').style.borderColor = 'var(--border)';
+      document.getElementById('jsonOutputContainer').classList.remove('error');
     }
   </script>
 </body>
