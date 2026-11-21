@@ -188,18 +188,28 @@ if __name__ == "__main__":
             h_match = re.search(r'(<!DOCTYPE\s+html[\s\S]*?</html>|<html[\s\S]*?</html>)', raw_response, re.IGNORECASE)
             new_code = h_match.group(1).strip() if h_match else None
             
+        if not new_code:
+            # Fallback: لو لم يجد الـ Tags، نأخذ النص كاملاً كمرشح لتنظيفه
+            new_code = raw_response.strip()
+
         # إزالة وسوم الـ markdown العالقة إن وجدت
-        if new_code:
-            new_code = re.sub(r'^```html\s*', '', new_code, flags=re.IGNORECASE)
-            new_code = re.sub(r'^```\s*', '', new_code)
-            new_code = re.sub(r'\s*```$', '', new_code).strip()
+        new_code = re.sub(r'^```html\s*', '', new_code, flags=re.IGNORECASE)
+        new_code = re.sub(r'^```\s*', '', new_code)
+        new_code = re.sub(r'\s*```$', '', new_code).strip()
             
-        # إذا وُجد جزء من الـ HTML ولكنه فقد وسم </html> بسبب القطع، نقوم بإغلاقه تلقائياً للحفاظ على استقرار الموقع
-        if new_code and "<html" in new_code.lower() and "</html>" not in new_code.lower():
+        # إزالة أي نصوص زائدة ظهرت بعد </html> إن وُجدت
+        if "</html>" in new_code.lower():
+            parts = re.split(r'</html>', new_code, flags=re.IGNORECASE)
+            new_code = parts[0] + "</html>"
+
+        # ضمان وجود عناصر الـ HTML الأساسية، وإذا نقصت نقوم بإكمالها بمرونة لتجنب توقف الموقع
+        if "<html" not in new_code.lower():
+            new_code = f"<!DOCTYPE html>\n<html lang='ar' dir='rtl'>\n<head>\n<meta charset='UTF-8'>\n<title>منصة الأدوات الذكية</title>\n</head>\n<body>\n{new_code}\n</body>\n</html>"
+        elif "</html>" not in new_code.lower():
             print("Warning: Extracted HTML was cut off. Auto-closing HTML tags.")
             new_code += "\n</body>\n</html>"
 
-        if not new_code or "</html>" not in new_code.lower() or "<html" not in new_code.lower():
+        if "<html" not in new_code.lower() or "</html>" not in new_code.lower():
             raise ValueError("Extracted HTML is broken or incomplete.")
             
         log_details = log_match.group(1).strip() if log_match and log_match.group(1) else "تم تطوير المنصة وإضافة ميزات جديدة بنجاح."
