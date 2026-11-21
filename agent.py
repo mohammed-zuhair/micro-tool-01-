@@ -11,24 +11,32 @@ if not api_key:
 
 genai.configure(api_key=api_key)
 
-# 2. Read Current HTML Code
+# 2. Read Current HTML & Roadmap Instructions
 with open("index.html", "r", encoding="utf-8") as f:
     current_code = f.read()
 
-# 3. Prompt Construction
+roadmap_text = "أضف أداة مصغرة جديدة مفيدة ومطلوبة لتطوير المنصة."
+if os.path.exists("roadmap.txt"):
+    with open("roadmap.txt", "r", encoding="utf-8") as rf:
+        roadmap_text = rf.read()
+
+# 3. Prompt Construction with Roadmap Context
 prompt = f"""
-أنت مهندس مطور خبير ومستقل للموقع التالي. مهمتك هي تحسين الموقع أو إضافة أداة مصغرة جديدة مفيدة ومطلوبة بدون كسر الأكواد الحالية.
+أنت مهندس مطور خبير ومستقل للموقع التالي.
+
+خطة التطوير المطلوبة (Roadmap):
+{roadmap_text}
 
 الشروط الصارمة:
 1. احتفظ بكل الوسوم الخاصة بـ Google Search Console وVercel Analytics وGoogle Fonts وشريط المشاركة وسياسة الخصوصية بدون أي تغيير.
-2. أضف ميزة جديدة أو حسّن التصميم/الأدوات القائمة.
+2. اختر أداة من قائمة الـ Roadmap لم تطبق بعد في الموقع وقم بتطويرها وإضافتها بتصميم احترافي.
 3. قم بإرجاع كود HTML الكامل فقط دون أي شرح أو أسطر markdown مثل ```html.
 
 الكود الحالي للموقع:
 {current_code}
 """
 
-print("Executing AI Agent code generation pipeline...")
+print("Executing AI Agent code generation pipeline with Roadmap context...")
 
 # 4. Multi-Model Fallback Strategy
 models_to_try = ['gemini-1.5-flash', 'gemini-1.5-flash-8b']
