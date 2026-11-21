@@ -1,0 +1,37 @@
+name: Autonomous AI Developer Agent
+
+on:
+  schedule:
+    # Run automatically every Sunday at 00:00 UTC (مرة واحدة أسبوعياً لتجنب عقوبات SEO)
+    - cron: '0 0 * * 0'
+  workflow_dispatch: # يتيح لك تشغيله يدوياً بنقرة زر في أي وقت
+
+jobs:
+  auto-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: |
+          pip install google-generativeai
+
+      - name: Run AI Agent with Validation Stage
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          python scripts/agent.py
+
+      - name: Commit and Push Changes to Main
+        run: |
+          git config --global user.name "Autonomous-AI-Agent"
+          git config --global user.email "agent@bot.local"
+          git add index.html
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-update: Enhanced features & tools [Verified]" && git push)
+          
