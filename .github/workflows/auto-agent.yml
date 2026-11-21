@@ -2,9 +2,11 @@ name: Autonomous AI Developer Agent
 
 on:
   schedule:
-    # Run automatically every Sunday at 00:00 UTC (مرة واحدة أسبوعياً لتجنب عقوبات SEO)
     - cron: '0 0 * * 0'
-  workflow_dispatch: # يتيح لك تشغيله يدوياً بنقرة زر في أي وقت
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   auto-update:
@@ -26,7 +28,7 @@ jobs:
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
         run: |
-          python scripts/agent.py
+          python agent.py
 
       - name: Commit and Push Changes to Main
         run: |
