@@ -24,7 +24,7 @@
   <style>
     :root { --bg: #0f172a; --card: #1e293b; --text: #f8fafc; --accent: #38bdf8; --border: #334155; }
     * { box-sizing: border-box; font-family: 'Cairo', system-ui, sans-serif; }
-    body { margin: 0; padding: 15px; background: var(--bg); color: var(--text); display: flex; justify-content: center; }
+    body { margin: 0; padding: 15px; background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center; }
     .container { width: 100%; max-width: 700px; background: var(--card); border-radius: 14px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
     h1 { color: var(--accent); margin: 0 0 15px 0; font-size: 1.3rem; text-align: center; font-weight: 800; }
     
@@ -46,10 +46,21 @@
     .stat-card { background: #0f172a; padding: 8px; border-radius: 6px; border: 1px solid var(--border); }
     .stat-val { font-size: 1.1rem; font-weight: bold; color: var(--accent); }
 
+    /* Ad Container Placeholder */
+    .ad-spot { margin: 15px 0; min-height: 80px; background: rgba(15, 23, 42, 0.4); border: 1px dashed var(--border); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #64748b; font-size: 0.8rem; text-align: center; padding: 10px; }
+
     .share-box { margin-top: 25px; padding-top: 15px; border-top: 1px solid var(--border); text-align: center; }
     .share-title { font-size: 0.85rem; color: #94a3b8; margin-bottom: 10px; }
     .share-btns { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
     .share-btn { background: #334155; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; cursor: pointer; text-decoration: none; font-weight: 600; }
+
+    footer { width: 100%; max-width: 700px; margin-top: 15px; text-align: center; font-size: 0.8rem; color: #64748b; }
+    footer a { color: var(--accent); text-decoration: none; margin: 0 6px; font-weight: 600; cursor: pointer; }
+
+    /* Modal Styling */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 100; justify-content: center; align-items: center; padding: 20px; }
+    .modal-content { background: var(--card); border-radius: 12px; padding: 20px; max-width: 500px; width: 100%; max-height: 80vh; overflow-y: auto; color: var(--text); border: 1px solid var(--border); font-size: 0.85rem; line-height: 1.6; }
+    .modal-close { background: var(--accent); color: #0f172a; border: none; padding: 8px 16px; border-radius: 6px; font-weight: bold; cursor: pointer; margin-top: 15px; width: 100%; }
   </style>
 </head>
 <body>
@@ -63,6 +74,9 @@
       <button class="tab-btn" onclick="switchTool('calc-tool', this)">4. حاسبة النسب</button>
       <button class="tab-btn" onclick="switchTool('conv-tool', this)">5. المحول النصي</button>
     </div>
+
+    <!-- Top Ad Slot Place -->
+    <div class="ad-spot" id="ad-top">مساحة إعلانية مجهزة (Ad Placement)</div>
 
     <!-- Tool 1: Text Processor -->
     <div id="text-tool" class="tool-panel active">
@@ -134,6 +148,20 @@
     </div>
   </div>
 
+  <footer>
+    © 2026 جميع الحقوق محفوظة | <a onclick="openModal()">سياسة الخصوصية</a>
+  </footer>
+
+  <!-- Modal Privacy Policy -->
+  <div class="modal" id="privacyModal">
+    <div class="modal-content">
+      <h3 style="color:var(--accent); margin-top:0;">سياسة الخصوصية</h3>
+      <p>نحن نحترم خصوصية زوارنا. المنصة لا تقوم بتخزين أي بيانات شخصية أو نصوص على خوادم خارجية، حيث تُنفّذ جميع العمليات والحسابات محلياً داخل متصفح الزائر.</p>
+      <p>قد نستخدم خدمات تحليلية معتمدة مثل Vercel Analytics أو شبكات إعلانية معتمدة لتغطية تكاليف الاستضافة والتطوير.</p>
+      <button class="modal-close" onclick="closeModal()">إغلاق</button>
+    </div>
+  </div>
+
   <script>
     function switchTool(id, btn) {
       document.querySelectorAll('.tool-panel').forEach(p => p.classList.remove('active'));
@@ -141,6 +169,9 @@
       document.getElementById(id).classList.add('active');
       btn.classList.add('active');
     }
+
+    function openModal() { document.getElementById('privacyModal').style.display = 'flex'; }
+    function closeModal() { document.getElementById('privacyModal').style.display = 'none'; }
 
     function copyText(elemId) {
       const el = document.getElementById(elemId);
@@ -203,4 +234,5 @@
     }
   </script>
 </body>
-</html>
+  </html>
+  
