@@ -3,9 +3,9 @@ import re
 import html.parser
 import google.generativeai as genai
 
-# 1. Setup Gemini API with Gemini 4 Hydrogen model
+# 1. Setup Gemini API with Pro/Hydrogen Developer Model
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
-model = genai.GenerativeModel('gemini-4-hydrogen')
+model = genai.GenerativeModel('gemini-1.5-pro')
 
 # 2. Read Current HTML
 with open("index.html", "r", encoding="utf-8") as f:
@@ -24,7 +24,13 @@ prompt = f"""
 {current_code}
 """
 
-response = model.generate_content(prompt)
+print("Starting Pro-level code generation...")
+
+# 4. Generate content with extended timeout (10 minutes)
+response = model.generate_content(
+    prompt,
+    request_options={"timeout": 600}
+)
 new_code = response.text.strip()
 
 # Clean code formatting if returned with markdown blocks
@@ -34,7 +40,7 @@ if new_code.endswith("```"):
     new_code = new_code[:-3]
 new_code = new_code.strip()
 
-# 4. Strict Validation (تأكيد خلو الكود من الأخطاء)
+# 5. Strict Validation Stage
 class HTMLValidator(html.parser.HTMLParser):
     pass
 
