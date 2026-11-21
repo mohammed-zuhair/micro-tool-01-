@@ -587,6 +587,364 @@ border: 1px solid rgba(255, 255, 255, 0.1);</pre>
     <p>تنظيف النصوص، تحويل الحالات، وإنشاء روابط SEO بضغطة زر.</p>
 </a>
 </div>
+<div class="tools-container">
+`: [The `<a>` tag]
+    *   `---LOG_START---`: [Technical report]
+
+    *   Check against existing tools: Not a duplicate.
+    *   Check responsiveness: Use `%` and `rem`.
+    *   Check performance: No heavy libraries (Vanilla JS).
+---FILENAME---
+gradient-palette-generator.html
+---TITLE---
+مولد التدرجات اللونية الاحترافي
+---DESC---
+ابتكار تدرجات لونية عصرية وجذابة لمشاريع التصميم وتطوير الويب مع استخراج كود CSS فوراً.
+---TOOL_HTML_START---
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مولد التدرجات اللونية الاحترافي | Pro Gradient Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #f8fafc;
+            --accent-color: #fbbf24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Cairo', 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 900px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @media (max-width: 768px) {
+            .container { grid-template-columns: 1fr; }
+        }
+
+        /* Preview Section */
+        .preview-section {
+            position: relative;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            background: linear-gradient(45deg, #6366f1, #a855f7);
+        }
+
+        .preview-section h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            z-index: 1;
+        }
+
+        /* Controls Section */
+        .controls-section {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #94a3b8;
+        }
+
+        .color-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .color-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #334155;
+            padding: 8px;
+            border-radius: 12px;
+            border: 2px solid transparent;
+        }
+
+        .color-field:focus-within {
+            border-color: var(--primary-color);
+        }
+
+        input[type="color"] {
+            -webkit-appearance: none;
+            border: none;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            background: none;
+        }
+
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        input[type="text"] {
+            background: transparent;
+            border: none;
+            color: white;
+            font-family: 'Inter', monospace;
+            width: 100%;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .range-slider {
+            width: 100%;
+            cursor: pointer;
+            accent-color: var(--primary-color);
+        }
+
+        .code-output {
+            background: #0f172a;
+            padding: 15px;
+            border-radius: 12px;
+            font-family: 'Inter', monospace;
+            font-size: 0.85rem;
+            color: #38bdf8;
+            position: relative;
+            border: 1px solid #334155;
+            word-break: break-all;
+            cursor: pointer;
+        }
+
+        .code-output:hover {
+            background: #1e293b;
+        }
+
+        .btn-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Cairo';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-random {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-random:hover { background: #4f46e5; }
+
+        .btn-copy {
+            background: #475569;
+            color: white;
+        }
+
+        .btn-copy:hover { background: #64748b; }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-color);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+        }
+
+        .toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="preview-section" id="preview">
+            <h2>تدرج لوني مذهل!</h2>
+        </div>
+
+        <div class="controls-section">
+            <div class="control-group">
+                <label>الألوان</label>
+                <div class="color-inputs">
+                    <div class="color-field">
+                        <input type="color" id="color1" value="#6366f1">
+                        <input type="text" id="hex1" value="#6366f1">
+                    </div>
+                    <div class="color-field">
+                        <input type="color" id="color2" value="#a855f7">
+                        <input type="text" id="hex2" value="#a855f7">
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>الزاوية: <span id="angleVal">45</span>°</label>
+                <input type="range" id="angle" class="range-slider" min="0" max="360" value="45">
+            </div>
+
+            <div class="control-group">
+                <label>نوع التدرج</label>
+                <select id="type" style="padding: 10px; border-radius: 10px; background: #334155; color: white; border: none; outline: none; cursor: pointer;">
+                    <option value="linear-gradient">خطي (Linear)</option>
+                    <option value="radial-gradient">دائري (Radial)</option>
+                </select>
+            </div>
+
+            <div class="control-group">
+                <label>كود CSS</label>
+                <div class="code-output" id="cssCode" title="انقر للنسخ">
+                    background: linear-gradient(45deg, #6366f1, #a855f7);
+                </div>
+            </div>
+
+            <div class="btn-group">
+                <button class="btn-random" onclick="randomize()">🎲 عشوائي</button>
+                <button class="btn-copy" onclick="copyCode()">📋 نسخ الكود</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">تم النسخ بنجاح! ✅</div>
+
+    <script>
+        const color1 = document.getElementById('color1');
+        const color2 = document.getElementById('color2');
+        const hex1 = document.getElementById('hex1');
+        const hex2 = document.getElementById('hex2');
+        const angle = document.getElementById('angle');
+        const angleVal = document.getElementById('angleVal');
+        const type = document.getElementById('type');
+        const preview = document.getElementById('preview');
+        const cssCode = document.getElementById('cssCode');
+        const toast = document.getElementById('toast');
+
+        function updateGradient() {
+            const c1 = color1.value;
+            const c2 = color2.value;
+            const a = angle.value;
+            const t = type.value;
+            
+            hex1.value = c1.toUpperCase();
+            hex2.value = c2.toUpperCase();
+            angleVal.innerText = a;
+
+            let gradientString = '';
+            if(t === 'linear-gradient') {
+                gradientString = `linear-gradient(${a}deg, ${c1}, ${c2})`;
+            } else {
+                gradientString = `radial-gradient(circle, ${c1}, ${c2})`;
+            }
+
+            preview.style.background = gradientString;
+            cssCode.innerText = `background: ${gradientString};`;
+        }
+
+        function randomize() {
+            const randomHex = () => '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0');
+            color1.value = randomHex();
+            color2.value = randomHex();
+            angle.value = Math.floor(Math.random() * 360);
+            updateGradient();
+        }
+
+        function copyCode() {
+            navigator.clipboard.writeText(cssCode.innerText);
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Event Listeners
+        [color1, color2, angle, type].forEach(el => {
+            el.addEventListener('input', updateGradient);
+        });
+
+        hex1.addEventListener('change', () => {
+            if(/^#[0-9A-F]{6}$/i.test(hex1.value)) {
+                color1.value = hex1.value;
+                updateGradient();
+            }
+        });
+
+        hex2.addEventListener('change', () => {
+            if(/^#[0-9A-F]{6}$/i.test(hex2.value)) {
+                color2.value = hex2.value;
+                updateGradient();
+            }
+        });
+
+        cssCode.addEventListener('click', copyCode);
+
+        // Init
+        updateGradient();
+    </script>
+</body>
+</html>
+---TOOL_HTML_END---
+
+---CARD_SNIPPET_START---
+<a href="tools/gradient-palette-generator.html" class="tool-card">
+    <div class="tool-icon" style="background: linear-gradient(45deg, #6366f1, #a855f7); color: white;">🎨</div>
+    <div class="tool-info">
+        <h3>مولد التدرجات اللونية</h3>
+        <p>ابتكار تدرجات CSS عصرية بضغطة زر واحدة</p>
+    </div>
+    <div class="tool-arrow">←</div>
+</a>
+</div>
 </body>
 </html>
 ---TOOL_HTML_END---
