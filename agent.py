@@ -1,6 +1,7 @@
 import os
 import re
 import html.parser
+import datetime
 import google.generativeai as genai
 
 # 1. Verify GEMINI_API_KEY
@@ -36,6 +37,7 @@ print("Searching trending tool ideas and executing code generation pipeline...")
 # 4. Multi-Model Fallback Strategy
 models_to_try = ['gemini-1.5-flash', 'gemini-1.5-flash-8b']
 new_code = None
+used_model = None
 
 for model_name in models_to_try:
     try:
@@ -47,6 +49,7 @@ for model_name in models_to_try:
         )
         if response and response.text:
             new_code = response.text.strip()
+            used_model = model_name
             print(f"SUCCESS: Generated updated code using {model_name}.")
             break
     except Exception as err:
@@ -84,16 +87,19 @@ except Exception as e:
     print(f"VALIDATION FAILED: {e}. Reverting changes.")
     exit(1)
 
-# 6. Automated Changelog & Summary Generator
+# 6. Guaranteed Automated Changelog Generator
 try:
-    summary_prompt = "في سطرين فقط باللغة العربية، اكتب ملخصاً مشوقاً للأداة الجديدة أو التحسين الذي أضفته للموقع الآن."
-    model_sum = genai.GenerativeModel('gemini-1.5-flash')
-    sum_res = model_sum.generate_content(summary_prompt)
-    log_text = sum_res.text.strip() if sum_res else "تم إضافة أداة مصغرة جديدة وتحديث البنية."
+    now_str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M UTC")
+    
+    # Extract Title tag content if available for precise logging
+    title_match = re.search(r'<title>(.*?)</title>', new_code, re.IGNORECASE)
+    site_title = title_match.group(1) if title_match else "تحديث الأدوات المصغرة"
+    
+    log_entry = f"\n\n### تحديث أوتوماتيكي ({now_str})\n- تم فحص المنصة وبناء/تطوير أدوات مصغرة جديدة بنجاح عبر نموذج ({used_model}).\n- عنوان الصفحة الحالي: {site_title}"
     
     with open("CHANGELOG.md", "a", encoding="utf-8") as log_file:
-        log_file.write(f"\n\n### تحديث جديد:\n- {log_text}")
-    print(f"CHANGELOG UPDATED: {log_text}")
+        log_file.write(log_entry)
+    print("CHANGELOG.md updated successfully.")
 except Exception as log_err:
-    print(f"Log generation notice: {log_err}")
+    print(f"Log writing error: {log_err}")
     
