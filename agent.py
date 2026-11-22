@@ -75,20 +75,50 @@ def get_active_text_models():
             
     return final_list if final_list else priority_models
 
-# 5. Targeted Generation
+# 5. Check missing tools in index.html
+def get_unindexed_tools():
+    if not os.path.exists("index.html") or not os.path.exists(TOOLS_DIR):
+        return []
+    with open("index.html", "r", encoding="utf-8") as f:
+        index_content = f.read()
+    
+    unindexed = []
+    for fname in os.listdir(TOOLS_DIR):
+        if fname.endswith(".html"):
+            rel_path = f"tools/{fname}"
+            if rel_path not in index_content:
+                unindexed.append(fname)
+    return unindexed
+
+# 6. Targeted Generation / Backfilling
 def generate_incremental_update(roadmap_text):
     existing_tools = os.listdir(TOOLS_DIR) if os.path.exists(TOOLS_DIR) else []
+    unindexed_tools = get_unindexed_tools()
     models = get_active_text_models()
     
+    # تحديد وضع العمل (إما استكمال مفقودات أو ابتكار أداة جديدة)
+    if unindexed_tools:
+        target_file = unindexed_tools[0]
+        mode_instruction = f"""
+ملاحظة هامة جداً: الملف '{target_file}' موجود حالياً في مجلد tools/ ولكن كرت الأداة غير مضاف في index.html.
+مهمتك الحالية:
+1. اقرأ الملف المفقود واقرأ فكرته.
+2. قم بتوليد كرت HTML مخصص (Card Snippet) لهذه الأداة لإضافته في index.html.
+3. اسم الملف يجب أن يكون بالتحديد: {target_file}
+"""
+    else:
+        mode_instruction = f"""
+ملاحظة هامة جداً: جميع الأدوات الموجودة في tools/ مضافة ومربوطة في index.html.
+مهمتك الحالية:
+1. ابتكار أداة مصغرة جديدة تماماً (High-Demand Tool).
+2. يجب ألا تكون الأداة جديدة مكررة من الأدوات التالية: {existing_tools}
+"""
+
     prompt = f"""
 أنت مهندس مطور أنظمة ويب (Surgical Incremental Code Architect).
-مهمتك:
-1. ابتكار أداة مصغرة جديدة فائقة الطلب (Viral High-Demand Tool).
-2. توليد صفحة HTML مستقلة خفيفة جداً لهذه الأداة ليتم حفظها في مجلد tools/.
-3. ضرورة إدراج رابط العودة للصفحة الرئيسية (<a href="../index.html">العودة للرئيسية</a>) في أعلى الأداة.
-4. توليد قصاصة الكرت (Card Snippet) المخصص لهذه الأداة فقط ليتم حُقنه في الصفحة الرئيسية دون إعادة كتابة index.html.
 
-الأدوات الحالية لمنع التكرار: {existing_tools}
+{mode_instruction}
+
 الخطة/الدستور: {roadmap_text}
 
 أخرج المخرجات بالتنسيق الصارم التالي حصراً:
@@ -135,10 +165,9 @@ def generate_incremental_update(roadmap_text):
                     desc = desc_match.group(1).strip() if desc_match else "أداة جديدة"
                     
                     filename = sanitize_filename(raw_fname, title)
-                    
                     tool_html = tool_html_match.group(1).strip()
                     card_snippet = card_match.group(1).strip()
-                    log_text = log_match.group(1).strip() if log_match else "تم إضافة أداة جديدة."
+                    log_text = log_match.group(1).strip() if log_match else "تم إضافة/ربط أداة."
                     
                     tool_html = re.sub(r'^```html\s*', '', tool_html, flags=re.IGNORECASE)
                     tool_html = re.sub(r'^```\s*', '', tool_html)
@@ -163,7 +192,7 @@ def generate_incremental_update(roadmap_text):
             
     return None, None, None, None, None, None, None
 
-# 6. Surgical Injection into index.html
+# 7. Surgical Injection into index.html
 def inject_card_into_index(card_snippet, tool_rel_link):
     if not os.path.exists("index.html"):
         return False
@@ -197,7 +226,7 @@ def inject_card_into_index(card_snippet, tool_rel_link):
         return True
     return False
 
-# 7. Main Gateway
+# 8. Main Gateway
 if __name__ == "__main__":
     try:
         cleanup_corrupted_tools()
@@ -216,7 +245,7 @@ if __name__ == "__main__":
         tool_path = os.path.join(TOOLS_DIR, filename)
         with open(tool_path, "w", encoding="utf-8") as tf:
             tf.write(tool_html)
-        print(f"SUCCESS: Created standalone tool file: {tool_path}")
+        print(f"SUCCESS: Standalone tool file ready: {tool_path}")
         
         tool_link = f"tools/{filename}"
         inject_card_into_index(card_snippet, tool_link)
@@ -236,7 +265,7 @@ if __name__ == "__main__":
         log_entry = (
             f"\n\n## ⚡ تعديل جراحي وتطوير إضافي [{now_utc}]\n"
             f"**النموذج المنفذ:** `{used_model}`\n"
-            f"**الأداة المضافة:** [{title}]({tool_link})\n"
+            f"**الأداة المضافة/المرتبطة:** [{title}]({tool_link})\n"
             f"**اسم الملف:** `{filename}`\n\n"
             f"### 📋 التفاصيل الفنية:\n"
             f"{log_text}\n"
@@ -249,3 +278,4 @@ if __name__ == "__main__":
     except Exception as err:
         print(f"SURGICAL PIPELINE ERROR: {err}")
         sys.exit(0)
+        
