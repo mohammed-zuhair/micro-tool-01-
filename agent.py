@@ -34,7 +34,8 @@ def cleanup_corrupted_tools():
 def sanitize_filename(raw_name, fallback_title):
     clean = raw_name.lower().strip()
     clean = re.sub(r'```[a-z]*', '', clean)
-    clean = re.sub(r'['"`]', '', clean)
+    for ch in ['"', "'", '`']:
+        clean = clean.replace(ch, '')
     clean = re.sub(r'\b(text|html|code|markdown|filename)\b', '', clean)
     clean = clean.replace(' ', '-')
     clean = re.sub(r'[^a-z0-9\-_]', '', clean)
@@ -153,7 +154,7 @@ def generate_incremental_update(roadmap_text):
                     card_snippet = re.sub(r'\s*```$', '', card_snippet).strip()
                     
                     if f"tools/{filename}" not in card_snippet:
-                        card_snippet = re.sub(r'href=["'][^"']*["']', f'href="tools/{filename}"', card_snippet, count=1)
+                        card_snippet = re.sub(r'href=["\'][^"\']*["\']', f'href="tools/{filename}"', card_snippet, count=1)
                     
                     if "</html>" in tool_html:
                         return filename, title, desc, tool_html, card_snippet, log_text, model_name
@@ -242,10 +243,10 @@ if __name__ == "__main__":
             f"\n---\n"
         )
         with open("CHANGELOG.md", "a", encoding="utf-8") as lf:
-            lf.write(lf_code if 'lf_code' in locals() else log_entry)
+            lf.write(log_entry)
         print("SUCCESS: Appended log entry to CHANGELOG.md")
 
     except Exception as err:
         print(f"SURGICAL PIPELINE ERROR: {err}")
         sys.exit(0)
-
+        
