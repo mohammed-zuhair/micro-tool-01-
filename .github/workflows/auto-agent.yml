@@ -6,7 +6,7 @@ on:
   workflow_dispatch:     # إمكانية التشغيل اليدوي في أي وقت
   push:
     paths:
-      - 'roadmap.txt'    # يتفعل الإيجنت فوراً وبدون تدخل عند تعديل ملف الخطة
+      - 'roadmap.txt'    # يتفعل الإيجنت فوراً عند تعديل ملف الخطة فقط
 
 permissions:
   contents: write
@@ -18,16 +18,16 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.10'
+          python-version: '3.11'
 
       - name: Install Dependencies
         run: |
-          pip install google-generativeai
+          pip install --upgrade google-generativeai
 
       - name: Execute Autonomous Agent
         env:
