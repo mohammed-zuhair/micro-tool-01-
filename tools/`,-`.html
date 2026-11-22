@@ -29,8 +29,26 @@
             padding: 2rem;
             border-radius: 1.5rem;
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-sizing: border-box;
         }
-        h1 { text-align: center; margin-bottom: 1.5rem; color: var(--primary); }
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        h1 { margin: 0; color: var(--primary); font-size: 1.5rem; }
+        .back-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            background: #0f172a;
+            border-radius: 0.5rem;
+            border: 1px solid #334155;
+            transition: color 0.2s;
+        }
+        .back-link:hover { color: var(--primary); }
         .preview-area {
             width: 100%;
             height: 300px;
@@ -43,22 +61,14 @@
             position: relative;
             border: 1px solid #334155;
         }
-        #wave-svg {
-            width: 100%;
-            height: 100%;
-            transition: all 0.3s ease;
-        }
+        #wave-svg { width: 100%; height: 100%; transition: all 0.3s ease; }
         .controls {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 1.5rem;
             margin-bottom: 2rem;
         }
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
+        .control-group { display: flex; flex-direction: column; gap: 0.5rem; }
         label { font-size: 0.9rem; color: #94a3b8; }
         input[type="range"] { width: 100%; cursor: pointer; }
         input[type="color"] {
@@ -69,19 +79,14 @@
             cursor: pointer;
             background: none;
         }
-        .actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+        .actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         button {
             padding: 0.8rem 1.5rem;
             border: none;
             border-radius: 0.75rem;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, opacity 0.2s;
+            transition: transform 0.2s;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -90,7 +95,6 @@
         .btn-copy { background: var(--primary); color: white; }
         .btn-download { background: #10b981; color: white; }
         .btn-reset { background: #ef4444; color: white; }
-        
         .code-output {
             margin-top: 2rem;
             background: #000;
@@ -105,17 +109,15 @@
             color: #10b981;
             border: 1px solid #334155;
         }
-
-        @media (max-width: 600px) {
-            .container { padding: 1rem; }
-            .controls { grid-template-columns: 1fr; }
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>مولد موجات SVG</h1>
+    <div class="header-bar">
+        <h1>مولد موجات SVG</h1>
+        <a href="../index.html" class="back-link">← العودة للرئيسية</a>
+    </div>
     
     <div class="preview-area" id="preview-container">
         <svg id="wave-svg" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -168,22 +170,19 @@
         const freq = parseFloat(inputs.frequency.value);
         const smooth = parseInt(inputs.smoothness.value);
         const color = inputs.color.value;
-
-        let d = `M 0 320 L 0 160 `; // Start point
         
         const width = 1440;
         const height = 320;
-        const step = width / 100; // Base resolution
+        // استخدام عامل النعومة لتحديد دقة النقاط في المنحنى
+        const step = width / (20 * smooth);
 
-        // Generate points using Sine wave
         let points = [];
         for (let x = 0; x <= width; x += step) {
             const y = 160 + Math.sin(x * freq) * amp;
             points.push({x, y});
         }
 
-        // Build path with Bezier curves for smoothness
-        d = `M 0 ${points[0].y}`;
+        let d = `M 0 ${points[0].y}`;
         for (let i = 0; i < points.length - 1; i++) {
             const p1 = points[i];
             const p2 = points[i+1];
@@ -225,12 +224,10 @@
         generateWave();
     }
 
-    // Event Listeners
     Object.values(inputs).forEach(input => {
         input.addEventListener('input', generateWave);
     });
 
-    // Initial call
     generateWave();
 </script>
 
