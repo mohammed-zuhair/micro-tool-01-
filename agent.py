@@ -97,6 +97,8 @@ def generate_incremental_update(roadmap_text):
                 
                 if file_match and tool_html_match and card_match:
                     filename = file_match.group(1).strip().lower().replace(' ', '-')
+                    # تنظيف اسم الملف من أي علامات تنصيص أو رموز زائدة
+                    filename = re.sub(r"[^a-zA-Z0-9\-_.]", "", filename)
                     if not filename.endswith('.html'):
                         filename += '.html'
                         
