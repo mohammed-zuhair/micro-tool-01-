@@ -3,173 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول النصوص وتحسين السيو - Text SEO Transformer</title>
-    <meta name="description" content="أداة متقدمة لمعالجة النصوص، تنظيف الكلمات، توليد الروابط الدائمة SEO Slugs، وحساب الكلمات المفتاحية لمواقع الويب.">
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>محول النصوص وتحسين السيو (SEO) | أدوات المطورين</title>
+    <meta name="description" content="قم بتحويل النصوص إلى روابط Slug، تنظيف النصوص من الرموز، وحساب طول العناوين والوصف لمحركات البحث بشكل احترافي.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap');
-        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }
-        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 10px;
+        }
+        .seo-indicator {
+            height: 4px;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between">
-    <!-- Header -->
-    <header class="glass-panel border-b border-slate-800 py-4 px-6 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <a href="../index.html" class="bg-slate-800 hover:bg-slate-700 p-2.5 rounded-xl transition text-slate-300 hover:text-white flex items-center gap-2 text-sm font-semibold">
-                    <i class="fa-solid fa-arrow-right"></i> الرئيسية
-                </a>
-                <span class="text-slate-600">/</span>
-                <h1 class="text-xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">محول النصوص وتحسين السيو</h1>
-            </div>
-            <div class="text-xs text-slate-400 hidden sm:block"><i class="fa-solid fa-bolt text-amber-400"></i> معالجة فورية بالمتصفح</div>
-        </div>
-    </header>
+<body class="min-h-screen p-4 md:p-8">
 
-    <!-- Main Content -->
-    <main class="max-w-6xl w-full mx-auto p-4 sm:p-6 flex-grow grid grid-cols-1 lg:grid-cols-3 gap-6 my-4">
-        <!-- Input Section -->
-        <div class="lg:col-span-1 glass-panel p-5 rounded-2xl flex flex-col gap-4">
-            <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
-                <i class="fa-solid fa-pen-nib text-cyan-400"></i> النص الأصلي
-            </h2>
-            <textarea id="inputText" rows="10" class="w-full bg-slate-900/80 border border-slate-700/60 rounded-xl p-3 text-slate-200 focus:outline-none focus:border-cyan-500 transition text-sm resize-none" placeholder="اكتب أو الصق النص هنا لمعالجته..."></textarea>
-            
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="transformText('slug')" class="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold py-2.5 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2 shadow-lg shadow-cyan-900/30">
-                    <i class="fa-solid fa-link"></i> توليد Slug
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <header class="flex justify-between items-center mb-8">
+            <a href="../index.html" class="text-blue-400 hover:text-blue-300 flex items-center gap-2 transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                العودة للرئيسية
+            </a>
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-400 to-emerald-400 bg-clip-text text-transparent">
+                Text SEO Transformer
+            </h1>
+        </header>
+
+        <main class="space-y-6">
+            <!-- Input Section -->
+            <div class="glass-card p-6">
+                <label class="block text-sm font-medium mb-2 text-slate-400">أدخل النص المراد معالجته:</label>
+                <textarea id="inputText" rows="5" class="w-full bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all custom-scrollbar" placeholder="اكتب أو الصق النص هنا..."></textarea>
+                
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                    <div class="bg-slate-800/50 p-3 rounded-lg text-center">
+                        <span class="block text-xs text-slate-400">عدد الحروف</span>
+                        <span id="charCount" class="text-xl font-bold text-blue-400">0</span>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg text-center">
+                        <span class="block text-xs text-slate-400">عدد الكلمات</span>
+                        <span id="wordCount" class="text-xl font-bold text-emerald-400">0</span>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg text-center">
+                        <span class="block text-xs text-slate-400">مؤشر العنوان</span>
+                        <div id="titleIndicator" class="seo-indicator bg-slate-700 mt-2"></div>
+                    </div>
+                    <div class="bg-slate-800/50 p-3 rounded-lg text-center">
+                        <span class="block text-xs text-slate-400">مؤشر الوصف</span>
+                        <div id="descIndicator" class="seo-indicator bg-slate-700 mt-2"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex flex-wrap gap-3">
+                <button onclick="generateSlug()" class="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-lg font-medium transition-colors flex items-center gap-2">
+                    <span>توليد رابط (Slug)</span>
                 </button>
-                <button onclick="transformText('upper')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold py-2.5 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-font"></i> أحرف كبيرة
+                <button onclick="cleanText()" class="px-6 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg font-medium transition-colors">
+                    تنظيف النص
                 </button>
-                <button onclick="transformText('lower')" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold py-2.5 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-text-slash"></i> أحرف صغيرة
+                <button onclick="removeExtraSpaces()" class="px-6 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg font-medium transition-colors">
+                    إزالة المسافات الزائدة
                 </button>
-                <button onclick="transformText('clean')" class="bg-rose-900/40 hover:bg-rose-900/60 text-rose-200 border border-rose-700/50 font-semibold py-2.5 px-4 rounded-xl transition text-xs flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-broom"></i> تنظيف المسافات
+                <button onclick="copyResult()" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 rounded-lg font-medium transition-colors mr-auto">
+                    نسخ النتيجة
                 </button>
             </div>
-        </div>
 
-        <!-- Output & Stats Section -->
-        <div class="lg:col-span-2 flex flex-col gap-6">
-            <!-- Output Box -->
-            <div class="glass-panel p-5 rounded-2xl flex flex-col gap-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-bold text-slate-200 flex items-center gap-2">
-                        <i class="fa-solid fa-square-poll-horizontal text-emerald-400"></i> النتيجة المعالجة
-                    </h2>
-                    <button onclick="copyOutput()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold py-2 px-3 rounded-lg transition flex items-center gap-1.5">
-                        <i class="fa-solid fa-copy"></i> نسخ النتيجة
-                    </button>
-                </div>
-                <textarea id="outputText" rows="5" readonly class="w-full bg-slate-900/80 border border-slate-700/60 rounded-xl p-3 text-emerald-300 font-mono text-sm focus:outline-none resize-none" placeholder="ستظهر النتيجة هنا..."></textarea>
+            <!-- Output Section -->
+            <div class="glass-card p-6">
+                <label class="block text-sm font-medium mb-2 text-slate-400">النتيجة:</label>
+                <div id="outputText" class="w-full min-h-[120px] bg-slate-900/80 border border-slate-700 rounded-lg p-4 text-emerald-400 break-all whitespace-pre-wrap font-mono"></div>
             </div>
 
-            <!-- SEO Stats Cards -->
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                <div class="glass-panel p-4 rounded-xl text-center">
-                    <div class="text-xs text-slate-400 mb-1">عدد الكلمات</div>
-                    <div id="wordCount" class="text-xl font-bold text-cyan-400">0</div>
+            <!-- SEO Guide Section -->
+            <section class="glass-card p-8 mt-12">
+                <h2 class="text-xl font-bold mb-4 text-blue-400">كيف تستخدم هذه الأداة لتحسين السيو؟</h2>
+                <div class="grid md:grid-cols-2 gap-8 text-sm leading-relaxed text-slate-300">
+                    <div>
+                        <h3 class="font-bold text-white mb-2">1. توليد الروابط (URL Slugs):</h3>
+                        <p>محركات البحث تفضل الروابط التي تحتوي على كلمات مفتاحية مفصولة بشرطات (-). الأداة تدعم اللغة العربية وتحولها لروابط صديقة للسيو.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white mb-2">2. فحص الطول المثالي:</h3>
+                        <p>العنوان المثالي (Title) يجب أن يكون بين 50-60 حرفاً، والوصف (Meta Description) بين 120-160 حرفاً. المؤشرات بالأعلى ستتغير ألوانها بناءً على ذلك.</p>
+                    </div>
                 </div>
-                <div class="glass-panel p-4 rounded-xl text-center">
-                    <div class="text-xs text-slate-400 mb-1">عدد الأحرف</div>
-                    <div id="charCount" class="text-xl font-bold text-emerald-400">0</div>
-                </div>
-                <div class="glass-panel p-4 rounded-xl text-center">
-                    <div class="text-xs text-slate-400 mb-1">وقت القراءة</div>
-                    <div id="readTime" class="text-xl font-bold text-amber-400">0 د</div>
-                </div>
-                <div class="glass-panel p-4 rounded-xl text-center">
-                    <div class="text-xs text-slate-400 mb-1">عدد الفقرات</div>
-                    <div id="paraCount" class="text-xl font-bold text-purple-400">0</div>
-                </div>
-            </div>
-        </div>
-    </main>
 
-    <!-- SEO Dynamic How-To Section -->
-    <section class="max-w-6xl w-full mx-auto px-4 sm:px-6 mb-8">
-        <div class="glass-panel p-6 rounded-2xl">
-            <h3 class="text-lg font-bold text-slate-100 mb-3"><i class="fa-solid fa-circle-question text-cyan-400"></i> كيف تستخدم أداة تحفز السيو والنصوص؟</h3>
-            <p class="text-slate-300 text-sm leading-relaxed mb-4">
-                تساعدك هذه الأداة على تنظيف النصوص العربية والإنجليزية، وتوليد روابط URL Slugs متوافقة مع محركات البحث (SEO)، بالإضافة إلى حساب إحصائيات النص بدقة لتسهيل تحسين المحتوى الخاص بمدونتك أو موقعك الإلكتروني.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-400">
-                <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-800">
-                    <strong class="text-slate-200 block mb-1">توليد الروابط الدائمة (Slugs):</strong>
-                    تقوم الأداة بتحويل العناوين إلى صيغة نظيفة مفصولة بشرطات (-) ومتوافقة تماماً مع معايير Google SEO.
+                <div class="mt-8 border-t border-slate-700 pt-6">
+                    <h3 class="font-bold text-white mb-4">الأسئلة الشائعة (FAQ)</h3>
+                    <div class="space-y-4">
+                        <details class="group">
+                            <summary class="cursor-pointer font-medium text-blue-300">لماذا يجب تنظيف النص؟</summary>
+                            <p class="mt-2 text-slate-400">تنظيف النص من الرموز الغريبة والمسافات المزدوجة يضمن عدم وجود أخطاء برمجية عند عرض المحتوى ويحسن تجربة القراءة للمستخدم.</p>
+                        </details>
+                        <details class="group">
+                            <summary class="cursor-pointer font-medium text-blue-300">هل الأداة تدعم الروابط العربية؟</summary>
+                            <p class="mt-2 text-slate-400">نعم، تقوم الأداة بتحويل المسافات إلى شرطات مع الحفاظ على الحروف العربية لضمان ظهور رابط مفهوم في نتائج البحث.</p>
+                        </details>
+                    </div>
                 </div>
-                <div class="bg-slate-900/50 p-3 rounded-xl border border-slate-800">
-                    <strong class="text-slate-200 block mb-1">إحصائيات فورية:</strong>
-                    تعرض الأداة عدد الكلمات، الحروف، والوقت المتوقع لقراءة النص لضمان ملاءمته لمحركات البحث.
-                </div>
-            </div>
-        </div>
-    </section>
+            </section>
+        </main>
 
-    <!-- Footer -->
-    <footer class="glass-panel border-t border-slate-800 py-4 text-center text-xs text-slate-500">
-        منصة الأدوات المصغرة &copy; 2025 - جميع الحقوق محفوظة
-    </footer>
+        <footer class="mt-12 text-center text-slate-500 text-sm">
+            <p>تم التطوير بواسطة مهندس الأنظمة الجراحي - جميع المعالجات تتم في متصفحك</p>
+        </footer>
+    </div>
 
     <script>
-        const inputElem = document.getElementById('inputText');
-        const outputElem = document.getElementById('outputText');
-        const wordCountElem = document.getElementById('wordCount');
-        const charCountElem = document.getElementById('charCount');
-        const readTimeElem = document.getElementById('readTime');
-        const paraCountElem = document.getElementById('paraCount');
+        const input = document.getElementById('inputText');
+        const output = document.getElementById('outputText');
+        const charCount = document.getElementById('charCount');
+        const wordCount = document.getElementById('wordCount');
+        const titleInd = document.getElementById('titleIndicator');
+        const descInd = document.getElementById('descIndicator');
 
-        inputElem.addEventListener('input', updateStats);
+        input.addEventListener('input', updateStats);
 
         function updateStats() {
-            const text = inputElem.value;
-            const words = text.trim() ? text.trim().split(/\s+/).length : 0;
-            const chars = text.length;
-            const paras = text.trim() ? text.split(/\n+/).length : 0;
-            const readTime = Math.ceil(words / 200);
+            const val = input.value;
+            const chars = val.length;
+            const words = val.trim() ? val.trim().split(/\s+/).length : 0;
 
-            wordCountElem.textContent = words;
-            charCountElem.textContent = chars;
-            readTimeElem.textContent = readTime + ' د';
-            paraCountElem.textContent = paras;
+            charCount.innerText = chars;
+            wordCount.innerText = words;
+
+            // Title Indicator (50-60 chars)
+            if (chars >= 50 && chars <= 60) titleInd.style.backgroundColor = '#10b981';
+            else if (chars > 0 && chars < 50) titleInd.style.backgroundColor = '#f59e0b';
+            else if (chars > 60) titleInd.style.backgroundColor = '#ef4444';
+            else titleInd.style.backgroundColor = '#475569';
+
+            // Desc Indicator (120-160 chars)
+            if (chars >= 120 && chars <= 160) descInd.style.backgroundColor = '#10b981';
+            else if (chars > 0 && chars < 120) descInd.style.backgroundColor = '#f59e0b';
+            else if (chars > 160) descInd.style.backgroundColor = '#ef4444';
+            else descInd.style.backgroundColor = '#475569';
         }
 
-        function transformText(type) {
-            const text = inputElem.value;
-            if (!text.trim()) {
-                outputElem.value = '';
-                return;
-            }
-
-            let result = '';
-            switch(type) {
-                case 'slug':
-                    result = text.trim().toLowerCase()
-                        .replace(/[^\w\s-]/g, '')
-                        .replace(/[\s_-]+/g, '-')
-                        .replace(/^-+|-+$/g, '');
-                    break;
-                case 'upper':
-                    result = text.toUpperCase();
-                    break;
-                case 'lower':
-                    result = text.toLowerCase();
-                    break;
-                case 'clean':
-                    result = text.replace(/\s+/g, ' ').trim();
-                    break;
-            }
-            outputElem.value = result;
+        function generateSlug() {
+            let text = input.value;
+            let slug = text.toLowerCase()
+                .trim()
+                .replace(/[^\u0600-\u06FFa-z0-9\s-]/g, '') // Keep Arabic, English, Numbers
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-');
+            output.innerText = slug;
         }
 
-        function copyOutput() {
-            if (!outputElem.value) return;
-            navigator.clipboard.writeText(outputElem.value);
-            alert('تم نسخ النتيجة بنجاح!');
+        function cleanText() {
+            let text = input.value;
+            let cleaned = text.replace(/[^\u0600-\u06FFa-zA-Z0-9\s.,!؟]/g, '');
+            output.innerText = cleaned;
+        }
+
+        function removeExtraSpaces() {
+            let text = input.value;
+            let cleaned = text.replace(/\s+/g, ' ').trim();
+            output.innerText = cleaned;
+        }
+
+        function copyResult() {
+            const text = output.innerText;
+            if (!text) return;
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = event.target;
+                const originalText = btn.innerText;
+                btn.innerText = 'تم النسخ!';
+                setTimeout(() => btn.innerText = originalText, 2000);
+            });
         }
     </script>
 </body>
