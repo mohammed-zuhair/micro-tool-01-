@@ -3,117 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مولد رموز QR الاحترافي | QR Code Generator</title>
+    <title>مولد رموز QR - منصة الأدوات المصغرة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <style>
-        body { font-family: 'Cairo', 'Tajawal', sans-serif; }
-        .glass-card {
-            background: rgba(30, 41, 59, 0.95);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(51, 65, 85, 1);
-        }
-        #qr-result img {
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-            border: 10px solid white;
-            border-radius: 12px;
-        }
+        body { font-family: 'Cairo', sans-serif; background-color: #0f172a; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+<body class="min-h-screen flex flex-col justify-between">
+    <header class="p-4 border-b border-slate-800 flex justify-between items-center max-w-4xl mx-auto w-full">
+        <a href="../index.html" class="flex items-center gap-2 text-slate-400 hover:text-white transition">
+            <i class="fa-solid fa-arrow-right"></i> العودة للرئيسية
+        </a>
+        <h1 class="text-xl font-bold text-cyan-400"><i class="fa-solid fa-qrcode ml-2"></i>مولد رموز QR</h1>
+    </header>
 
-    <div class="max-w-md w-full glass-card rounded-3xl p-6 sm:p-8 shadow-2xl transition-all">
-        <!-- Header Bar with Back Link -->
-        <div class="flex justify-between items-center mb-6 pb-4 border-b border-slate-700">
-            <h1 class="text-lg font-bold text-sky-400">مولد رموز QR</h1>
-            <a href="../index.html" class="text-xs sm:text-sm bg-slate-900 text-slate-300 hover:text-sky-400 px-3 py-1.5 rounded-lg border border-slate-700 font-bold transition-all">
-                ← العودة للرئيسية
-            </a>
-        </div>
-
-        <div class="text-center mb-6">
-            <div class="bg-sky-500/20 text-sky-400 w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-3 border border-sky-500/30 shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                </svg>
-            </div>
-            <p class="text-slate-400 text-sm">حول أي رابط أو نص إلى رمز QR في ثوانٍ</p>
-        </div>
-
-        <div class="space-y-5">
+    <main class="max-w-2xl mx-auto p-4 w-full my-8">
+        <div class="glass-card p-6 rounded-2xl shadow-xl space-y-6">
             <div>
-                <label class="block text-xs font-bold text-slate-300 mb-2">الرابط أو النص</label>
-                <input type="text" id="qr-input" placeholder="https://example.com" 
-                    class="w-full px-4 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white placeholder-slate-500 focus:ring-2 focus:ring-sky-400 focus:border-transparent outline-none transition-all text-left" dir="ltr">
+                <label class="block text-sm font-medium mb-2 text-slate-300">النص أو الرابط المراد تحويله:</label>
+                <input type="text" id="text-input" placeholder="https://example.com" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-cyan-500 transition">
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-2">الحجم</label>
-                    <select id="qr-size" class="w-full px-3 py-3 rounded-xl bg-slate-900 border border-slate-700 text-white focus:ring-2 focus:ring-sky-400 outline-none cursor-pointer">
-                        <option value="150">صغير (150x150)</option>
-                        <option value="300" selected>متوسط (300x300)</option>
-                        <option value="500">كبير (500x500)</option>
-                    </select>
+                    <label class="block text-sm font-medium mb-2 text-slate-300">لون الرمز:</label>
+                    <input type="color" id="fg-color" value="#000000" class="w-full h-10 bg-slate-900 border border-slate-700 rounded-xl cursor-pointer">
                 </div>
                 <div>
-                    <label class="block text-xs font-bold text-slate-300 mb-2">اللون</label>
-                    <input type="color" id="qr-color" value="#000000" class="w-full h-12 p-1 rounded-xl bg-slate-900 border border-slate-700 cursor-pointer">
+                    <label class="block text-sm font-medium mb-2 text-slate-300">لون الخلفية:</label>
+                    <input type="color" id="bg-color" value="#ffffff" class="w-full h-10 bg-slate-900 border border-slate-700 rounded-xl cursor-pointer">
                 </div>
             </div>
 
-            <button onclick="generateQR()" class="w-full bg-sky-400 hover:bg-sky-500 text-slate-950 font-extrabold py-3 rounded-xl transition-all transform active:scale-95 shadow-lg shadow-sky-400/20">
-                توليد الرمز الآن
+            <div class="flex justify-center p-6 bg-white rounded-xl shadow-inner" id="qrcode-container">
+                <div id="qrcode"></div>
+            </div>
+
+            <button onclick="downloadQR()" class="w-full bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-bold py-3 px-6 rounded-xl transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-download"></i> تحميل الرمز (PNG)
             </button>
-
-            <div id="qr-result" class="hidden flex flex-col items-center justify-center mt-6">
-                <div id="qr-image-container"></div>
-                <button onclick="downloadQR()" class="mt-5 flex items-center gap-2 text-sky-400 font-bold hover:text-sky-300 transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    تحميل الصورة
-                </button>
-            </div>
         </div>
-    </div>
+    </main>
+
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-800">
+        منصة الأدوات المصغرة &copy; 2025
+    </footer>
 
     <script>
-        function generateQR() {
-            const text = document.getElementById('qr-input').value;
-            const size = document.getElementById('qr-size').value;
-            const color = document.getElementById('qr-color').value.substring(1);
-            const resultDiv = document.getElementById('qr-result');
-            const container = document.getElementById('qr-image-container');
+        const textInput = document.getElementById('text-input');
+        const fgColor = document.getElementById('fg-color');
+        const bgColor = document.getElementById('bg-color');
+        const qrContainer = document.getElementById('qrcode');
 
-            if (!text) {
-                alert('يرجى إدخال نص أو رابط أولاً');
-                return;
-            }
+        let qrcode = new QRCode(qrContainer, {
+            text: "https://example.com",
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
 
-            const apiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodeURIComponent(text)}&color=${color}`;
-            
-            container.innerHTML = `<img src="${apiUrl}" alt="QR Code" class="max-w-full h-auto">`;
-            resultDiv.classList.remove('hidden');
+        function updateQR() {
+            qrContainer.innerHTML = "";
+            let textValue = textInput.value.trim() || "https://example.com";
+            new QRCode(qrContainer, {
+                text: textValue,
+                width: 200,
+                height: 200,
+                colorDark: fgColor.value,
+                colorLight: bgColor.value,
+                correctLevel: QRCode.CorrectLevel.H
+            });
         }
 
-        async function downloadQR() {
-            const img = document.querySelector('#qr-image-container img');
-            if (!img) return;
+        textInput.addEventListener('input', updateQR);
+        fgColor.addEventListener('input', updateQR);
+        bgColor.addEventListener('input', updateQR);
 
-            try {
-                const response = await fetch(img.src);
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'qrcode.png';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            } catch (e) {
-                alert('حدث خطأ أثناء التحميل، يرجى محاولة حفظ الصورة يدوياً');
+        function downloadQR() {
+            const img = qrContainer.querySelector('img');
+            const canvas = qrContainer.querySelector('canvas');
+            let dataUrl = "";
+            if (img && img.src) {
+                dataUrl = img.src;
+            } else if (canvas) {
+                dataUrl = canvas.toDataURL("image/png");
+            }
+            if (dataUrl) {
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = 'qrcode.png';
+                link.click();
             }
         }
     </script>
