@@ -230,8 +230,7 @@
       const txt = document.getElementById('mainText').value;
       document.getElementById('cCount').innerText = txt.length;
       document.getElementById('wCount').innerText = txt.trim() ? txt.trim().split(/\s+/).length : 0;
-      document.getElementById('lCount').innerText = txt ? txt.split('
-').length : 0;
+      document.getElementById('lCount').innerText = txt ? txt.split('\n').length : 0;
     }
     function cleanSpaces() {
       const el = document.getElementById('mainText');
@@ -240,10 +239,8 @@
     }
     function removeDuplicates() {
       const el = document.getElementById('mainText');
-      const lines = el.value.split('
-');
-      el.value = [...new Set(lines)].join('
-');
+      const lines = el.value.split('\n');
+      el.value = [...new Set(lines)].join('\n');
       analyzeText();
     }
 
