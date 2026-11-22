@@ -3,100 +3,193 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول نصوص السيو والروابط الدائمة</title>
+    <title>محول النصوص وتحسين محركات البحث SEO - أدوات الويب</title>
+    <meta name="description" content="أداة احترافية لتحويل النصوص، ضبط أحرف الكلمات، استخراج الكلمات المفتاحية، وتوليد الروابط الدائمة المناسبة لمحركات البحث بشكل فوري وسريع.">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
-        body { font-family: 'Cairo', sans-serif; }
-    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        darkSlate: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between">
-    <header class="bg-slate-800 border-b border-slate-700 py-4 px-6 shadow-md">
-        <div class="max-w-4xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-bold flex items-center gap-2 text-emerald-400">
-                <i class="fa-solid fa-wand-magic-sparkles"></i> محول نصوص السيو والروابط
-            </h1>
-            <a href="../index.html" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded-lg text-sm transition flex items-center gap-2">
-                <i class="fa-solid fa-arrow-right"></i> الرئيسية
+<body class="bg-darkSlate-950 text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- شريط التنقل العلوي -->
+    <header class="bg-darkSlate-900 border-b border-slate-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <a href="../index.html" class="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors">
+                <i class="fa-solid fa-arrow-right">5</i>
+                <span class="font-bold text-lg">العودة للرئيسية</span>
             </a>
+            <h1 class="text-xl font-bold bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
+                محول النصوص وتحسين محركات البحث SEO
+            </h1>
+            <div class="w-24"></div> <!-- مساحة للتوازن -->
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto p-6 w-full flex-grow">
-        <div class="bg-slate-800 border border-slate-700 rounded-xl p-6 shadow-xl space-y-6">
-            <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">النص الأصلي:</label>
-                <textarea id="inputText" rows="4" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-slate-100 focus:outline-none focus:border-emerald-500" placeholder="اكتب أو الصق النص هنا..."></textarea>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">الرابط الدائم (URL Slug):</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="slugOutput" readonly class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-emerald-400 text-sm focus:outline-none">
-                        <button onclick="copyText('slugOutput')" class="bg-emerald-600 hover:bg-emerald-500 px-4 rounded-lg text-white transition"><i class="fa-solid fa-copy"></i></button>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-sm font-medium text-slate-300 mb-2">الكشاف / الكلمات المفتاحية:</label>
-                    <div class="flex gap-2">
-                        <input type="text" id="keywordsOutput" readonly class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-emerald-400 text-sm focus:outline-none">
-                        <button onclick="copyText('keywordsOutput')" class="bg-emerald-600 hover:bg-emerald-500 px-4 rounded-lg text-white transition"><i class="fa-solid fa-copy"></i></button>
-                    </div>
-                </div>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">وصف ميتا المقترح (Meta Description):</label>
-                <div class="flex gap-2">
-                    <textarea id="metaOutput" rows="2" readonly class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-emerald-400 text-sm focus:outline-none"></textarea>
-                    <button onclick="copyText('metaOutput')" class="bg-emerald-600 hover:bg-emerald-500 px-4 rounded-lg text-white transition self-stretch"><i class="fa-solid fa-copy"></i></button>
-                </div>
+    <!-- المحتوى الرئيسي -->
+    <main class="flex-grow max-w-5xl w-full mx-auto px-4 py-8">
+        
+        <!-- صندوق الإدخال -->
+        <div class="bg-darkSlate-900 border border-slate-800 rounded-2xl p-6 shadow-xl mb-6">
+            <label for="inputText" class="block text-sm font-medium text-slate-300 mb-2">أدخل النص المراد معالجته:</label>
+            <textarea id="inputText" rows="6" class="w-full bg-darkSlate-950 border border-slate-700 rounded-xl p-4 text-slate-100 focus:outline-none focus:border-indigo-500 transition-colors resize-y" placeholder="اكتب أو الصق النص هنا..."></textarea>
+            
+            <!-- أزرار العمليات السريعة -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+                <button onclick="transformText('upper')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 py-2.5 px-4 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-font text-indigo-400"></i> أحرف كبيرة
+                </button>
+                <button onclick="transformText('lower')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 py-2.5 px-4 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-font text-indigo-400"></i> أحرف صغيرة
+                </button>
+                <button onclick="transformText('slug')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 py-2.5 px-4 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-link text-indigo-400"></i> رابط دائم (Slug)
+                </button>
+                <button onclick="transformText('clean')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 py-2.5 px-4 rounded-xl text-sm font-medium transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-broom text-indigo-400"></i> تنظيف المسافات
+                </button>
             </div>
         </div>
+
+        <!-- إحصائيات النص -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+            <div class="bg-darkSlate-900 border border-slate-800 rounded-xl p-4 text-center">
+                <span class="block text-slate-400 text-sm mb-1">الكلمات</span>
+                <span id="wordCount" class="text-2xl font-bold text-indigo-400">0</span>
+            </div>
+            <div class="bg-darkSlate-900 border border-slate-800 rounded-xl p-4 text-center">
+                <span class="block text-slate-400 text-sm mb-1">الأحرف</span>
+                <span id="charCount" class="text-2xl font-bold text-indigo-400">0</span>
+            </div>
+            <div class="bg-darkSlate-900 border border-slate-800 rounded-xl p-4 text-center">
+                <span class="block text-slate-400 text-sm mb-1">الفقرات</span>
+                <span id="paragraphCount" class="text-2xl font-bold text-indigo-400">0</span>
+            </div>
+            <div class="bg-darkSlate-900 border border-slate-800 rounded-xl p-4 text-center">
+                <span class="block text-slate-400 text-sm mb-1">وقت القراءة</span>
+                <span id="readTime" class="text-2xl font-bold text-indigo-400">0 دقيقة</span>
+            </div>
+        </div>
+
+        <!-- صندوق الإخراج -->
+        <div class="bg-darkSlate-900 border border-slate-800 rounded-2xl p-6 shadow-xl relative">
+            <div class="flex justify-between items-center mb-2">
+                <label for="outputText" class="block text-sm font-medium text-slate-300">النتيجة:</label>
+                <button onclick="copyResult()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold py-1.5 px-3 rounded-lg transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-copy"></i> نسخ النتيجة
+                </button>
+            </div>
+            <textarea id="outputText" rows="6" readonly class="w-full bg-darkSlate-950 border border-slate-700 rounded-xl p-4 text-slate-100 focus:outline-none resize-y" placeholder="ستظهر النتيجة هنا..."></textarea>
+        </div>
+
+        <!-- قسم التوضيح و SEO (How to Use + FAQ) -->
+        <section class="mt-12 bg-darkSlate-900 border border-slate-800 rounded-2xl p-6 sm:p-8">
+            <h2 class="text-xl font-bold text-indigo-400 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-circle-info"></i> دليل الاستخدام والأسئلة الشائعة
+            </h2>
+            
+            <div class="space-y-6 text-slate-300 text-sm leading-relaxed">
+                <div>
+                    <h3 class="font-semibold text-slate-200 text-base mb-1">كيف تستخدم أداة تحويل النصوص وSEO؟</h3>
+                    <p>فقط قم بكتابة أو لصق النص الخاص بك في خانة الإدخال بالأعلى، ثم اختر العملية المطلوبة مثل تحويل الأحرف، توليد رابط دائم (Slug) متوافق مع محركات البحث، أو تنظيف المسافات الزائدة. ستظهر النتيجة فوراً في خانة الإخراج مع إمكانية نسخها بضغطة زر واحدة.</p>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold text-slate-200 text-base mb-1">لماذا تعتبر هذه الأداة مهمة لتحسين محركات البحث (SEO)؟</h3>
+                    <p>تساعدك الأداة على توليد روابط نظيفة وخالية من الرموز أو المسافات (URL Slugs) والتي تفضلها محركات بحث مثل جوجل لفهم محتوى الصفحة بسرعة وأرشفته بشكل أفضل، بالإضافة إلى تحليل النص ومعرفة عدد الكلمات والأحرف ووقت القراءة بدقة.</p>
+                </div>
+
+                <div>
+                    <h3 class="font-semibold text-slate-200 text-base mb-1">هل يتم حفظ بياناتي أو نصوصي على خوادم خارجية؟</h3>
+                    <p>لا مطلقا! تتم عملية المعالجة بالكامل محلياً داخل متصفحك (Client-side Processing) لضمان الخصوصية والأمان التام لبياناتك.</p>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <footer class="bg-slate-800 border-t border-slate-700 py-4 text-center text-xs text-slate-400">
-        منصة الأدوات المصغرة &copy; 2025 - جميع الحقوق محفوظة
+    <!-- التذييل -->
+    <footer class="bg-darkSlate-900 border-t border-slate-800 py-6 text-center text-slate-500 text-sm mt-12">
+        <p>منظومة الأدوات الذكية &copy; 2025 - جميع الحقوق محفوظة</p>
     </footer>
 
+    <!-- سكود المعالجة التفاعلية -->
     <script>
-        const input = document.getElementById('inputText');
-        const slugOutput = document.getElementById('slugOutput');
-        const keywordsOutput = document.getElementById('keywordsOutput');
-        const metaOutput = document.getElementById('metaOutput');
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        const wordCount = document.getElementById('wordCount');
+        const charCount = document.getElementById('charCount');
+        const paragraphCount = document.getElementById('paragraphCount');
+        const readTime = document.getElementById('readTime');
 
-        input.addEventListener('input', () => {
-            let text = input.value.trim();
-            if (!text) {
-                slugOutput.value = '';
-                keywordsOutput.value = '';
-                metaOutput.value = '';
-                return;
+        inputText.addEventListener('input', updateStats);
+
+        function updateStats() {
+            const text = inputText.value;
+            
+            // الأحرف
+            charCount.textContent = text.length;
+            
+            // الكلمات
+            const words = text.trim() ? text.trim().split(/\s+/) : [];
+            wordCount.textContent = words.length;
+            
+            // الفقرات
+            const paragraphs = text.split(/\n+/).filter(p => p.trim().length > 0);
+            paragraphCount.textContent = paragraphs.length;
+            
+            // وقت القراءة (تقريبي: 200 كلمة في الدقيقة)
+            const minutes = Math.ceil(words.length / 200);
+            readTime.textContent = minutes + ' دقيقة';
+        }
+
+        function transformText(type) {
+            const text = inputText.value;
+            let result = '';
+
+            switch(type) {
+                case 'upper':
+                    result = text.toUpperCase();
+                    break;
+                case 'lower':
+                    result = text.toLowerCase();
+                    break;
+                case 'slug':
+                    result = text
+                        .toLowerCase()
+                        .trim()
+                        .replace(/[^\w\s-]/g, '') // إزالة الرموز الخاصة
+                        .replace(/[\s_-]+/g, '-')  // استبدال المسافات بشرطة
+                        .replace(/^-+|-+$/g, '');  // إزالة الشرطات من البداية والنهاية
+                    break;
+                case 'clean':
+                    result = text
+                        .replace(/[ \t]+/g, ' ')  // مسافات متعددة إلى مسافة واحدة
+                        .replace(/\n\s*\n/g, '\n\n') // تنظيم الأسطر الفارغة
+                        .trim();
+                    break;
             }
 
-            // Slug generation
-            let slug = text.toLowerCase()
-                .replace(/[^\w\sع-ي-]/gi, '')
-                .replace(/\s+/g, '-');
-            slugOutput.value = slug;
+            outputText.value = result;
+        }
 
-            // Keywords generation
-            let words = text.replace(/[^\w\sع-ي]/gi, '').split(/\s+/);
-            let uniqueWords = [...new Set(words)].filter(w => w.length > 3).slice(0, 8);
-            keywordsOutput.value = uniqueWords.join(', ');
-
-            // Meta description
-            metaOutput.value = text.length > 150 ? text.substring(0, 147) + '...' : text;
-        });
-
-        function copyText(elementId) {
-            const el = document.getElementById(elementId);
-            el.select();
-            document.execCommand('copy');
-            alert('تم النسخ بنجاح!');
+        function copyResult() {
+            if (!outputText.value) return;
+            navigator.clipboard.writeText(outputText.value);
+            alert('تم نسخ النتيجة بنجاح!');
         }
     </script>
 </body>
