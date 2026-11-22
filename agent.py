@@ -22,7 +22,6 @@ def cleanup_corrupted_tools():
     for fname in os.listdir(TOOLS_DIR):
         fpath = os.path.join(TOOLS_DIR, fname)
         if os.path.isfile(fpath):
-            # حذف الملفات المعطوبة التي تبدأ بنقطة أو شحطة أو اسم أقصر من حرفين
             name_no_ext = fname.replace(".html", "").strip(".-_")
             if fname == ".html" or fname.startswith("-") or len(name_no_ext) < 2:
                 try:
@@ -35,13 +34,12 @@ def cleanup_corrupted_tools():
 def sanitize_filename(raw_name, fallback_title):
     clean = raw_name.lower().strip()
     clean = re.sub(r'```[a-z]*', '', clean)
-    clean = re.sub(r'[\'"`]', '', clean)
+    clean = re.sub(r'['"`]', '', clean)
     clean = re.sub(r'\b(text|html|code|markdown|filename)\b', '', clean)
     clean = clean.replace(' ', '-')
     clean = re.sub(r'[^a-z0-9\-_]', '', clean)
     clean = clean.strip('.-_')
     
-    # إذا كان الاسم فارغاً أو غير صالح، يتم اشتقاقه من العنوان أو الوقت
     if not clean or len(clean) < 3:
         clean = re.sub(r'[^a-z0-9]', '', fallback_title.lower())
         if len(clean) < 3:
@@ -135,19 +133,16 @@ def generate_incremental_update(roadmap_text):
                     title = title_match.group(1).strip() if title_match else "أداة مصغرة"
                     desc = desc_match.group(1).strip() if desc_match else "أداة جديدة"
                     
-                    # تطهير صارم لاسم الملف
                     filename = sanitize_filename(raw_fname, title)
                     
                     tool_html = tool_html_match.group(1).strip()
                     card_snippet = card_match.group(1).strip()
                     log_text = log_match.group(1).strip() if log_match else "تم إضافة أداة جديدة."
                     
-                    # تنظيف الأكواد
                     tool_html = re.sub(r'^```html\s*', '', tool_html, flags=re.IGNORECASE)
                     tool_html = re.sub(r'^```\s*', '', tool_html)
                     tool_html = re.sub(r'\s*```$', '', tool_html).strip()
                     
-                    # حقن زر العودة أوتوماتيكياً إذا لم يكن موجوداً
                     if "../index.html" not in tool_html and "index.html" not in tool_html:
                         nav_bar = '\n<div style="padding:10px 20px; background:#1e293b; text-align:right;"><a href="../index.html" style="color:#38bdf8; text-decoration:none; font-weight:bold;">← العودة للرئيسية</a></div>\n'
                         if "<body" in tool_html.lower():
@@ -157,9 +152,8 @@ def generate_incremental_update(roadmap_text):
                     card_snippet = re.sub(r'^```\s*', '', card_snippet)
                     card_snippet = re.sub(r'\s*```$', '', card_snippet).strip()
                     
-                    # التأكد من صحة مسار الرابط داخل الكرت
                     if f"tools/{filename}" not in card_snippet:
-                        card_snippet = re.sub(r'href=["\'][^"\']*["\']', f'href="tools/{filename}"', card_snippet, count=1)
+                        card_snippet = re.sub(r'href=["'][^"']*["']', f'href="tools/{filename}"', card_snippet, count=1)
                     
                     if "</html>" in tool_html:
                         return filename, title, desc, tool_html, card_snippet, log_text, model_name
@@ -205,7 +199,6 @@ def inject_card_into_index(card_snippet, tool_rel_link):
 # 7. Main Gateway
 if __name__ == "__main__":
     try:
-        # تشغيل التطهير أولاً لحذف الملفات المعطوبة القديمة
         cleanup_corrupted_tools()
         
         roadmap_text = ""
@@ -249,10 +242,10 @@ if __name__ == "__main__":
             f"\n---\n"
         )
         with open("CHANGELOG.md", "a", encoding="utf-8") as lf:
-            lf.write(log_entry)
+            lf.write(lf_code if 'lf_code' in locals() else log_entry)
         print("SUCCESS: Appended log entry to CHANGELOG.md")
 
     except Exception as err:
         print(f"SURGICAL PIPELINE ERROR: {err}")
         sys.exit(0)
-    
+
