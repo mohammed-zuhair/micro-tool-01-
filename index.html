@@ -938,6 +938,300 @@ gradient-palette-generator.html
     <p>صمم موجات SVG انسيابية لموقعك بضغطة زر.</p>
 </a>
 </div>
+<div class="tools-container">
+`: A link with a nice icon (maybe a robot or a magic wand) and the title/desc.
+
+    *   Check against existing tools: No overlap.
+    *   Check format: Strict adherence to the requested tags.
+    *   Check responsiveness: Use CSS Flex/Grid.
+---FILENAME---
+ai-prompt-builder.html
+---TITLE---
+مُهندس الأوامر الذكي (AI Prompt Builder)
+---DESC---
+صمم أوامر احترافية لنماذج الذكاء الاصطناعي (ChatGPT, Claude, Gemini) لضمان الحصول على أدق النتائج.
+---TOOL_HTML_START---
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مُهندس الأوامر الذكي | AI Prompt Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Kufi+Arabic:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --accent: #f1f5f9;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { 
+            font-family: 'Noto Kufi Arabic', 'Inter', sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text-main); 
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+        }
+
+        header { 
+            text-align: center; 
+            margin-bottom: 30px; 
+        }
+
+        header h1 { 
+            font-size: 2rem; 
+            color: var(--primary); 
+            margin-bottom: 10px; 
+        }
+
+        header p { 
+            color: var(--text-muted); 
+            font-size: 1.1rem; 
+        }
+
+        .main-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 25px; 
+        }
+
+        @media (max-width: 768px) { 
+            .main-grid { grid-template-columns: 1fr; } 
+        }
+
+        .card { 
+            background: var(--card-bg); 
+            padding: 25px; 
+            border-radius: 16px; 
+            border: 1px solid var(--border); 
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); 
+        }
+
+        .input-group { 
+            margin-bottom: 20px; 
+        }
+
+        .input-group label { 
+            display: block; 
+            font-weight: 700; 
+            margin-bottom: 8px; 
+            font-size: 0.9rem; 
+            color: var(--text-main); 
+        }
+
+        .input-group input, .input-group textarea, .input-group select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            font-family: inherit; 
+            font-size: 1rem; 
+            transition: border-color 0.2s; 
+            background: var(--accent);
+        }
+
+        .input-group input:focus, .input-group textarea:focus { 
+            outline: none; 
+            border-color: var(--primary); 
+            background: #fff;
+        }
+
+        .output-area { 
+            position: sticky; 
+            top: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            height: fit-content; 
+        }
+
+        #finalPrompt { 
+            width: 100%; 
+            height: 300px; 
+            padding: 15px; 
+            border-radius: 12px; 
+            border: 2px dashed var(--primary); 
+            background: #fdfdff; 
+            font-family: 'Inter', 'Noto Kufi Arabic', sans-serif; 
+            font-size: 1rem; 
+            resize: none; 
+            margin-bottom: 15px; 
+            color: #334155;
+        }
+
+        .btn-copy { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 8px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            font-size: 1.1rem; 
+            transition: background 0.3s; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px; 
+        }
+
+        .btn-copy:hover { background: var(--primary-hover); }
+        .btn-copy:active { transform: scale(0.98); }
+
+        .preset-chips { 
+            display: flex; 
+            gap: 8px; 
+            flex-wrap: wrap; 
+            margin-bottom: 15px; 
+        }
+
+        .chip { 
+            padding: 5px 12px; 
+            background: var(--accent); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            transition: all 0.2s; 
+        }
+
+        .chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #e0e7ff;
+            color: #4338ca;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🚀 مُهندس الأوامر الذكي</h1>
+        <p>حول أفكارك البسيطة إلى أوامر (Prompts) احترافية تخرج أفضل ما في الذكاء الاصطناعي.</p>
+    </header>
+
+    <div class="main-grid">
+        <!-- Input Section -->
+        <div class="card">
+            <div class="input-group">
+                <span class="badge">الخطوة 1</span>
+                <label>تقمص الشخصية (Role)</label>
+                <div class="preset-chips">
+                    <span class="chip" onclick="setRole('خبير تسويق رقمي متخصص في زيادة المبيعات')">خبير تسويق</span>
+                    <span class="chip" onclick="setRole('مبرمج Full-Stack محترف في React و Node.js')">مبرمج محترف</span>
+                    <span class="chip" onclick="setRole('كاتب محتوى إبداعي ومتخصص في الـ SEO')">كاتب SEO</span>
+                    <span class="chip" onclick="setRole('محلل بيانات خبير في استخراج الرؤى الاستراتيجية')">محلل بيانات</span>
+                </div>
+                <input type="text" id="role" placeholder="مثال: أنت خبير في التغذية العلاجية..." oninput="updatePrompt()">
+            </div>
+
+            <div class="input-group">
+                <span class="badge">الخطوة 2</span>
+                <label>المهمة المطلوبة (Task)</label>
+                <textarea id="task" rows="3" placeholder="ما الذي تريد من الذكاء الاصطناعي فعله بالضبط؟" oninput="updatePrompt()"></textarea>
+            </div>
+
+            <div class="input-group">
+                <span class="badge">الخطوة 3</span>
+                <label>السياق والتفاصيل (Context)</label>
+                <textarea id="context" rows="3" placeholder="أضف معلومات إضافية، الجمهور المستهدف، أو خلفية عن المشروع..." oninput="updatePrompt()"></textarea>
+            </div>
+
+            <div class="input-group">
+                <span class="badge">الخطوة 4</span>
+                <label>القيود والتنسيق (Constraints & Format)</label>
+                <input type="text" id="format" placeholder="مثال: جدول، نقاط، نبرة رسمية، أقل من 200 كلمة..." oninput="updatePrompt()">
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-area">
+            <div class="card">
+                <label style="display:block; font-weight:700; margin-bottom:10px;">✨ الأمر النهائي الجاهز للنسخ:</label>
+                <textarea id="finalPrompt" readonly></textarea>
+                <button class="btn-copy" onclick="copyPrompt()">
+                    <span>📋</span> نسخ الأمر الآن
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function setRole(val) {
+        document.getElementById('role').value = val;
+        updatePrompt();
+    }
+
+    function updatePrompt() {
+        const role = document.getElementById('role').value.trim();
+        const task = document.getElementById('task').value.trim();
+        const context = document.getElementById('context').value.trim();
+        const format = document.getElementById('format').value.trim();
+
+        let prompt = "";
+
+        if (role) prompt += `**الشخصية:**\n${role}\n\n`;
+        if (task) prompt += `**المهمة:**\n${task}\n\n`;
+        if (context) prompt += `**السياق:**\n${context}\n\n`;
+        if (format) prompt += `**التنسيق والقيود:**\n${format}\n\n`;
+
+        if (!role && !task && !context && !format) {
+            prompt = "ابدأ بتعبئة الحقول لتوليد أمر احترافي...";
+        }
+
+        document.getElementById('finalPrompt').value = prompt;
+    }
+
+    async function copyPrompt() {
+        const text = document.getElementById('finalPrompt').value;
+        try {
+            await navigator.clipboard.writeText(text);
+            const btn = document.querySelector('.btn-copy');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "✅ تم النسخ بنجاح!";
+            btn.style.background = "#22c55e";
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = "";
+            }, 2000);
+        } catch (err) {
+            alert("فشل النسخ، يرجى النسخ يدوياً");
+        }
+    }
+
+    // Initialize
+    updatePrompt();
+</script>
+
+</body>
+</html>
+---TOOL_HTML_END---
+
+---CARD_SNIPPET_START---
+<a href="tools/ai-prompt-builder.html" class="tool-card">
+    <div class="tool-icon" style="font-size: 2rem; margin-bottom: 10px;">🚀</div>
+    <h3>مُهندس الأوامر الذكي</h3>
+    <p>صمم أوامر احترافية لـ ChatGPT و Claude لضمان أفضل النتائج.</p>
+</a>
+</div>
 </body>
 </html>
 ---TOOL_HTML_END---
