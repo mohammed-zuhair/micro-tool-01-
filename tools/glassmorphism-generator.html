@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassmorphism Generator | مولد تأثير الزجاج</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text: #f8fafc;
+            --accent: #38bdf8;
+            --border: #334155;
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--bg-gradient);
+            padding: 20px;
+            color: var(--text);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 { margin: 0; color: var(--accent); font-size: 1.5rem; font-weight: 800; }
+
+        .back-link {
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 16px;
+            background: #0f172a;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .back-link:hover { color: var(--accent); border-color: var(--accent); }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        .preview-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+            border-radius: 16px;
+            min-height: 320px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* The Glass Element */
+        #glass-preview {
+            width: 210px;
+            height: 210px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4);
+            font-size: 1.1rem;
+        }
+
+        .controls-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        label { font-size: 0.88rem; font-weight: 700; color: #94a3b8; }
+
+        input[type="range"] { width: 100%; cursor: pointer; accent-color: var(--accent); }
+        input[type="color"] { width: 100%; height: 42px; border: none; border-radius: 8px; cursor: pointer; background: none; }
+
+        .code-output-container {
+            margin-top: 25px;
+            background: #0f172a;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 18px;
+            position: relative;
+        }
+
+        .code-output {
+            color: #38bdf8;
+            direction: ltr;
+            font-family: monospace;
+            font-size: 0.88rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.85rem;
+        }
+
+        .copy-btn:hover { transform: translateY(-2px); opacity: 0.9; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-bar">
+        <h1>🎨 مولد تأثير الزجاج (Glassmorphism)</h1>
+        <a href="../index.html" class="back-link">← العودة للرئيسية</a>
+    </div>
+
+    <div class="main-grid">
+        <div class="preview-section">
+            <div id="glass-preview">معاينة التأثير</div>
+        </div>
+
+        <div class="controls-section">
+            <div class="control-group">
+                <label>الشفافية (Opacity)</label>
+                <input type="range" id="opacity" min="0" max="1" step="0.01" value="0.2">
+            </div>
+            <div class="control-group">
+                <label>تغبيش الخلفية (Blur)</label>
+                <input type="range" id="blur" min="0" max="25" step="1" value="10">
+            </div>
+            <div class="control-group">
+                <label>لون الخلفية (Color)</label>
+                <input type="color" id="color" value="#ffffff">
+            </div>
+            <div class="control-group">
+                <label>انحناء الحواف (Border Radius)</label>
+                <input type="range" id="radius" min="0" max="50" step="1" value="16">
+            </div>
+            <div class="control-group">
+                <label>سمك الإطار (Border Width)</label>
+                <input type="range" id="border-width" min="0" max="5" step="0.5" value="1">
+            </div>
+        </div>
+    </div>
+
+    <div class="code-output-container">
+        <button class="copy-btn" onclick="copyCode()">نسخ الكود</button>
+        <div class="code-output" id="css-code">background: rgba(255, 255, 255, 0.2);
+backdrop-filter: blur(10px);
+-webkit-backdrop-filter: blur(10px);
+border-radius: 16px;
+border: 1px solid rgba(255, 255, 255, 0.1);</div>
+    </div>
+</div>
+
+<script>
+    const preview = document.getElementById('glass-preview');
+    const cssCode = document.getElementById('css-code');
+    const inputs = document.querySelectorAll('input');
+
+    function hexToRgba(hex, alpha) {
+        let c = hex.replace('#', '');
+        if (c.length === 3) c = c.split('').map(x => x + x).join('');
+        const r = parseInt(c.slice(0, 2), 16) || 255;
+        const g = parseInt(c.slice(2, 4), 16) || 255;
+        const b = parseInt(c.slice(4, 6), 16) || 255;
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    function update() {
+        const opacity = document.getElementById('opacity').value;
+        const blur = document.getElementById('blur').value;
+        const color = document.getElementById('color').value;
+        const radius = document.getElementById('radius').value;
+        const borderWidth = document.getElementById('border-width').value;
+
+        const rgba = hexToRgba(color, opacity);
+        const borderColor = hexToRgba(color, Math.min(1, parseFloat(opacity) + 0.15));
+
+        preview.style.background = rgba;
+        preview.style.backdropFilter = `blur(${blur}px)`;
+        preview.style.webkitBackdropFilter = `blur(${blur}px)`;
+        preview.style.borderRadius = `${radius}px`;
+        preview.style.border = `${borderWidth}px solid ${borderColor}`;
+
+        const code = `background: ${rgba};
+backdrop-filter: blur(${blur}px);
+-webkit-backdrop-filter: blur(${blur}px);
+border-radius: ${radius}px;
+border: ${borderWidth}px solid ${borderColor};`;
+        cssCode.textContent = code;
+    }
+
+    function copyCode() {
+        navigator.clipboard.writeText(cssCode.textContent).then(() => {
+            const btn = document.querySelector('.copy-btn');
+            btn.textContent = 'تم النسخ! ✅';
+            setTimeout(() => btn.textContent = 'نسخ الكود', 2000);
+        });
+    }
+
+    inputs.forEach(input => input.addEventListener('input', update));
+    update();
+</script>
+
+</body>
+</html>
