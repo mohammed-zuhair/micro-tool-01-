@@ -15,7 +15,41 @@ genai.configure(api_key=api_key)
 TOOLS_DIR = "tools"
 os.makedirs(TOOLS_DIR, exist_ok=True)
 
-# 2. Smart Model Discovery
+# 2. Cleanup Function for Corrupted Files in tools/
+def cleanup_corrupted_tools():
+    if not os.path.exists(TOOLS_DIR):
+        return
+    for fname in os.listdir(TOOLS_DIR):
+        fpath = os.path.join(TOOLS_DIR, fname)
+        if os.path.isfile(fpath):
+            # حذف الملفات المعطوبة التي تبدأ بنقطة أو شحطة أو اسم أقصر من حرفين
+            name_no_ext = fname.replace(".html", "").strip(".-_")
+            if fname == ".html" or fname.startswith("-") or len(name_no_ext) < 2:
+                try:
+                    os.remove(fpath)
+                    print(f"CLEANUP: Removed corrupted file -> {fname}")
+                except Exception as e:
+                    print(f"Cleanup notice: {e}")
+
+# 3. Filename Sanitizer Engine
+def sanitize_filename(raw_name, fallback_title):
+    clean = raw_name.lower().strip()
+    clean = re.sub(r'```[a-z]*', '', clean)
+    clean = re.sub(r'[\'"`]', '', clean)
+    clean = re.sub(r'\b(text|html|code|markdown|filename)\b', '', clean)
+    clean = clean.replace(' ', '-')
+    clean = re.sub(r'[^a-z0-9\-_]', '', clean)
+    clean = clean.strip('.-_')
+    
+    # إذا كان الاسم فارغاً أو غير صالح، يتم اشتقاقه من العنوان أو الوقت
+    if not clean or len(clean) < 3:
+        clean = re.sub(r'[^a-z0-9]', '', fallback_title.lower())
+        if len(clean) < 3:
+            clean = f"tool-{int(datetime.datetime.now().timestamp())}"
+            
+    return f"{clean}.html"
+
+# 4. Smart Model Discovery
 def get_active_text_models():
     candidate_models = []
     try:
@@ -42,7 +76,7 @@ def get_active_text_models():
             
     return final_list if final_list else priority_models
 
-# 3. Targeted Generation: Standalone tool page + Card Snippet only
+# 5. Targeted Generation
 def generate_incremental_update(roadmap_text):
     existing_tools = os.listdir(TOOLS_DIR) if os.path.exists(TOOLS_DIR) else []
     models = get_active_text_models()
@@ -52,7 +86,8 @@ def generate_incremental_update(roadmap_text):
 مهمتك:
 1. ابتكار أداة مصغرة جديدة فائقة الطلب (Viral High-Demand Tool).
 2. توليد صفحة HTML مستقلة خفيفة جداً لهذه الأداة ليتم حفظها في مجلد tools/.
-3. توليد قصاصة الكرت (Card Snippet) المخصص لهذه الأداة فقط ليتم حُقنه في الصفحة الرئيسية دون إعادة كتابة index.html.
+3. ضرورة إدراج رابط العودة للصفحة الرئيسية (<a href="../index.html">العودة للرئيسية</a>) في أعلى الأداة.
+4. توليد قصاصة الكرت (Card Snippet) المخصص لهذه الأداة فقط ليتم حُقنه في الصفحة الرئيسية دون إعادة كتابة index.html.
 
 الأدوات الحالية لمنع التكرار: {existing_tools}
 الخطة/الدستور: {roadmap_text}
@@ -60,7 +95,7 @@ def generate_incremental_update(roadmap_text):
 أخرج المخرجات بالتنسيق الصارم التالي حصراً:
 
 ---FILENAME---
-[اسم الملف مثل: unit-converter.html]
+[اسم الملف بالإنجليزية فقط بحروف وشحطات مثل: unit-converter.html]
 ---TITLE---
 [اسم الأداة بالعربية]
 ---DESC---
@@ -70,7 +105,7 @@ def generate_incremental_update(roadmap_text):
 ---TOOL_HTML_END---
 
 ---CARD_SNIPPET_START---
-[ضع هنا كود HTML الخاص ببطاقة الأداة فقط لإضافتها في index.html مثل: <a href="tools/filename.html" class="tool-card">...</a>]
+[ضع كود HTML الخاص ببطاقة الأداة فقط لإضافتها في index.html مثل: <a href="tools/filename.html" class="tool-card">...</a>]
 ---CARD_SNIPPET_END---
 
 ---LOG_START---
@@ -96,14 +131,13 @@ def generate_incremental_update(roadmap_text):
                 log_match = re.search(r'---LOG_START---([\s\S]*?)---LOG_END---', text)
                 
                 if file_match and tool_html_match and card_match:
-                    filename = file_match.group(1).strip().lower().replace(' ', '-')
-                    # تنظيف اسم الملف من أي علامات تنصيص أو رموز زائدة
-                    filename = re.sub(r"[^a-zA-Z0-9\-_.]", "", filename)
-                    if not filename.endswith('.html'):
-                        filename += '.html'
-                        
+                    raw_fname = file_match.group(1).strip()
                     title = title_match.group(1).strip() if title_match else "أداة مصغرة"
                     desc = desc_match.group(1).strip() if desc_match else "أداة جديدة"
+                    
+                    # تطهير صارم لاسم الملف
+                    filename = sanitize_filename(raw_fname, title)
+                    
                     tool_html = tool_html_match.group(1).strip()
                     card_snippet = card_match.group(1).strip()
                     log_text = log_match.group(1).strip() if log_match else "تم إضافة أداة جديدة."
@@ -113,9 +147,19 @@ def generate_incremental_update(roadmap_text):
                     tool_html = re.sub(r'^```\s*', '', tool_html)
                     tool_html = re.sub(r'\s*```$', '', tool_html).strip()
                     
+                    # حقن زر العودة أوتوماتيكياً إذا لم يكن موجوداً
+                    if "../index.html" not in tool_html and "index.html" not in tool_html:
+                        nav_bar = '\n<div style="padding:10px 20px; background:#1e293b; text-align:right;"><a href="../index.html" style="color:#38bdf8; text-decoration:none; font-weight:bold;">← العودة للرئيسية</a></div>\n'
+                        if "<body" in tool_html.lower():
+                            tool_html = re.sub(r'(<body[^>]*>)', r'\1' + nav_bar, tool_html, count=1, flags=re.IGNORECASE)
+                    
                     card_snippet = re.sub(r'^```html\s*', '', card_snippet, flags=re.IGNORECASE)
                     card_snippet = re.sub(r'^```\s*', '', card_snippet)
                     card_snippet = re.sub(r'\s*```$', '', card_snippet).strip()
+                    
+                    # التأكد من صحة مسار الرابط داخل الكرت
+                    if f"tools/{filename}" not in card_snippet:
+                        card_snippet = re.sub(r'href=["\'][^"\']*["\']', f'href="tools/{filename}"', card_snippet, count=1)
                     
                     if "</html>" in tool_html:
                         return filename, title, desc, tool_html, card_snippet, log_text, model_name
@@ -124,7 +168,7 @@ def generate_incremental_update(roadmap_text):
             
     return None, None, None, None, None, None, None
 
-# 4. Surgical Injection into index.html (إدراج جراحي دون مسح الملف)
+# 6. Surgical Injection into index.html
 def inject_card_into_index(card_snippet, tool_rel_link):
     if not os.path.exists("index.html"):
         return False
@@ -132,12 +176,10 @@ def inject_card_into_index(card_snippet, tool_rel_link):
     with open("index.html", "r", encoding="utf-8") as f:
         content = f.read()
         
-    # منع تكرار الأداة إذا كانت موجودة مسبقاً
     if tool_rel_link in content:
         print("Tool link already present in index.html. Skipping injection.")
         return True
         
-    # البحث عن حاوية الأدوات وإقحام السطر فيها مباشرة
     inserted = False
     if 'id="tools-grid"' in content:
         content = re.sub(r'(<div[^>]*id="tools-grid"[^>]*>)', r'\1\n' + card_snippet, content, count=1)
@@ -149,7 +191,6 @@ def inject_card_into_index(card_snippet, tool_rel_link):
         content = re.sub(r'(<div[^>]*class="grid"[^>]*>)', r'\1\n' + card_snippet, content, count=1)
         inserted = True
     else:
-        # خيار إلحاق احتياطي قبل نهاية body
         if "</body>" in content:
             content = content.replace("</body>", f'<div class="tools-container">\n{card_snippet}\n</div>\n</body>', 1)
             inserted = True
@@ -161,9 +202,12 @@ def inject_card_into_index(card_snippet, tool_rel_link):
         return True
     return False
 
-# 5. Main Surgical Execution Gateway
+# 7. Main Gateway
 if __name__ == "__main__":
     try:
+        # تشغيل التطهير أولاً لحذف الملفات المعطوبة القديمة
+        cleanup_corrupted_tools()
+        
         roadmap_text = ""
         if os.path.exists("roadmap.txt"):
             with open("roadmap.txt", "r", encoding="utf-8") as rf:
@@ -175,17 +219,14 @@ if __name__ == "__main__":
             print("NOTICE: Incremental update skipped in this cycle.")
             sys.exit(0)
             
-        # أ) حفظ ملف الأداة المستقل في tools/
         tool_path = os.path.join(TOOLS_DIR, filename)
         with open(tool_path, "w", encoding="utf-8") as tf:
             tf.write(tool_html)
         print(f"SUCCESS: Created standalone tool file: {tool_path}")
         
-        # ب) حقن السطر/الكرت جراحياً في index.html دون إعادة كتابته
         tool_link = f"tools/{filename}"
         inject_card_into_index(card_snippet, tool_link)
         
-        # ج) الإلحاق بأسلوب Append لملف sitemap.xml
         if os.path.exists("sitemap.xml"):
             with open("sitemap.xml", "r", encoding="utf-8") as sf:
                 sm_code = sf.read()
@@ -197,13 +238,12 @@ if __name__ == "__main__":
                     sf.write(sm_code)
                 print("SUCCESS: Appended new URL entry to sitemap.xml")
 
-        # د) الإلحاق بأسلوب Append لملف CHANGELOG.md
         now_utc = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
         log_entry = (
             f"\n\n## ⚡ تعديل جراحي وتطوير إضافي [{now_utc}]\n"
             f"**النموذج المنفذ:** `{used_model}`\n"
             f"**الأداة المضافة:** [{title}]({tool_link})\n"
-            f"**نوع التعديل:** حقن أسطر مخصصة (Surgical Line Patching) دون مسح الملفات.\n\n"
+            f"**اسم الملف:** `{filename}`\n\n"
             f"### 📋 التفاصيل الفنية:\n"
             f"{log_text}\n"
             f"\n---\n"
@@ -215,4 +255,4 @@ if __name__ == "__main__":
     except Exception as err:
         print(f"SURGICAL PIPELINE ERROR: {err}")
         sys.exit(0)
-        
+    
