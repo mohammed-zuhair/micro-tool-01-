@@ -27,3 +27,14 @@
 - المهارات المستخدمة: (SEO Optimization, Glassmorphism UI, Client-side Processing).
 
 ---
+
+
+## ⚡ تعديل جراحي وتطوير إضافي [2026-11-23 12:51 UTC]
+**النموذج المنفذ:** `models/gemini-flash-lite-latest`
+**الأداة المضافة/المرتبطة:** [محول النصوص وتحسين السيو الذكي](tools/seo-transformer.html)
+**اسم الملف:** `seo-transformer.html`
+
+### 📋 التفاصيل الفنية:
+تم إضافة/ربط أداة.
+
+---

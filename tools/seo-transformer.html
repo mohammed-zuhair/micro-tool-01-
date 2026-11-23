@@ -1,325 +1,294 @@
-`. I will generate a high-quality version of this tool that fits the "Governor's" vision: Dark Slate theme, client-side processing, and SEO footer.
-    *   *CARD_SNIPPET:* A clean, modern card.
-
-    *   *Features for the tool:*
-        *   Input: Raw text.
-        *   Input: Target keywords.
-        *   Action: Distribute keywords, clean whitespace, suggest headings, optimize length.
-        *   Output: SEO-ready text.
-        *   UI: Dark Slate, Glassmorphism.
-
-    *   *Card Snippet:*
-        `<a href="tools/text-seo-transformer.html" class="tool-card">`
-        `<div class="tool-icon"><i class="fas fa-magic"></i></div>`
-        `<h3>محول النصوص للسيو</h3>`
-        `<p>تحسين النصوص وتوزيع الكلمات المفتاحية لزيادة ظهورك في محركات البحث.</p>`
-        `</a>`
-
-    *   Check against constraints: No fluff, strict format, Dark Slate theme, RTL support.
-بناءً على توجيهات **سلطة الحاكم** وتفعيل **الأولوية الأولى** (استكمال الأدوات المفقودة)، قام **النائب الثاني (خبير SEO والنصوص)** و**النائب الحادي عشر (مسؤول الحقن)** بتحليل الملف `text-seo-transformer.html` وتجهيز الكرت الخاص به لضمان تكامل المنصة.
-
----FILENAME---
-text-seo-transformer.html
----TITLE---
-محول النصوص لتحسين السيو (Text SEO Transformer)
----DESC---
-أداة احترافية لتحويل النصوص العادية إلى محتوى محسن لمحركات البحث عبر توزيع الكلمات المفتاحية وتنسيق البنية.
----TOOL_HTML_START---
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محول النصوص لتحسين السيو | Text SEO Transformer</title>
-    <meta name="description" content="أداة مجانية لتحويل النصوص العادية إلى نصوص محسنة لمحركات البحث (SEO) من خلال توزيع الكلمات المفتاحية وتحسين القراءة.">
-    <meta name="keywords" content="SEO, تحسين النصوص, كلمات مفتاحية, سيو, محول نصوص, Content Optimization">
+    <title>محول النصوص وتحسين السيو الذكي | Text & SEO Transformer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #38bdf8;
-            --text-main: #f1f5f9;
-            --text-dim: #94a3b8;
-            --success: #22c55e;
-            --border: #334155;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            max-width: 900px;
-            width: 100%;
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(10px);
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            color: var(--accent-color);
-            font-size: 2rem;
-            margin-bottom: 10px;
-        }
-
-        .header p {
-            color: var(--text-dim);
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-bottom: 20px;
-            color: var(--accent-color);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        .back-link:hover {
-            text-decoration: underline;
-        }
-
-        .input-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: var(--text-dim);
-            font-weight: bold;
-        }
-
-        textarea, input {
-            width: 100%;
-            padding: 12px;
-            background: var(--bg-color);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            color: var(--text-main);
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: 0.3s;
-        }
-
-        textarea:focus, input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
-        }
-
-        .controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            cursor: pointer;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-primary {
-            background: var(--accent-color);
-            color: var(--bg-color);
-        }
-
-        .btn-primary:hover {
-            background: #7dd3fc;
-            transform: translateY(-2px);
-        }
-
-        .btn-secondary {
-            background: var(--border);
-            color: var(--text-main);
-        }
-
-        .btn-secondary:hover {
-            background: #475569;
-        }
-
-        .result-area {
-            margin-top: 30px;
-            position: relative;
-        }
-
-        #output {
-            background: #0a0f1d;
-            border: 1px dashed var(--accent-color);
-            min-height: 200px;
-            white-space: pre-wrap;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: var(--accent-color);
-            color: var(--bg-color);
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 0.8rem;
-        }
-
-        .seo-guide {
-            margin-top: 40px;
-            padding: 20px;
-            background: rgba(56, 189, 248, 0.05);
-            border-radius: 15px;
-            border-right: 4px solid var(--accent-color);
-        }
-
-        .seo-guide h2 {
-            font-size: 1.2rem;
-            color: var(--accent-color);
-            margin-bottom: 15px;
-        }
-
-        .seo-guide ul {
-            padding-right: 20px;
-            color: var(--text-dim);
-            line-height: 1.6;
-        }
-
-        .seo-guide li {
-            margin-bottom: 10px;
-        }
-
-        @media (max-width: 600px) {
-            .controls {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <a href="../index.html" class="back-link"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
-
-    <div class="container">
-        <div class="header">
-            <h1><i class="fas fa-magic"></i> محول النصوص للسيو</h1>
-            <p>حول نصوصك العادية إلى محتوى متوافق مع معايير محركات البحث</p>
-        </div>
-
-        <div class="input-group">
-            <label>النص المراد تحويله:</label>
-            <textarea id="inputText" rows="8" placeholder="أدخل النص هنا..."></textarea>
-        </div>
-
-        <div class="input-group">
-            <label>الكلمات المفتاحية (افصل بينها بفاصلة):</label>
-            <input type="text" id="keywords" placeholder="مثال: الربح من الانترنت, التسويق الرقمي, سيو">
-        </div>
-
-        <div class="controls">
-            <button class="btn btn-primary" onclick="transformText()">
-                <i class="fas fa-wand-magic-sparkles"></i> تحويل النص الآن
-            </button>
-            <button class="btn btn-secondary" onclick="clearAll()">
-                <i class="fas fa-trash"></i> مسح الكل
-            </button>
-        </div>
-
-        <div class="result-area">
-            <label>النص المحسن:</label>
-            <button class="copy-btn" onclick="copyResult()"><i class="fas fa-copy"></i> نسخ</button>
-            <textarea id="output" rows="10" readonly placeholder="النتيجة ستظهر هنا..."></textarea>
-        </div>
-
-        <div class="seo-guide">
-            <h2><i class="fas fa-info-circle"></i> كيف تستخدم هذه الأداة لتحسين ترتيبك؟</h2>
-            <ul>
-                <li><strong>توزيع الكلمات:</strong> تقوم الأداة بدمج كلماتك المفتاحية بشكل طبيعي داخل النص لزيادة كثافة الكلمات (Keyword Density).</li>
-                <li><strong>تحسين البنية:</strong> يتم تنظيف المسافات الزائدة وتنسيق الفقرات لتسهيل القراءة على المستخدم وزحف عناكب جوجل.</li>
-                <li><strong>نصيحة ذهبية:</strong> لا تبالغ في عدد الكلمات المفتاحية؛ اجعل المحتوى مفيداً للقارئ أولاً ثم لمحرك البحث ثانياً.</li>
-                <li><strong>الروابط:</strong> بعد تحويل النص، قم بإضافة روابط داخلية وخارجية لتعزيز قوة الصفحة.</li>
-            </ul>
-        </div>
-    </div>
-
     <script>
-        function transformText() {
-            const text = document.getElementById('inputText').value;
-            const keywordsInput = document.getElementById('keywords').value;
-            
-            if (!text) {
-                alert('يرجى إدخال النص أولاً!');
-                return;
-            }
-
-            let keywords = keywordsInput.split(',').map(k => k.trim()).filter(k => k !== "");
-            let processedText = text.trim();
-
-            // 1. تنظيف النصوص من المسافات الزائدة
-            processedText = processedText.replace(/\s+/g, ' ');
-
-            // 2. توزيع الكلمات المفتاحية (بشكل ذكي وبسيط)
-            if (keywords.length > 0) {
-                // إضافة كلمة مفتاحية في البداية إذا لم تكن موجودة
-                if (!processedText.includes(keywords[0])) {
-                    processedText = `<strong>${keywords[0]}</strong>: ${processedText}`;
-                }
-
-                // توزيع بقية الكلمات في نهاية الفقرات أو بشكل عشوائي مدروس
-                for (let i = 1; i < keywords.length; i++) {
-                    if (!processedText.includes(keywords[i])) {
-                        const sentences = processedText.split('. ');
-                        if (sentences.length > 1) {
-                            const randomPos = Math.floor(Math.random() * (sentences.length - 1)) + 1;
-                            sentences[randomPos] = sentences[randomPos] + ` (وهذا يرتبط بـ ${keywords[i]})`;
-                            processedText = sentences.join('. ');
-                        } else {
-                            processedText += `\n\nاقرأ أيضاً عن ${keywords[i]}.`;
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        tajawal: ['Tajawal', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            850: '#151f32',
+                            900: '#0f172a',
+                            950: '#090d16',
                         }
                     }
                 }
             }
+        }
+    </script>
+    <style>
+        body { font-family: 'Tajawal', sans-serif; }
+        [dir="ltr"] body { font-family: 'Inter', sans-serif; }
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-blue-500 selection:text-white">
 
-            // 3. تحسين التنسيق النهائي
-            const finalOutput = `--- نص محسن للسيو ---\n\n${processedText}\n\n--- نهاية النص ---`;
-            document.getElementById('output').value = finalOutput;
+    <!-- Header -->
+    <header class="glass-panel border-b border-slate-800 sticky top-0 z-50 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <a href="../index.html" class="bg-slate-800 hover:bg-slate-700 p-2 rounded-xl text-slate-300 transition-all border border-slate-700">
+                    <i class="fa-solid fa-arrow-right rtl:rotate-0 ltr:rotate-180"></i>
+                </a>
+                <h1 id="app-title" class="text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+                    محول النصوص وتحسين السيو
+                </h1>
+            </div>
+            <div class="flex items-center gap-2">
+                <button onclick="toggleLanguage()" id="lang-btn" class="bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-xl text-sm font-medium border border-slate-700 transition-all">
+                    English
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto w-full p-4 md:p-6 my-auto flex-grow grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Input Section -->
+        <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
+            <div
+ class="flex justify-between items-center">
+                <label for="input-text" id="lbl-input" class="font-semibold text-slate-300 flex items-center gap-2">
+                    <i class="fa-solid fa-pen-to-square text-blue-400"></i> النص الأصلي
+                </label>
+                <button onclick="clearText()" id="btn-clear" class="text-xs text-rose-400 hover:text-rose-300 transition-all flex items-center gap-1">
+                    <i class="fa-solid fa-trash-can"></i> مسح
+                </button>
+            </div>
+            <textarea id="input-text" rows="8" class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 text-slate-100 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-all resize-none" placeholder="اكتب أو الصق النص هنا لمعالجته..."></textarea>
+            
+            <!-- Stats Bar -->
+            <div class="grid grid-cols-3 gap-3 pt-2">
+                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-center">
+                    <span id="stat-words" class="block text-lg font-bold text-blue-400">0</span>
+                    <span id="lbl-words" class="text-xs text-slate-400">كلمات</span>
+                </div>
+                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-center">
+                    <span id="stat-chars" class="block text-lg font-bold text-indigo-400">0</span>
+                    <span id="lbl-chars" class="text-xs text-slate-400">حروف</span>
+                </div>
+                <div class="bg-slate-900/60 p-3 rounded-xl border border-slate-800 text-center">
+                    <span id="stat-reading" class="block text-lg font-bold text-emerald-400">0 د</span>
+                    <span id="lbl-reading" class="text-xs text-slate-400">وقت القراءة</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Output & Actions Section -->
+        <div class="glass-panel rounded-2xl p-5 flex flex-col gap-4 shadow-xl">
+            <div class="flex justify-between items-center">
+                <label id="lbl-output" class="font-semibold text-slate-300 flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> النتائج والمعالجة
+                </label>
+                <button onclick="copyOutput()" id="btn-copy" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1.5 rounded-lg transition-all flex items-center gap-1 font-medium shadow-lg shadow-blue-500/20">
+                    <i class="fa-regular fa-copy"></i> نسخ النتيجة
+                </button>
+            </div>
+
+            <!-- Transformation Options -->
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="transformText('slug')" id="opt-slug" class="bg-slate-800/80 hover:bg-slate-700 p-2.5 rounded-xl text-xs font-medium border border-slate-700 text-right rtl:text-right ltr:text-left transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-link text-blue-400"></i> توليد رابط SEO Slug
+                </button>
+                <button onclick="transformText('upper')" id="opt-upper" class="bg-slate-800/80 hover:bg-slate-700 p-2.5 rounded-xl text-xs font-medium border border-slate-700 text-right rtl:text-right ltr:text-left transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-font text-indigo-400"></i> تحويل أحرف كبيرة
+                </button>
+                <button onclick="transformText('clean')" id="opt-clean" class="bg-slate-800/80 hover:bg-slate-700 p-2.5 rounded-xl text-xs font-medium border border-slate-700 text-right rtl:text-right ltr:text-left transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-broom text-emerald-400"></i> تنظيف المسافات الزائدة
+                </button>
+                <button onclick="transformText('meta')" id="opt-meta" class="bg-slate-800/80 hover:bg-slate-700 p-2.5 rounded-xl text-xs font-medium border border-slate-700 text-right rtl:text-right ltr:text-left transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-tags text-amber-400"></i> تقليم وصف Meta (160 حرف)
+                </button>
+            </div>
+
+            <textarea id="output-text" rows="7" readonly class="w-full bg-slate-900/80 border border-slate-700/80 rounded-xl p-4 text-slate-300 placeholder-slate-600 focus:outline-none transition-all resize-none" placeholder="ستظهر النتيجة هنا..."></textarea>
+        </div>
+
+    </main>
+
+    <!-- SEO / FAQ Dynamic Section -->
+    <section class="max-w-7xl mx-auto w-full px-4 mb-8">
+        <div class="glass-panel rounded-2xl p-6 border border-slate-800">
+            <h2 id="faq-title" class="text-lg font-bold mb-4 text-blue-400">الأسئلة الشائعة وكيفية الاستخدام</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-300">
+                <div>
+                    <h3 id="faq-q1" class="font-semibold text-slate-200 mb-1">كيف تساعدك هذه الأداة في تحسين محركات البحث (SEO)؟</h3>
+                    <p id="faq-a1" class="text-slate-400 text-xs leading-relaxed">تتيح لك تحويل العناوين إلى روابط دائمة (Slugs) نظيفة خالية من الرموز والمسافات، بالإضافة إلى تقليم وصف الميتا ليطابق المعايير القياسية لجوجل.</p>
+                </div>
+                <div>
+                    <h3 id="faq-q2" class="font-semibold text-slate-200 mb-1">هل البيانات آمنة ومعالجة محلياً؟</h3>
+                    <p id="faq-a2" class="text-slate-400 text-xs leading-relaxed">نعم، تتم كافة عمليات المعالجة والحساب داخل المتصفح الخاص بك (Client-side) دون إرسال أي بيانات لخوادم خارجية.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="text-center py-4 text-xs text-slate-500 border-t border-slate-900">
+        <p id="footer-text">منصة الأدوات الذكية الذاتية - مدمجة بمعايير السيو الحديثة</p>
+    </footer>
+
+    <!-- Script / i18n & Logic -->
+    <script>
+        const i18n = {
+            ar: {
+                appTitle: "محول النصوص وتحسين السيو",
+                langBtn: "English",
+                lblInput: "النص الأصلي",
+                btnClear: "مسح",
+                inputPlaceholder: "اكتب أو الصق النص هنا لمعالجته...",
+                lblWords: "كلمات",
+                lblChars: "حروف",
+                lblReading: "وقت القراءة",
+                lblOutput: "النتائج والمعالجة",
+                btnCopy: "نسخ النتيجة",
+                optSlug: "توليد رابط SEO Slug",
+                optUpper: "إزالة التكرار والتنظيم",
+                optClean: "تنظيف المسافات الزائدة",
+                optMeta: "تقليم وصف Meta (160 حرف)",
+                outputPlaceholder: "ستظهر النتيجة هنا...",
+                faqTitle: "الأسئلة الشائعة وكيفية الاستخدام",
+                faqQ1: "كيف تساعدك هذه الأداة في تحسين محركات البحث (SEO)؟",
+                faqA1: "تتيح لك تحويل العناوين إلى روابط دائمة (Slugs) نظيفة خالية من الرموز والمسافات، بالإضافة إلى تقليم وصف الميتا ليطابق المعايير القياسية لجوجل.",
+                faqQ2: "هل البيانات آمنة ومعالجة محلياً؟",
+                faqA2: "نعم، تتم كافة عمليات المعالجة والحساب داخل المتصفح الخاص بك (Client-side) دون إرسال أي بيانات لخوادم خارجية.",
+                footerText: "منصة الأدوات الذكية الذاتية - مدمجة بمعايير السيو الحديثة",
+                copied: "تم النسخ!"
+            },
+            en: {
+                appTitle: "Text & SEO Transformer",
+                langBtn: "العربية",
+                lblInput: "Original Text",
+                btnClear: "Clear",
+                inputPlaceholder: "Type or paste text here to process...",
+                lblWords: "Words",
+                lblChars: "Chars",
+                lblReading: "Reading Time",
+                lblOutput: "Results & Output",
+                btnCopy: "Copy Result",
+                optSlug: "Generate SEO Slug",
+                optUpper: "Clean & Format",
+                optClean: "Trim Extra Spaces",
+                optMeta: "Trim Meta Description (160 chars)",
+                outputPlaceholder: "Result will appear here...",
+                faqTitle: "FAQ & How to Use",
+                faqQ1: "How does this tool help with SEO?",
+                faqA1: "It converts titles into clean, URL-friendly slugs without symbols or spaces, and trims meta descriptions to Google standards.",
+                faqQ2: "Is my data secure?",
+                faqA2: "Yes, all processing happens entirely inside your browser (Client-side) without sending data to servers.",
+                footerText: "Autonomous Smart Tools Platform - Optimized for Modern SEO",
+                copied: "Copied!"
+            }
+        };
+
+        let currentLang = 'ar';
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.documentElement.setAttribute('lang', currentLang);
+            document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+            updateUI();
         }
 
-        function copyResult() {
-            const output = document.getElementById('output');
-            output.select();
-            document.execCommand('copy');
-            alert('تم نسخ النص المحسن بنجاح!');
+        function updateUI() {
+            const t = i18n[currentLang];
+            document.getElementById('app-title').innerText = t.appTitle;
+            document.getElementById('lang-btn').innerText = t.langBtn;
+            document.getElementById('lbl-input').innerHTML = `<i class="fa-solid fa-pen-to-square text-blue-400"></i> ${t.lblInput}`;
+            document.getElementById('btn-clear').innerHTML = `<i class="fa-solid fa-trash-can"></i> ${t.btnClear}`;
+            document.getElementById('input-text').placeholder = t.inputPlaceholder;
+            document.getElementById('lbl-words').innerText = t.lblWords;
+            document.getElementById('lbl-chars').innerText = t.lblChars;
+            document.getElementById('lbl-reading').innerText = t.lblReading;
+            document.getElementById('lbl-output').innerHTML = `<i class="fa-solid fa-wand-magic-sparkles text-indigo-400"></i> ${t.lblOutput}`;
+            document.getElementById('btn-copy').innerHTML = `<i class="fa-regular fa-copy"></i> ${t.btnCopy}`;
+            document.getElementById('opt-slug').innerHTML = `<i class="fa-solid fa-link text-blue-400"></i> ${t.optSlug}`;
+            document.getElementById('opt-upper').innerHTML = `<i class="fa-solid fa-font text-indigo-400"></i> ${t.optUpper}`;
+            document.getElementById('opt-clean').innerHTML = `<i class="fa-solid fa-broom text-emerald-400"></i> ${t.optClean}`;
+            document.getElementById('opt-meta').innerHTML = `<i class="fa-solid fa-tags text-amber-400"></i> ${t.optMeta}`;
+            document.getElementById('output-text').placeholder = t.outputPlaceholder;
+            document.getElementById('faq-title').innerText = t.faqTitle;
+            document.getElementById('faq-q1').innerText = t.faqQ1;
+            document.getElementById('faq-a1').innerText = t.faqA1;
+            document.getElementById('faq-q2').innerText = t.faqQ2;
+            document.getElementById('faq-a2').innerText = t.faqA2;
+            document.getElementById('footer-text').innerText = t.footerText;
         }
 
-        function clearAll() {
-            document.getElementById('inputText').value = '';
-            document.getElementById('keywords').value = '';
-            document.getElementById('output').value = '';
+        const inputField = document.getElementById('input-text');
+        const outputField = document.getElementById('output-text');
+        const statWords = document.getElementById('stat-words');
+        const statChars = document.getElementById('stat-chars');
+        const statReading = document.getElementById('stat-reading');
+
+        inputField.addEventListener('input', () => {
+            const text = inputField.value;
+            const chars = text.length;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const readingTime = Math.ceil(words / 200);
+
+            statChars.innerText = chars;
+            statWords.innerText = words;
+            statReading.innerText = `${readingTime} د`;
+        });
+
+        function clearText() {
+            inputField.value = '';
+            outputField.value = '';
+            statChars.innerText = '0';
+            statWords.innerText = '0';
+            statReading.innerText = '0 د';
+        }
+
+        function transformText(type) {
+            const text = inputField.value;
+            if (!text) return;
+
+            let result = '';
+            switch(type) {
+                case 'slug':
+                    result = text.toLowerCase()
+                        .replace(/[^\w\s-]/g, '')
+                        .replace(/[\s_-]+/g, '-')
+                        .replace(/^-+|-+$/g, '');
+                    break;
+                case 'upper':
+                    result = text.replace(/\s+/g, ' ').trim();
+                    break;
+                case 'clean':
+                    result = text.replace(/[\t\n]+/g, ' ').replace(/\s{2,}/g, ' ').trim();
+                    break;
+                case 'meta':
+                    result = text.length > 160 ? text.substring(0, 157) + '...' : text;
+                    break;
+            }
+            outputField.value = result;
+        }
+
+        function copyOutput() {
+            if (!outputField.value) return;
+            outputField.select();
+            navigator.clipboard.writeText(outputField.value);
+            const btn = document.getElementById('btn-copy');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> ${i18n[currentLang].copied}`;
+            setTimeout(() => btn.innerHTML = originalText, 2000);
         }
     </script>
 </body>
