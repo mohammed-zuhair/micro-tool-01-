@@ -3,264 +3,243 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text SEO Transformer | محول النصوص لتحسين SEO</title>
+    <title>Text SEO Transformer | محول النصوص للـ SEO</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Tajawal:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --glass-bg: rgba(15, 23, 42, 0.7);
+            --glass-bg: rgba(15, 23, 42, 0.8);
             --glass-border: rgba(51, 65, 85, 0.5);
-            --accent-color: #0ea5e9;
         }
         body {
             font-family: 'Tajawal', 'Inter', sans-serif;
-            background: radial-gradient(circle at top left, #0f172a, #020617);
+            background-color: #0f172a;
             color: #f1f5f9;
             min-height: 100vh;
         }
-        .glass-panel {
+        .glass-card {
             background: var(--glass-bg);
             backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+            border-radius: 1rem;
         }
-        .input-field {
-            background: rgba(30, 41, 59, 0.5);
-            border: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
         }
-        .input-field:focus {
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 2px rgba(14, 165, 233, 0.2);
-            outline: none;
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 10px;
         }
         .btn-primary {
-            background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
-            transition: transform 0.2s active;
+            background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+            transition: all 0.3s ease;
         }
-        .btn-primary:active { transform: scale(0.95); }
-        .rtl { direction: rtl; text-align: right; }
-        .ltr { direction: ltr; text-align: left; }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+        }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <!-- Navigation -->
-    <nav class="max-w-5xl mx-auto mb-8 flex justify-between items-center">
-        <a href="../index.html" class="text-slate-400 hover:text-sky-400 transition-colors flex items-center gap-2">
-            <i class="fa-solid fa-arrow-right rtl:rotate-180"></i>
-            <span data-i18n="back_home">العودة للرئيسية</span>
-        </a>
-        <button onclick="toggleLanguage()" class="px-4 py-2 rounded-full glass-panel text-sm font-medium hover:bg-slate-800 transition-all">
-            <i class="fa-solid fa-language ml-2"></i>
-            <span id="lang-text">English</span>
-        </button>
-    </nav>
-
-    <main class="max-w-5xl mx-auto">
-        <!-- Header -->
-        <div class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-indigo-400" data-i18n="title">
-                محول النصوص لتحسين SEO
-            </h1>
-            <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="subtitle">
-                حول نصوصك العادية إلى محتوى جذاب لمحركات البحث من خلال توزيع الكلمات المفتاحية وتحسين الهيكلية.
-            </p>
+    <div class="max-w-5xl mx-auto">
+        <!-- Header & Lang Toggle -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <a href="../index.html" class="text-sky-500 hover:text-sky-400 text-sm flex items-center gap-2 transition-colors">
+                    <span>←</span> <span data-i18n="back_home">العودة للرئيسية</span>
+                </a>
+                <h1 class="text-3xl font-bold mt-2 bg-clip-text text-transparent bg-gradient-to-r from-white to-slate-400" data-i18n="title">محول النصوص للـ SEO</h1>
+            </div>
+            <button id="langToggle" class="glass-card px-4 py-2 text-sm font-semibold hover:bg-slate-800 transition-all">
+                English
+            </button>
         </div>
 
-        <!-- Tool Interface -->
-        <div class="glass-panel rounded-3xl p-6 md:p-8 mb-12">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                
-                <!-- Input Section -->
-                <div class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2" data-i18n="label_text">النص المراد تحويله</label>
-                        <textarea id="inputText" class="input-field w-full h-64 p-4 rounded-xl text-slate-200 resize-none" placeholder="أدخل نصك هنا..."></textarea>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Input Section -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="glass-card p-6">
+                    <label class="block text-sm font-medium text-slate-400 mb-2" data-i18n="input_label">أدخل النص المراد معالجته</label>
+                    <textarea id="inputText" class="w-full h-64 bg-slate-900/50 border border-slate-700 rounded-lg p-4 text-slate-200 focus:ring-2 focus:ring-sky-500 focus:outline-none custom-scrollbar" placeholder="..."></textarea>
+                    
+                    <div class="flex flex-wrap gap-3 mt-4">
+                        <button onclick="processText('clean')" class="btn-primary px-5 py-2 rounded-lg text-sm font-bold" data-i18n="btn_clean">تنظيف النص</button>
+                        <button onclick="processText('slug')" class="btn-primary px-5 py-2 rounded-lg text-sm font-bold" data-i18n="btn_slug">توليد رابط (Slug)</button>
+                        <button onclick="processText('keywords')" class="btn-primary px-5 py-2 rounded-lg text-sm font-bold" data-i18n="btn_keywords">استخراج الكلمات</button>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2" data-i18n="label_keywords">الكلمات المفتاحية (افصل بينها بفاصلة)</label>
-                        <input type="text" id="keywords" class="input-field w-full p-4 rounded-xl text-slate-200" placeholder="مثال: تسويق رقمي, سيو, زيادة الزيارات">
-                    </div>
-                    <button onclick="transformSEO()" class="btn-primary w-full py-4 rounded-xl font-bold text-white shadow-lg shadow-sky-900/20 flex items-center justify-center gap-2">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
-                        <span data-i18n="btn_transform">تحويل النص الآن</span>
-                    </button>
                 </div>
 
-                <!-- Output Section -->
-                <div class="space-y-6">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <label class="text-sm font-medium text-slate-300" data-i18n="label_result">النتيجة المحسنة</label>
-                            <button onclick="copyResult()" class="text-xs text-sky-400 hover:text-sky-300 transition-colors flex items-center gap-1">
-                                <i class="fa-solid fa-copy"></i> <span data-i18n="copy">نسخ</span>
-                            </button>
-                        </div>
-                        <div id="outputText" class="input-field w-full h-64 p-4 rounded-xl text-slate-200 overflow-y-auto whitespace-pre-wrap"></div>
+                <!-- Stats Bar -->
+                <div class="grid grid-cols-3 gap-4">
+                    <div class="glass-card p-4 text-center">
+                        <div class="text-xs text-slate-500 uppercase" data-i18n="stat_chars">الحروف</div>
+                        <div id="charCount" class="text-xl font-bold text-sky-400">0</div>
                     </div>
-                    <div>
-                        <label class="block text-sm font-medium text-slate-300 mb-2" data-i18n="label_meta">وصف الميتا المقترح (Meta Description)</label>
-                        <div id="metaOutput" class="input-field w-full p-4 rounded-xl text-slate-400 text-sm italic"></div>
+                    <div class="glass-card p-4 text-center">
+                        <div class="text-xs text-slate-500 uppercase" data-i18n="stat_words">الكلمات</div>
+                        <div id="wordCount" class="text-xl font-bold text-sky-400">0</div>
                     </div>
+                    <div class="glass-card p-4 text-center">
+                        <div class="text-xs text-slate-500 uppercase" data-i18n="stat_lines">الأسطر</div>
+                        <div id="lineCount" class="text-xl font-bold text-sky-400">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Output Section -->
+            <div class="space-y-6">
+                <div class="glass-card p-6 h-full flex flex-col">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="font-bold text-slate-200" data-i18n="output_title">النتيجة</h2>
+                        <button onclick="copyOutput()" class="text-xs text-sky-500 hover:text-sky-400" data-i18n="btn_copy">نسخ</button>
+                    </div>
+                    <div id="outputText" class="flex-grow bg-slate-950/50 border border-slate-800 rounded-lg p-4 text-sm text-emerald-400 font-mono overflow-y-auto custom-scrollbar min-h-[200px] whitespace-pre-wrap"></div>
                 </div>
             </div>
         </div>
 
         <!-- SEO Content Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-            <div class="glass-panel p-6 rounded-2xl">
-                <h3 class="text-xl font-bold mb-4 text-sky-400" data-i18n="how_to_title">كيفية الاستخدام</h3>
-                <ul class="space-y-3 text-slate-400 text-sm" data-i18n-list="how_to_steps">
-                    <li>• ضع النص الأصلي في مربع الإدخال.</li>
-                    <li>• أضف الكلمات المفتاحية التي تستهدفها في محركات البحث.</li>
-                    <li>• اضغط على "تحويل النص" ليقوم النظام بإعادة توزيع الكلمات وتحسين الصياغة.</li>
-                    <li>• انسخ النص المحسن ووصف الميتا واستخدمهما في موقعك.</li>
-                </ul>
-            </div>
-            <div class="glass-panel p-6 rounded-2xl">
-                <h3 class="text-xl font-bold mb-4 text-sky-400" data-i18n="faq_title">الأسئلة الشائعة</h3>
-                <div class="space-y-4 text-sm">
-                    <div>
-                        <p class="text-slate-200 font-medium" data-i18n="faq_q1">هل هذه الأداة تضمن تصدر النتائج؟</p>
-                        <p class="text-slate-400" data-i18n="faq_a1">الأداة تساعد في تحسين هيكلية النص وتوزيع الكلمات، ولكن التصدر يعتمد أيضاً على جودة المحتوى والروابط الخلفية.</p>
-                    </div>
-                    <div>
-                        <p class="text-slate-200 font-medium" data-i18n="faq_q2">هل تدعم الأداة اللغتين العربية والإنجليزية؟</p>
-                        <p class="text-slate-400" data-i18n="faq_a2">نعم، الأداة مصممة لتعمل بكفاءة مع كلا اللغتين مع دعم كامل للـ RTL و LTR.</p>
-                    </div>
+        <div class="mt-12 glass-card p-8 border-t-4 border-t-sky-600">
+            <h2 class="text-2xl font-bold mb-6" data-i18n="seo_how_to">كيفية استخدام الأداة وتحسين الـ SEO</h2>
+            <div class="grid md:grid-cols-2 gap-8 text-slate-400 text-sm leading-relaxed">
+                <div>
+                    <h3 class="text-white font-bold mb-2" data-i18n="step_1_title">1. تنظيف النص (Text Cleaning)</h3>
+                    <p data-i18n="step_1_desc">استخدم ميزة التنظيف لإزالة المسافات الزائدة والأسطر الفارغة التي قد تؤثر على جودة المحتوى وتجربة المستخدم.</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-2" data-i18n="step_2_title">2. توليد الروابط (Slug Generation)</h3>
+                    <p data-i18n="step_2_desc">الروابط الصديقة لمحركات البحث يجب أن تكون قصيرة وتحتوي على الكلمات المفتاحية. الأداة تحول عنوانك إلى رابط مثالي.</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-2" data-i18n="step_3_title">3. استخراج الكلمات المفتاحية</h3>
+                    <p data-i18n="step_3_desc">ساعد نفسك في تحديد الكلمات الأكثر تكراراً في نصك لتعرف ما الذي يركز عليه محتواك وتستخدمه في الـ Meta Tags.</p>
+                </div>
+                <div>
+                    <h3 class="text-white font-bold mb-2" data-i18n="faq_title">الأسئلة الشائعة</h3>
+                    <p data-i18n="faq_desc">هل تدعم الأداة اللغة العربية؟ نعم، تدعم تحويل النصوص العربية إلى روابط (Slugs) متوافقة مع المعايير الحديثة.</p>
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script>
         const i18n = {
             ar: {
                 back_home: "العودة للرئيسية",
-                title: "محول النصوص لتحسين SEO",
-                subtitle: "حول نصوصك العادية إلى محتوى جذاب لمحركات البحث من خلال توزيع الكلمات المفتاحية وتحسين الهيكلية.",
-                label_text: "النص المراد تحويله",
-                label_keywords: "الكلمات المفتاحية (افصل بينها بفاصلة)",
-                btn_transform: "تحويل النص الآن",
-                label_result: "النتيجة المحسنة",
-                copy: "نسخ",
-                label_meta: "وصف الميتا المقترح (Meta Description)",
-                how_to_title: "كيفية الاستخدام",
-                how_to_steps: [
-                    "• ضع النص الأصلي في مربع الإدخال.",
-                    "• أضف الكلمات المفتاحية التي تستهدفها في محركات البحث.",
-                    "• اضغط على \"تحويل النص\" ليقوم النظام بإعادة توزيع الكلمات وتحسين الصياغة.",
-                    "• انسخ النص المحسن ووصف الميتا واستخدمهما في موقعك."
-                ],
+                title: "محول النصوص للـ SEO",
+                input_label: "أدخل النص المراد معالجته",
+                btn_clean: "تنظيف النص",
+                btn_slug: "توليد رابط (Slug)",
+                btn_keywords: "استخراج الكلمات",
+                stat_chars: "الحروف",
+                stat_words: "الكلمات",
+                stat_lines: "الأسطر",
+                output_title: "النتيجة",
+                btn_copy: "نسخ",
+                seo_how_to: "كيفية استخدام الأداة وتحسين الـ SEO",
+                step_1_title: "1. تنظيف النص",
+                step_1_desc: "إزالة المسافات والرموز غير الضرورية لجعل النص نقياً.",
+                step_2_title: "2. توليد الروابط",
+                step_2_desc: "تحويل العناوين إلى روابط URL صديقة لمحركات البحث.",
+                step_3_title: "3. الكلمات المفتاحية",
+                step_3_desc: "تحليل النص لاستخراج الكلمات الأساسية.",
                 faq_title: "الأسئلة الشائعة",
-                faq_q1: "هل هذه الأداة تضمن تصدر النتائج؟",
-                faq_a1: "الأداة تساعد في تحسين هيكلية النص وتوزيع الكلمات، ولكن التصدر يعتمد أيضاً على جودة المحتوى والروابط الخلفية.",
-                faq_q2: "هل تدعم الأداة اللغتين العربية والإنجليزية؟",
-                faq_a2: "نعم، الأداة مصممة لتعمل بكفاءة مع كلا اللغتين مع دعم كامل للـ RTL و LTR.",
-                lang_btn: "English"
+                faq_desc: "الأداة تعمل بالكامل في متصفحك، بياناتك آمنة تماماً.",
+                placeholder: "اكتب أو الصق النص هنا..."
             },
             en: {
                 back_home: "Back to Home",
                 title: "Text SEO Transformer",
-                subtitle: "Transform your plain text into search-engine friendly content by optimizing keyword distribution and structure.",
-                label_text: "Text to Transform",
-                label_keywords: "Keywords (separated by commas)",
-                btn_transform: "Transform Text Now",
-                label_result: "Optimized Result",
-                copy: "Copy",
-                label_meta: "Suggested Meta Description",
-                how_to_title: "How to Use",
-                how_to_steps: [
-                    "• Paste your original text into the input box.",
-                    "• Add the keywords you are targeting for search engines.",
-                    "• Click 'Transform Text' to redistribute keywords and improve phrasing.",
-                    "• Copy the optimized text and meta description for your site."
-                ],
+                input_label: "Enter text to process",
+                btn_clean: "Clean Text",
+                btn_slug: "Generate Slug",
+                btn_keywords: "Extract Keywords",
+                stat_chars: "Chars",
+                stat_words: "Words",
+                stat_lines: "Lines",
+                output_title: "Result",
+                btn_copy: "Copy",
+                seo_how_to: "How to use & SEO Optimization",
+                step_1_title: "1. Text Cleaning",
+                step_1_desc: "Remove extra spaces and redundant characters for clean content.",
+                step_2_title: "2. Slug Generation",
+                step_2_desc: "Convert titles into SEO-friendly URL slugs.",
+                step_3_title: "3. Keywords",
+                step_3_desc: "Analyze text to extract core keywords.",
                 faq_title: "FAQ",
-                faq_q1: "Does this tool guarantee top rankings?",
-                faq_a1: "The tool helps optimize structure and keyword density, but ranking also depends on content quality and backlinks.",
-                faq_q2: "Does it support both Arabic and English?",
-                faq_a2: "Yes, the tool is designed to work efficiently with both languages, supporting RTL and LTR layouts.",
-                lang_btn: "العربية"
+                faq_desc: "The tool runs entirely in your browser. Your data is 100% private.",
+                placeholder: "Type or paste text here..."
             }
         };
 
         let currentLang = 'ar';
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+        function updateLang() {
             document.documentElement.lang = currentLang;
             document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            document.getElementById('langToggle').innerText = currentLang === 'ar' ? 'English' : 'العربية';
             
-            // Update simple texts
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                el.textContent = i18n[currentLang][key];
+                el.innerText = i18n[currentLang][key];
             });
-
-            // Update lists
-            document.querySelectorAll('[data-i18n-list]').forEach(el => {
-                const key = el.getAttribute('data-i18n-list');
-                el.innerHTML = i18n[currentLang][key].map(item => `<li>${item}</li>`).join('');
-            });
-
-            document.getElementById('lang-text').textContent = i18n[currentLang].lang_btn;
-            
-            // Update placeholders
-            document.getElementById('inputText').placeholder = currentLang === 'ar' ? 'أدخل نصك هنا...' : 'Enter your text here...';
-            document.getElementById('keywords').placeholder = currentLang === 'ar' ? 'مثال: تسويق رقمي, سيو, زيادة الزيارات' : 'Example: Digital Marketing, SEO, Traffic';
+            document.getElementById('inputText').placeholder = i18n[currentLang].placeholder;
         }
 
-        function transformSEO() {
-            const text = document.getElementById('inputText').value;
-            const keywords = document.getElementById('keywords').value.split(',').map(k => k.trim()).filter(k => k);
-            
-            if (!text) {
-                alert(currentLang === 'ar' ? 'يرجى إدخال النص أولاً' : 'Please enter text first');
-                return;
-            }
+        document.getElementById('langToggle').addEventListener('click', () => {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            updateLang();
+        });
 
-            // Simulated SEO Transformation Logic
-            let optimizedText = text;
-            
-            // 1. Basic Structure Improvement (Adding a simulated H1/H2 feel)
-            const firstSentence = text.split(/[.!\n]/)[0];
-            optimizedText = `【${firstSentence}】\n\n${text}`;
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
 
-            // 2. Keyword Injection (Simulated)
-            keywords.forEach(kw => {
-                const regex = new RegExp(`([^.!?])\\s`, 'g');
-                let count = 0;
-                optimizedText = optimizedText.replace(regex, (match) => {
-                    if (count < 2) {
-                        count++;
-                        return `${match} ${kw} `;
-                    }
-                    return match;
-                });
-            });
+        inputText.addEventListener('input', () => {
+            const val = inputText.value;
+            document.getElementById('charCount').innerText = val.length;
+            document.getElementById('wordCount').innerText = val.trim() ? val.trim().split(/\s+/).length : 0;
+            document.getElementById('lineCount').innerText = val.trim() ? val.split(/\n/).length : 0;
+        });
 
-            // 3. Formatting
-            optimizedText = optimizedText.replace(/\n\n/g, '\n\n🚀 ');
-
-            document.getElementById('outputText').textContent = optimizedText;
-
-            // Generate Meta Description
-            const meta = keywords.length > 0 
-                ? `${firstSentence}. اكتشف المزيد عن ${keywords.slice(0, 3).join(' و ')} لتحقيق أفضل النتائج.`
-                : `${firstSentence}. اقرأ المزيد من التفاصيل في هذا المقال الشامل.`;
-            
-            document.getElementById('metaOutput').textContent = meta.substring(0, 160);
-        }
-
-        async function copyResult() {
-            const text = document.getElementById('outputText').textContent;
+        function processText(mode) {
+            let text = inputText.value;
             if (!text) return;
-            await navigator.clipboard.writeText(text);
-            alert(currentLang === 'ar' ? 'تم النسخ بنجاح!' : 'Copied successfully!');
+
+            if (mode === 'clean') {
+                text = text.replace(/\s+/g, ' ').trim();
+                outputText.innerText = text;
+            } 
+            else if (mode === 'slug') {
+                text = text.toLowerCase()
+                    .replace(/[^\w\s\u0621-\u064A]/g, '') // Keep alphanumeric and Arabic
+                    .replace(/\s+/g, '-')
+                    .replace(/-+/g, '-');
+                outputText.innerText = text;
+            } 
+            else if (mode === 'keywords') {
+                const words = text.toLowerCase().match(/[\u0621-\u064A\w]{3,}/g) || [];
+                const freq = {};
+                words.forEach(w => freq[w] = (freq[w] || 0) + 1);
+                const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 10);
+                outputText.innerText = sorted.map(item => item[0]).join(', ');
+            }
         }
+
+        function copyOutput() {
+            const text = outputText.innerText;
+            if (!text) return;
+            navigator.clipboard.writeText(text);
+            const btn = document.querySelector('[data-i18n="btn_copy"]');
+            const original = btn.innerText;
+            btn.innerText = currentLang === 'ar' ? 'تم!' : 'Done!';
+            setTimeout(() => btn.innerText = original, 2000);
+        }
+
+        updateLang();
     </script>
 </body>
 
