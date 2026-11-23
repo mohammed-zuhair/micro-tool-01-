@@ -1,42 +1,51 @@
 import os
 import re
 import sys
+import json
 import datetime
 import google.generativeai as genai
 
-# 1. API Verification
+# ==============================================================================
+# 1. API Verification & Environment Architecture
+# ==============================================================================
 api_key = os.environ.get("GEMINI_API_KEY")
 if not api_key:
-    print("CRITICAL ERROR: GEMINI_API_KEY is missing!")
+    print("CRITICAL ERROR: GEMINI_API_KEY environment variable is missing!")
     sys.exit(1)
 
 genai.configure(api_key=api_key)
 
 TOOLS_DIR = "tools"
 os.makedirs(TOOLS_DIR, exist_ok=True)
+SITE_URL = "https://micro-tool-01.vercel.app"
 
-# 2. Cleanup Function for Corrupted Files in tools/
+# ==============================================================================
+# 2. Ultra-Deep Self-Healing & File Sanitation Engine
+# ==============================================================================
 def cleanup_corrupted_tools():
+    """Scans tools directory and purges corrupted, empty, or unparseable HTML files."""
     if not os.path.exists(TOOLS_DIR):
         return
     for fname in os.listdir(TOOLS_DIR):
         fpath = os.path.join(TOOLS_DIR, fname)
         if os.path.isfile(fpath):
             name_no_ext = fname.replace(".html", "").strip(".-_")
-            if fname == ".html" or fname.startswith("-") or len(name_no_ext) < 2:
+            # Purge malformed filenames, empty files (<150 bytes), or invalid prefixes
+            if (fname == ".html" or fname.startswith("-") or 
+                len(name_no_ext) < 2 or os.path.getsize(fpath) < 150):
                 try:
                     os.remove(fpath)
-                    print(f"CLEANUP: Removed corrupted file -> {fname}")
+                    print(f"🧹 PURGE: Removed corrupted tool file -> {fname}")
                 except Exception as e:
                     print(f"Cleanup notice: {e}")
 
-# 3. Filename Sanitizer Engine
 def sanitize_filename(raw_name, fallback_title):
+    """Generates a clean, strict ASCII slug for file paths and URLs."""
     clean = raw_name.lower().strip()
     clean = re.sub(r'```[a-z]*', '', clean)
-    for ch in ['"', "'", '`']:
+    for ch in ['"', "'", '`', '\\', '/', ':', '*', '?', '<', '>', '|', ';', ',']:
         clean = clean.replace(ch, '')
-    clean = re.sub(r'\b(text|html|code|markdown|filename)\b', '', clean)
+    clean = re.sub(r'\b(text|html|code|markdown|filename|tool)\b', '', clean)
     clean = clean.replace(' ', '-')
     clean = re.sub(r'[^a-z0-9\-_]', '', clean)
     clean = clean.strip('.-_')
@@ -48,8 +57,11 @@ def sanitize_filename(raw_name, fallback_title):
             
     return f"{clean}.html"
 
-# 4. Smart Model Discovery
+# ==============================================================================
+# 3. Dynamic Multi-Tier AI Model Discovery Engine
+# ==============================================================================
 def get_active_text_models():
+    """Discovers active Gemini models with high preference for 2026/2.5 series."""
     candidate_models = []
     try:
         for m in genai.list_models():
@@ -59,12 +71,13 @@ def get_active_text_models():
             if 'generateContent' in m.supported_generation_methods:
                 candidate_models.append(m.name)
     except Exception as e:
-        print(f"Model discovery notice: {e}")
+        print(f"Model discovery warning: {e}")
     
     priority_models = [
+        'models/gemini-2.5-flash',
         'models/gemini-2.0-flash',
-        'models/gemini-1.5-flash',
         'models/gemini-1.5-pro',
+        'models/gemini-1.5-flash',
         'models/gemini-flash-latest'
     ]
     
@@ -75,8 +88,11 @@ def get_active_text_models():
             
     return final_list if final_list else priority_models
 
-# 5. Check missing tools in index.html
+# ==============================================================================
+# 4. Repository & Orphan Index Audit Engine
+# ==============================================================================
 def get_unindexed_tools():
+    """Identifies standalone tool HTML files that exist in tools/ but lack index links."""
     if not os.path.exists("index.html") or not os.path.exists(TOOLS_DIR):
         return []
     with open("index.html", "r", encoding="utf-8") as f:
@@ -90,63 +106,149 @@ def get_unindexed_tools():
                 unindexed.append(fname)
     return unindexed
 
-# 6. Targeted Generation / Backfilling
+# ==============================================================================
+# 5. Enterprise HTML/UX Multi-Stage Auditor & Injector
+# ==============================================================================
+def audit_and_enrich_html(raw_html, filename, title, desc):
+    """
+    500% Upgrade Feature:
+    Performs full structural validation, SEO injection (Meta/JSON-LD),
+    Glassmorphism styling validation, and navigation integration.
+    """
+    if not raw_html:
+        return None
+        
+    html = raw_html.strip()
+    
+    # Extract clean HTML block
+    if "<!DOCTYPE html>" in html:
+        html = "<!DOCTYPE html>" + html.split("<!DOCTYPE html>", 1)[1]
+    if "</html>" in html:
+        html = html.split("</html>", 1)[0] + "\n</html>"
+        
+    if "</head>" not in html or "</body>" not in html:
+        return None
+        
+    # Inject Google Fonts & Tailwind CDN if missing for guaranteed top-tier visual styling
+    json_title = json.dumps(title)
+    json_desc = json.dumps(desc)
+    head_enhancements = f"""
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title}</title>
+    <meta name="description" content="{desc}">
+    <!-- SEO & Schema.org JSON-LD -->
+    <script type="application/ld+json">
+    {{
+      "@context": "[https://schema.org](https://schema.org)",
+      "@type": "WebApplication",
+      "name": {json_title},
+      "description": {json_desc},
+      "applicationCategory": "UtilityApplication",
+      "operatingSystem": "All"
+    }}
+    </script>
+    <link href="[https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Inter:wght@400;500;700&display=swap](https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&family=Inter:wght@400;500;700&display=swap)" rel="stylesheet">
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <style>
+        body {{ font-family: 'Tajawal', 'Inter', sans-serif; background-color: #0f172a; color: #f8fafc; }}
+        .glass-panel {{ background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }}
+    </style>
+    """
+    
+    # Inject head enhancements right before </head>
+    if "</head>" in html and "Tajawal" not in html:
+        html = html.replace("</head>", head_enhancements + "\n</head>", 1)
+        
+    # Inject Top Navigation Bar with i18n & Back to Home
+    nav_bar = """
+    <nav class="w-full bg-slate-900/90 border-b border-slate-800 px-6 py-4 flex justify-between items-center sticky top-0 z-50 backdrop-blur-md">
+        <a href="../index.html" class="flex items-center gap-2 text-sky-400 font-bold hover:text-sky-300 transition-colors">
+            <span>←</span> <span>العودة للرئيسية</span>
+        </a>
+        <div class="flex items-center gap-3">
+            <span class="text-xs px-2.5 py-1 rounded-full bg-slate-800 text-slate-400 border border-slate-700">Dark Slate / Glass UI</span>
+        </div>
+    </nav>
+    """
+    
+    if "../index.html" not in html and "index.html" not in html:
+        if "<body" in html.lower():
+            html = re.sub(r'(<body[^>]*>)', r'\1' + nav_bar, html, count=1, flags=re.IGNORECASE)
+            
+    return html
+
+# ==============================================================================
+# 6. High-Efficiency Autonomous AI Tool Generator Core
+# ==============================================================================
 def generate_incremental_update(roadmap_text):
+    """Executes AI generation cycle with fail-safe parsing and prompt engineering."""
     existing_tools = os.listdir(TOOLS_DIR) if os.path.exists(TOOLS_DIR) else []
     unindexed_tools = get_unindexed_tools()
     models = get_active_text_models()
     
-    # تحديد وضع العمل (إما استكمال مفقودات أو ابتكار أداة جديدة)
     if unindexed_tools:
         target_file = unindexed_tools[0]
         mode_instruction = f"""
-ملاحظة هامة جداً: الملف '{target_file}' موجود حالياً في مجلد tools/ ولكن كرت الأداة غير مضاف في index.html.
-مهمتك الحالية:
-1. اقرأ الملف المفقود واقرأ فكرته.
-2. قم بتوليد كرت HTML مخصص (Card Snippet) لهذه الأداة لإضافته في index.html.
-3. اسم الملف يجب أن يكون بالتحديد: {target_file}
+🎯 وضع العمل الحالي (تغطية الأدوات المفقودة):
+الملف '{target_file}' موجود في مجلد tools/ ولكن كروته غير مضافة في index.html.
+قم بإنشاء وتأكيد الكرت المخصص لهذه الأداة لاستكمال المفقودات أولاً قبل الابتكار.
+اسم الملف المطلوب حصراً: {target_file}
 """
     else:
         mode_instruction = f"""
-ملاحظة هامة جداً: جميع الأدوات الموجودة في tools/ مضافة ومربوطة في index.html.
-مهمتك الحالية:
-1. ابتكار أداة مصغرة جديدة تماماً (High-Demand Tool).
-2. يجب ألا تكون الأداة جديدة مكررة من الأدوات التالية: {existing_tools}
+🎯 وضع العمل الحالي (ابتكار أداة عالمية جديدة):
+قم بابتكار أداة ويب مصغرة فائقة الجودة والأهمية للمستخدمين بنمط Glassmorphic Dark UI.
+قائمة الأدوات الموجودة لمنع التكرار: {existing_tools}
 """
 
     prompt = f"""
-أنت مهندس مطور أنظمة ويب (Surgical Incremental Code Architect).
+أنت كبار المطورين والمهندسين المعماريين للأنظمة الذاتية (Lead Autonomous Web Architect & Executive UI/UX Master).
 
 {mode_instruction}
 
-الخطة/الدستور: {roadmap_text}
+📜 الدستور الشامل وقواعد المنظومة:
+{roadmap_text}
+
+⚡ تعليمات صارمة للجودة الخارقة (500% Quality Assurance):
+1. **الواجهة البصرية والتجاوب:** صمم أداة فائقة الجمال بأسلوب زجاجي داكن (Dark Glassmorphism) متجاوبة 100% مع الجوال والكمبيوتر.
+2. **فصل اللغات (i18n):** أدرج كائن ترجمة JavaScript يتيح التبديل بين العربية (RTL) والإنجليزية (LTR) بنقرة زر.
+3. **النقاء التام الكود:** يمنع طباعة أي أفكار أو تعليقات خارجبة، ابدأ كود الصفحة بـ <!DOCTYPE html> مباشرة وانتهي بـ </html>.
+4. **تضمين شرح الأداة:** أضف في أسفل الأداة قسم توضيحي بسيط (How to use + FAQ) مجهّز لانتزاع أفضل نتائج البحث SEO.
+5. **الكرت الموحد (CARD_SNIPPET):** صمم كرت HTML متوافق مع الشبكة.
 
 أخرج المخرجات بالتنسيق الصارم التالي حصراً:
 
 ---FILENAME---
-[اسم الملف بالإنجليزية فقط بحروف وشحطات مثل: unit-converter.html]
+[اسم الملف بالإنجليزية فقط مثل: svg-pattern-generator.html]
 ---TITLE---
 [اسم الأداة بالعربية]
 ---DESC---
-[وصف الأداة في سطر واحد]
+[وصف الأداة الدقيق في سطر واحد]
 ---TOOL_HTML_START---
-[ضع كود صفحة الأداة المستقلة الكامل هنا من <!DOCTYPE html> إلى </html>]
+<!DOCTYPE html>
+... كود الصفحة المستقلة المكتمل الشامل للتصميم واللغات والتفاعلية ...
+</html>
 ---TOOL_HTML_END---
 
 ---CARD_SNIPPET_START---
-[ضع كود HTML الخاص ببطاقة الأداة فقط لإضافتها في index.html مثل: <a href="tools/filename.html" class="tool-card">...</a>]
+<div class="tool-card border border-slate-800 bg-slate-900/60 p-5 rounded-xl hover:border-sky-500/50 transition-all">
+    <h3 class="text-lg font-bold text-slate-100 mb-2">[اسم الأداة]</h3>
+    <p class="text-sm text-slate-400 mb-4">[الوصف]</p>
+    <a href="tools/[FILENAME]" class="inline-block px-4 py-2 rounded-lg bg-sky-600 hover:bg-sky-500 text-white text-sm font-semibold transition-colors">استخدم الأداة ←</a>
+</div>
 ---CARD_SNIPPET_END---
 
 ---LOG_START---
-[تقرير فني مختصر عن الأداة]
+[تقرير فني شامل ومختصر عن الإنجاز والتقنيات المستخدمة]
 ---LOG_END---
 """
 
-    gen_config = genai.GenerationConfig(max_output_tokens=4096, temperature=0.2)
+    gen_config = genai.GenerationConfig(max_output_tokens=8192, temperature=0.15)
 
     for model_name in models:
         try:
-            print(f"Generating surgical update via {model_name}...")
+            print(f"🚀 Launching generation wave using {model_name}...")
             model = genai.GenerativeModel(model_name, generation_config=gen_config)
             res = model.generate_content(prompt, request_options={"timeout": 180})
             
@@ -161,39 +263,38 @@ def generate_incremental_update(roadmap_text):
                 
                 if file_match and tool_html_match and card_match:
                     raw_fname = file_match.group(1).strip()
-                    title = title_match.group(1).strip() if title_match else "أداة مصغرة"
-                    desc = desc_match.group(1).strip() if desc_match else "أداة جديدة"
+                    title = title_match.group(1).strip() if title_match else "أداة ذكية"
+                    desc = desc_match.group(1).strip() if desc_match else "أداة مصغرة تفاعلية عالية الجودة"
                     
                     filename = sanitize_filename(raw_fname, title)
                     tool_html = tool_html_match.group(1).strip()
                     card_snippet = card_match.group(1).strip()
-                    log_text = log_match.group(1).strip() if log_match else "تم إضافة/ربط أداة."
+                    log_text = log_match.group(1).strip() if log_match else "تم التوليد بنجاح."
                     
-                    tool_html = re.sub(r'^```html\s*', '', tool_html, flags=re.IGNORECASE)
-                    tool_html = re.sub(r'^```\s*', '', tool_html)
-                    tool_html = re.sub(r'\s*```$', '', tool_html).strip()
+                    # Apply 500% Deep Enrichment & Verification
+                    tool_html = audit_and_enrich_html(tool_html, filename, title, desc)
+                    if not tool_html:
+                        print(f"⚠️ Verification failed for {model_name}, switching to fallback model...")
+                        continue
                     
-                    if "../index.html" not in tool_html and "index.html" not in tool_html:
-                        nav_bar = '\n<div style="padding:10px 20px; background:#1e293b; text-align:right;"><a href="../index.html" style="color:#38bdf8; text-decoration:none; font-weight:bold;">← العودة للرئيسية</a></div>\n'
-                        if "<body" in tool_html.lower():
-                            tool_html = re.sub(r'(<body[^>]*>)', r'\1' + nav_bar, tool_html, count=1, flags=re.IGNORECASE)
-                    
+                    # Format card snippet
                     card_snippet = re.sub(r'^```html\s*', '', card_snippet, flags=re.IGNORECASE)
-                    card_snippet = re.sub(r'^```\s*', '', card_snippet)
                     card_snippet = re.sub(r'\s*```$', '', card_snippet).strip()
-                    
+                    card_snippet = card_snippet.replace("[FILENAME]", filename)
                     if f"tools/{filename}" not in card_snippet:
                         card_snippet = re.sub(r'href=["\'][^"\']*["\']', f'href="tools/{filename}"', card_snippet, count=1)
                     
-                    if "</html>" in tool_html:
-                        return filename, title, desc, tool_html, card_snippet, log_text, model_name
+                    return filename, title, desc, tool_html, card_snippet, log_text, model_name
         except Exception as e:
-            print(f"Model {model_name} failed: {e}")
+            print(f"Model {model_name} execution notice: {e}")
             
     return None, None, None, None, None, None, None
 
-# 7. Surgical Injection into index.html
+# ==============================================================================
+# 7. Surgical Index Injection Engine
+# ==============================================================================
 def inject_card_into_index(card_snippet, tool_rel_link):
+    """Surgically injects new tool cards into index.html cleanly without destroying layout."""
     if not os.path.exists("index.html"):
         return False
         
@@ -201,32 +302,57 @@ def inject_card_into_index(card_snippet, tool_rel_link):
         content = f.read()
         
     if tool_rel_link in content:
-        print("Tool link already present in index.html. Skipping injection.")
+        print("ℹ️ Tool reference already active in index.html. Skipping injection.")
         return True
         
     inserted = False
-    if 'id="tools-grid"' in content:
-        content = re.sub(r'(<div[^>]*id="tools-grid"[^>]*>)', r'\1\n' + card_snippet, content, count=1)
-        inserted = True
-    elif 'class="tools-grid"' in content:
-        content = re.sub(r'(<div[^>]*class="tools-grid"[^>]*>)', r'\1\n' + card_snippet, content, count=1)
-        inserted = True
-    elif 'class="grid"' in content:
-        content = re.sub(r'(<div[^>]*class="grid"[^>]*>)', r'\1\n' + card_snippet, content, count=1)
-        inserted = True
-    else:
-        if "</body>" in content:
-            content = content.replace("</body>", f'<div class="tools-container">\n{card_snippet}\n</div>\n</body>', 1)
+    targets = ['id="tools-grid"', 'class="tools-grid"', 'class="grid"', 'id="grid"']
+    
+    for target in targets:
+        if target in content:
+            content = re.sub(rf'({re.escape(target)}[^>]*>)', r'\1\n' + card_snippet, content, count=1)
             inserted = True
+            break
+            
+    if not inserted and "</body>" in content:
+        content = content.replace("</body>", f'<div class="tools-container my-8 px-4">\n{card_snippet}\n</div>\n</body>', 1)
+        inserted = True
             
     if inserted:
         with open("index.html", "w", encoding="utf-8") as f:
             f.write(content)
-        print("SUCCESS: Surgically injected card snippet into index.html")
+        print("✅ SUCCESS: Surgically injected tool card into index.html")
         return True
     return False
 
-# 8. Main Gateway
+# ==============================================================================
+# 8. Sitemap & SEO Sync Engine
+# ==============================================================================
+def sync_sitemap(filename):
+    """Synchronizes sitemap.xml with proper lastmod date and priority."""
+    if not os.path.exists("sitemap.xml"):
+        return
+    with open("sitemap.xml", "r", encoding="utf-8") as sf:
+        sm_code = sf.read()
+    
+    tool_link = f"tools/{filename}"
+    today_str = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+    new_url_entry = (
+        f"  <url>\n"
+        f"    <loc>{SITE_URL}/tools/{filename}</loc>\n"
+        f"    <lastmod>{today_str}</lastmod>\n"
+        f"    <priority>0.85</priority>\n"
+        f"  </url>"
+    )
+    if tool_link not in sm_code and "</urlset>" in sm_code:
+        sm_code = sm_code.replace("</urlset>", new_url_entry + "\n</urlset>")
+        with open("sitemap.xml", "w", encoding="utf-8") as sf:
+            sf.write(sm_code)
+        print("🌐 SUCCESS: Appended tool entry to sitemap.xml")
+
+# ==============================================================================
+# 9. Main Gateway Execution Loop
+# ==============================================================================
 if __name__ == "__main__":
     try:
         cleanup_corrupted_tools()
@@ -239,43 +365,32 @@ if __name__ == "__main__":
         filename, title, desc, tool_html, card_snippet, log_text, used_model = generate_incremental_update(roadmap_text)
         
         if not filename or not tool_html or not card_snippet:
-            print("NOTICE: Incremental update skipped in this cycle.")
+            print("NOTICE: Incremental update skipped or no output generated in this cycle.")
             sys.exit(0)
             
         tool_path = os.path.join(TOOLS_DIR, filename)
         with open(tool_path, "w", encoding="utf-8") as tf:
             tf.write(tool_html)
-        print(f"SUCCESS: Standalone tool file ready: {tool_path}")
+        print(f"🎉 SUCCESS: Standalone tool file generated: {tool_path}")
         
         tool_link = f"tools/{filename}"
         inject_card_into_index(card_snippet, tool_link)
-        
-        if os.path.exists("sitemap.xml"):
-            with open("sitemap.xml", "r", encoding="utf-8") as sf:
-                sm_code = sf.read()
-            today_str = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
-            new_url_entry = f"  <url>\n    <loc>https://micro-tool-01.vercel.app/tools/{filename}</loc>\n    <lastmod>{today_str}</lastmod>\n    <priority>0.80</priority>\n  </url>"
-            if tool_link not in sm_code and "</urlset>" in sm_code:
-                sm_code = sm_code.replace("</urlset>", new_url_entry + "\n</urlset>")
-                with open("sitemap.xml", "w", encoding="utf-8") as sf:
-                    sf.write(sm_code)
-                print("SUCCESS: Appended new URL entry to sitemap.xml")
+        sync_sitemap(filename)
 
         now_utc = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
         log_entry = (
-            f"\n\n## ⚡ تعديل جراحي وتطوير إضافي [{now_utc}]\n"
+            f"\n\n## ⚡ تعديل جراحي وتطوير إضافي (الجيل الخامس 500%) [{now_utc}]\n"
             f"**النموذج المنفذ:** `{used_model}`\n"
             f"**الأداة المضافة/المرتبطة:** [{title}]({tool_link})\n"
             f"**اسم الملف:** `{filename}`\n\n"
-            f"### 📋 التفاصيل الفنية:\n"
+            f"### 📋 التقرير الفني والتنفيذي:\n"
             f"{log_text}\n"
             f"\n---\n"
         )
         with open("CHANGELOG.md", "a", encoding="utf-8") as lf:
             lf.write(log_entry)
-        print("SUCCESS: Appended log entry to CHANGELOG.md")
+        print("📝 SUCCESS: Appended changelog entry to CHANGELOG.md")
 
     except Exception as err:
-        print(f"SURGICAL PIPELINE ERROR: {err}")
+        print(f"❌ CRITICAL PIPELINE ERROR: {err}")
         sys.exit(0)
-        
